@@ -3,6 +3,8 @@ const express = require('express');
 
 const app = express();
 
+require('./db/mysql-config');
+
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 
