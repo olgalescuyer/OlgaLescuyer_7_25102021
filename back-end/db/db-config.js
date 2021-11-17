@@ -1,0 +1,17 @@
+// db/db-config.js
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './.env' });
+
+module.exports = {
+    'connection': {
+        'host': process.env.DB_HOST,
+        'user': process.env.DB_USER,
+        'password': process.env.DB_PASS
+
+    },
+    'database': process.env.DB,
+    'user_table': process.env.UT,
+    'post_table': process.env.PT,
+    'like_table': process.env.LT
+}

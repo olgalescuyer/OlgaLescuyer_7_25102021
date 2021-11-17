@@ -3,8 +3,11 @@ const express = require('express');
 
 const app = express();
 
-require('./db/mysql-config');
+// import db config + connect :
+require('./db/db-config');
+require('./db/db-connect');
 
+// Define Routes
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 
@@ -18,12 +21,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// parser 
+// parser URL-encoded bodies ( as sent by HTML forms) ? false ?
 app.use(express.urlencoded({ extended: true })); //?
+// Parse JSON bodies ( as sent by API clients)
 app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+// Define Routes
 app.use('/api/auth', userRoutes);
 app.use('api/posts', postRoutes);
 
