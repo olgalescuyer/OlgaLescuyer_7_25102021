@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/signup', ); // new user sign up
+const { signup, login, getOneUser, modifyOneUser, deleteOneUser } = require('../controllers/user');
 
-router.post('/login', (req, res, next) => {
-    res.status(200).json({ 
-        message:   '✔️ api/auth/login' 
-    });
-}); // user login
-
-router.get('/:id', ); // get user profile
-router.put('/:id', ); // modify user profile
-router.delete('/:id', ); // delete user profile
+router.post('/signup', signup); // new user sign up
+router.post('/login', login); // new user login
+router.get('/:id', getOneUser); // get user profile
+router.put('/:id', modifyOneUser); // modify user profile
+router.delete('/:id', deleteOneUser); // delete user profile
 
 module.exports = router;
