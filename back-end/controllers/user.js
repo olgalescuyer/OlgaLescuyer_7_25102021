@@ -1,94 +1,58 @@
-const User = require('../models/User');
 const userModel = require('../models/userModel');
+const db = require('../db/db-connect');
+const mysql = require('mysql');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
-
 
 const dotenv = require("dotenv");
 dotenv.config();
 // masque :
 const tokenSecret = process.env.TOKEN;
 
-// version 1 - signup/registre/s'inscrire - from one guy Swedish on YouTube :
 exports.signup = (req, res, next) => {
     // I grab the values of req :
-    const { first_name, last_name, email, password } = req.body;
+    // const { first_name, last_name, email, password } = req.body;
 
-    userModel.findByEmail(email)
-        .then((utilisateur) => {
-            res.status(200).json(utilisateur[0])
-        })
-        .catch((error) => res.status(404).json({ error }));
-
-    // db.query(sql, (err, result) => {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-
-    // so if there is an email in the db :
-    if (result.length > 0) {
-        return console.log('This email is already registered');
-    }
-
-    // const hash = await bcrypt.hash(password, 10);
-    // console.log(hash);
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const password = req.body.password;
 
     bcrypt.hash(password, 10)
-        .then((hash) => {
 
-            const user = new User({
-                u_first_name: first_name,
-                u_last_name: last_name,
-                u_email: email,
-                u_password: hash
-            });
+    .then((hash) => {
 
-            // let sql = 'INSERT INTO user SET ?';
-            // db.query(sql, user, (err, results) => {
-            //     if (err) {
-            //         console.log(err);
-            //     } else {
-            //         return res.status(201).json({ 
-            //             message:   '✔️ User successfully created' 
-            //         });
-            //     }
-            // });
+            let sqlInserts = [firstName, lastName, email, hash];
+
+            userModel.insertIntoUser(sqlInserts)
+
+            .then((response) => {
+                    res.status(201).json(JSON.stringify(response));
+                    console.log(response);
+                })
+                .catch(error => res.status(400).json({ error }));
 
         })
         .catch(error => res.status(500).json({ error }));
 
-
-
 };
-
-
-
-
-
 
 exports.login = (req, res, next) => {
 
-    const { email, password } = req.body;
+    // const { u_email, password } = req.body;
+    // or :
+    const email = req.body.email;
+    // const password = req.body.password;
 
-    let sql = 'SELECT * FROM user WHERE u_email = ?';
-    db.query(sql, email, password, (err, result) => {
+    userModel.findByEmail(email)
+        .then((utilisateur) => {
 
-        bcrypt.compare(password, result.u_password)
-            .then((user) => {
-                    if (!user) return res.status(401).json({ error: '👎 Utilisateur non trouvé !' });
+            res.status(200).json(utilisateur[0])
 
-                    const id = result.u_id;
-                    const email = result.u_email;
+        })
+        .catch((error) => res.status(404).json({ error }));
 
-                    const token = jwt.sign({ userId: id, userEmail: email }, tokenSecret, { expiresIn: "24h" });
-                    res.status(200).json({ message:   '✔️ api/auth/login', token, userEmail: email });
-                }
-
-            )
-            .catch(error => res.status(500).json({ error }));
-    });
 
 };
 

@@ -1,7 +1,7 @@
 const Post = require('../models/Post');
 
 const fs = require('fs');
-// file system for put/delete images
+// file system for  images
 
 exports.createPost = (req, res, next) => {
 
