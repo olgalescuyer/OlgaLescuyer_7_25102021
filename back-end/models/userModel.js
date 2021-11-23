@@ -34,7 +34,7 @@ exports.findByEmail = (email) => {
         db.query(sql, (err, result) => {
 
             if (result === undefined) {
-                reject('Utilisateur non trouvé !')
+                reject({ error: '👎 Utilisateur non trouvé !' })
             } else {
                 resolve(result);
             }
@@ -51,11 +51,9 @@ exports.findById = (id) => {
     return new Promise((resolve, reject) => {
 
         db.query(sql, (err, result) => {
-            if (result === undefined) {
-                reject('Utilisateur non trouvé !')
-            } else {
-                resolve(result);
-            }
+
+            if (err) return reject({ error: 'Cette page n\'existe pas :( ' });
+            resolve(result);
         })
     })
 }
