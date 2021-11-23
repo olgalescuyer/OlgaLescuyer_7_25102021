@@ -14,14 +14,18 @@ exports.signup = (req, res, next) => {
     // I grab the values of req :
     // const { first_name, last_name, email, password } = req.body;
 
+    console.log(req.body.firstName);
+
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
     const password = req.body.password;
 
+
     bcrypt.hash(password, 10)
 
     .then((hash) => {
+            console.log(hash);
 
             let sqlInserts = [firstName, lastName, email, hash];
 
@@ -52,7 +56,6 @@ exports.login = (req, res, next) => {
 
         })
         .catch((error) => res.status(404).json({ error }));
-
 
 };
 

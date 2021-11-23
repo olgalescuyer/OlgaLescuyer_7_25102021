@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 exports.insertIntoUser = (sqlInserts) => {
 
-    let sql = "INSERT INTO user ( u_first_name, u_last_name, u_email, u_password) VALUES ?, ?, ?, ? )";
+    let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password) VALUES ( ?, ?, ?, ? )`;
 
     //From doc : Preparing Queries. You can use mysql.format to prepare a query 
     // with multiple insertion points, utilizing the proper escaping 
@@ -14,16 +14,8 @@ exports.insertIntoUser = (sqlInserts) => {
 
         db.query(sql, (err, result) => {
 
-            // if (err) reject({ error: 'Erreur !' });
-            // resolve({ message: 'Succes !' })
-
-            if (err) {
-
-                return res.status(400).json("erreur")
-            } else {
-                return res.status(201).json({ message: 'Création du compte effectuée' })
-            };
-
+            if (err) reject({ error: 'Vous avez déjà un compte !' });
+            resolve({ message: 'Utilisateur créé !' })
 
         })
     })
@@ -34,7 +26,7 @@ exports.insertIntoUser = (sqlInserts) => {
 
 exports.findByEmail = (email) => {
 
-    // let is for 'scoped' :
+    // let is for 'scope' :
     let sql = `SELECT * FROM user WHERE u_email = '${email}'`;
 
     return new Promise((resolve, reject) => {
