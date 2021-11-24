@@ -54,10 +54,10 @@ exports.login = (req, res, next) => {
     userModel.findByEmail(email)
         .then((user) => {
 
-            console.log('response from userModel :', user);
+            console.log('response from userModel :', user[0].u_password);
             console.log('user is an ', typeof user)
 
-            res.status(200).json(user[0]);
+            // res.status(200).json(user[0]); // !!!!
 
             bcrypt.compare(req.body.password, user[0].u_password)
 
@@ -69,6 +69,7 @@ exports.login = (req, res, next) => {
                         console.log('Password is incorrect');
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
+
                     res.status(200).json({
                         userId: user[0].u_id,
                         token: jwt.sign({ userId: user[0].u_id },
