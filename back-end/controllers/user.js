@@ -57,23 +57,26 @@ exports.login = (req, res, next) => {
             console.log('response from userModel :', user);
             console.log('user is an ', typeof user)
 
-
             res.status(200).json(user[0]);
 
-            // bcrypt.compare(req.body.password, user[0].password)
-            //     .then(valid => {
-            //         if (!valid) {
-            //             return res.status(401).json({ error: 'Mot de passe incorrect !' })
-            //         }
-            //         // res.status(200).json({
-            //         //     userId: user[0].id,
-            //         //     token: jwt.sign({ userId: user[0].id },
-            //         //         tokenSecret, { expiresIn: '24h' }
-            //         //     )
-            //         // });
-            //     })
-            //     .catch((error) => res.status(500).json({ error }));
+            bcrypt.compare(req.body.password, user[0].u_password)
 
+            .then(valid => {
+
+                    console.log(valid)
+
+                    if (!valid) {
+                        console.log('Password is incorrect');
+                        return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                    }
+                    res.status(200).json({
+                        userId: user[0].u_id,
+                        token: jwt.sign({ userId: user[0].u_id },
+                            tokenSecret, { expiresIn: '24h' }
+                        )
+                    });
+                })
+                .catch((error) => res.status(500).json({ error }));
 
         })
         .catch((error) => res.status(404).json({ error }));
