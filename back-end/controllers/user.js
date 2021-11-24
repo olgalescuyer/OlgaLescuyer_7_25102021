@@ -47,26 +47,32 @@ exports.login = (req, res, next) => {
     // const { u_email, password } = req.body;
     // or :
     const email = req.body.email;
-    // const password = req.body.password;
+    const password = req.body.password;
+
+    console.log('req.body : ', email, password);
 
     userModel.findByEmail(email)
         .then((user) => {
 
+            console.log('response from userModel :', user);
+            console.log('user is an ', typeof user)
+
+
             res.status(200).json(user[0]);
 
-            bcrypt.compare(req.body.password, user[0].password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json({ error: 'Mot de passe incorrect !' })
-                    }
-                    res.status(200).json({
-                        userId: user[0].id,
-                        token: jwt.sign({ userId: user[0].id },
-                            tokenSecret, { expiresIn: '24h' }
-                        )
-                    });
-                })
-                .catch(error => res.status(500).json({ error }));
+            // bcrypt.compare(req.body.password, user[0].password)
+            //     .then(valid => {
+            //         if (!valid) {
+            //             return res.status(401).json({ error: 'Mot de passe incorrect !' })
+            //         }
+            //         // res.status(200).json({
+            //         //     userId: user[0].id,
+            //         //     token: jwt.sign({ userId: user[0].id },
+            //         //         tokenSecret, { expiresIn: '24h' }
+            //         //     )
+            //         // });
+            //     })
+            //     .catch((error) => res.status(500).json({ error }));
 
 
         })
