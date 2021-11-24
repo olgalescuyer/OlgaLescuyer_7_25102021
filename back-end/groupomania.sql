@@ -90,7 +90,7 @@ CREATE TABLE `user` (
   `u_admin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`u_id`),
   UNIQUE KEY `u_email_UNIQUE` (`u_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'toto','dubois','dubois.toto@groupomania.fr','123456',0),(2,'john','doe','jonh.doe@groupomania.fr','AZERTY',0),(4,'jane','smith','smith.jane@groupomania@fr','wxcvb',0),(5,'admin','moderateur','admin@groupomania','passadmin',1);
+INSERT INTO `user` VALUES (1,'toto','dubois','dubois.toto@groupomania.fr','123456',0),(2,'john','doe','doe.john@groupomania.fr','AZERTY',0),(4,'jane','smith','smith.jane@groupomania.fr','wxcvb',0),(5,'admin','moderateur','admin@groupomania.fr','passadmin',1),(6,'emilie','martin','martin.emilie@groupomania.fr','$2b$10$p4/SYLER0WJ5UQkOEMZdrulHxEMMTnyynlexXv9TNs3gA9pGZbDAu',NULL),(11,'bob','martin',' martin.bob@groupomania.fr','$2b$10$a2msnSQlk6Ss38L5aLJnpebkPx.2YVkvtjucJXQs.phwfrL9lF2qC',NULL),(14,'sebastien','dupon','dupon.sebastien@groupomania.fr','$2b$10$YxfJQ4TA.gqnUVIYkuAzIeEaw.gcybwpeOwALCTaM8P6ob1IGLoiK',NULL),(15,'isaac','asimov','asimov.isaac@groupomania.fr','$2b$10$z9h2B.F8dGKLBJafQxB1Ae.1yerqTo//TL9c9/8lCOfB509.2PncC',NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -112,4 +112,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-22 11:02:24
+-- Dump completed on 2021-11-24 17:30:42
