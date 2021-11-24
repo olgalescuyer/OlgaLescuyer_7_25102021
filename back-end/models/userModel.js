@@ -26,16 +26,19 @@ exports.insertIntoUser = (sqlInserts) => {
 
 exports.findByEmail = (email) => {
 
-    // let is for 'scope' :
+    // "let" is for "scope" :
     let sql = `SELECT * FROM user WHERE u_email = '${email}'`;
 
     return new Promise((resolve, reject) => {
 
         db.query(sql, (err, result) => {
 
-            if (result === undefined) {
-                reject('Utilisateur non trouvé !')
+            if (result.length === 0) {
+
+                reject({ error: '👎 Utilisateur non trouvé !' })
             } else {
+
+                console.log('result from db : ', result); // whaaaaatt ? 
                 resolve(result);
             }
 
@@ -51,11 +54,9 @@ exports.findById = (id) => {
     return new Promise((resolve, reject) => {
 
         db.query(sql, (err, result) => {
-            if (result === undefined) {
-                reject('Utilisateur non trouvé !')
-            } else {
-                resolve(result);
-            }
+
+            if (err) return reject({ error: 'Cette page n\'existe pas :( ' });
+            resolve(result);
         })
     })
 }
