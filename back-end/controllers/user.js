@@ -2,13 +2,12 @@ const userModel = require('../models/userModel');
 const db = require('../db/db-connect');
 const mysql = require('mysql');
 
+require("dotenv").config();
+// masque
+
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
-const dotenv = require("dotenv");
-dotenv.config();
-// masque :
-const tokenSecret = process.env.TOKEN;
 
 exports.signup = (req, res, next) => {
     // I grab the values of req :
@@ -32,7 +31,7 @@ exports.signup = (req, res, next) => {
             userModel.insertIntoUser(sqlInserts)
 
             .then((response) => {
-                    res.status(201).json(JSON.stringify(response));
+                    res.status(201).json({ response });
                     console.log(response);
                 })
                 .catch(error => res.status(400).json({ error }));
@@ -57,7 +56,7 @@ exports.login = (req, res, next) => {
             console.log('response from userModel :', user[0].u_password);
             console.log('user is an ', typeof user)
 
-            // res.status(200).json(user[0]); // !!!!
+            // res.status(200).json(user[0]); // !!!! don't touch it
 
             bcrypt.compare(req.body.password, user[0].u_password)
 
@@ -72,8 +71,9 @@ exports.login = (req, res, next) => {
 
                     res.status(200).json({
                         userId: user[0].u_id,
+                        role: user[0].u_admin === 1 ? 'admin' : 'membre',
                         token: jwt.sign({ userId: user[0].u_id },
-                            tokenSecret, { expiresIn: '24h' }
+                            process.env.TOKEN, { expiresIn: '24h' }
                         )
                     });
                 })
@@ -86,21 +86,53 @@ exports.login = (req, res, next) => {
 
 exports.getOneUser = (req, res, next) => {
 
+    // console.log(req.params);
+    // grabs the id from params of request ?? :
+    // const id = req.params.id;
 
+    // or from token ? :
+    const idFromToken = req.bearerToken.userId;
+    // console.log(idFromToken);
 
+    // save the id in a params of the method or idFromToken :
+    userModel.findUserById(idFromToken)
+        .then(user => res.status(200).json(user[0]))
+        .catch(error => res.status(404).json({ error }));
 
 };
 
 exports.modifyOneUser = (req, res, next) => {
 
+    const userObject = req.body;
+    console.log(userObject);
+
+    const firstName = userObject.firstName;
+    const lastName = userObject.lastName;
+    const email = userObject.email;
+
+    const sqlInserts = [firstName, lastName, email];
+
+    const userId = req.bearerToken.userId;
+
+    userModel.updateOneUser(sqlInserts, userId)
+        .then(response => res.status(200).json({ message: 'User modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+
 };
 
 exports.deleteOneUser = (req, res, next) => {
 
-};
+    const userIdFromToken = req.bearerToken.userId;
+    const userIdFromParams = req.params.id;
 
-// (req, res, next) => {
-//     res.status(200).json({ 
-//         message:   '✔️ api/auth/login' 
-//     });
-// }
+    if (userIdFromParams == userIdFromToken) {
+
+        userModel.deleteOneUserByUser(userIdFromToken)
+            .then(response => res.status(200).json({ message: 'User supprimé !' }))
+            .catch(error => res.status(500).json({ error }));
+    } else {
+
+        res.status(400).json({ message: 'user Id from params not valid !' })
+    }
+
+};

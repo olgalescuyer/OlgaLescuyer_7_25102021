@@ -1,5 +1,3 @@
-const Post = require('../models/Post');
-
 const fs = require('fs');
 // file system for  images
 

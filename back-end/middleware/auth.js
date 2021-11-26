@@ -1,24 +1,31 @@
 const jwt = require('jsonwebtoken');
 // authentification
-const dotenv = require("dotenv");
+require("dotenv").config();
 // masque
-dotenv.config();
-
-const tokenSecret = process.env.TOKEN;
 
 module.exports = (req, res, next) => {
     try {
+        // I grab the token from the request =>
+        // split : return an array with 'Bearer' & token =>
+        // I grab only token :
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, tokenSecret);
-        const u_id = decodedToken.u_id;
 
-        if (req.body.u_id && req.body.u_id !== u_id) {
-            throw 'User ID non valable';
-        } else {
-            next();
-        }
+        // verify : for decode token ( payload + tokenSecret) =>
+        req.bearerToken = jwt.verify(token, process.env.TOKEN);
+        console.log(req.bearerToken);
+
+        // I don't understand this :
+        // if (req.body.id && req.body.id !== userId) {
+
+        //     throw 'User ID non valable';
+
+        // } else {
+        //     next();
+        // }
+
+        next();
 
     } catch (error) {
-        res.status(401).json({ error: error | 'Requête non authentifiée !' });
+        res.status(401).json({ error: 'Requête non authentifiée !' });
     }
 }

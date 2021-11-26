@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 
 // import db config + connect :
-require('./db/db-config');
 require('./db/db-connect');
 
 // Define Routes
@@ -21,8 +20,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// parser URL-encoded bodies ( as sent by HTML forms) ? true ?
-// app.use(express.urlencoded({ extended: false })); //?
+// parser URL-encoded bodies ( as sent by HTML forms) 
+app.use(express.urlencoded({ extended: true }));
 // Parse JSON bodies ( as sent by API clients)
 app.use(express.json());
 
