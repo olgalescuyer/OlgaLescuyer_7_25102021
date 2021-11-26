@@ -21,8 +21,8 @@ exports.signupValidator = [
     check('email')
     .isEmail()
     .normalizeEmail()
-    .withMessage('👎 It must be something like this : your.name@groupomania.fr')
-    .matches(/^([a-z\d\.-]+)@([groupomania\d-]+)\.([fr]{2})/),
+    .matches(/^([a-z\d\.-]+)@([groupomania\d-]+)\.([fr]{2})/)
+    .withMessage('👎 It must be something like this : your.name@groupomania.fr'),
 
     check('password')
     .trim()
