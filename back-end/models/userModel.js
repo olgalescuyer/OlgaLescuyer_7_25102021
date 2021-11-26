@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 exports.insertIntoUser = (sqlInserts) => {
 
-    let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password) VALUES ( ?, ?, ?, ? )`;
+    const sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password) VALUES ( ?, ?, ?, ? )`;
 
     //From doc : Preparing Queries. You can use mysql.format to prepare a query 
     // with multiple insertion points, utilizing the proper escaping 
@@ -49,7 +49,7 @@ exports.findByEmail = (email) => {
 
 exports.findUserById = (id) => {
 
-    let sql = `SELECT * FROM user WHERE u_id = ?`;
+    const sql = `SELECT * FROM user WHERE u_id = ?`;
 
     return new Promise((resolve, reject) => {
 
@@ -63,6 +63,53 @@ exports.findUserById = (id) => {
                 // console.log('result from db : ', result);
                 resolve(result);
             }
+        })
+    })
+}
+
+exports.updateOneUser = (sqlInserts, userId) => {
+
+    let sql = `UPDATE user SET u_first_name = ?, u_last_name = ?, u_email = ? WHERE u_id = ` + db.escape(userId);
+
+    sql = mysql.format(sql, sqlInserts);
+
+
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, sqlInserts, (err, result) => {
+
+            if (result === undefined || result.length === 0) {
+
+                reject({ error: '👎  !' })
+            } else {
+
+                console.log('result from db : ', result);
+                resolve(result);
+            }
+
+        })
+    })
+
+}
+
+exports.deleteOneUserByUser = (userId) => {
+
+    let sql = `DELETE FROM user WHERE u_id = ` + db.escape(userId);
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, (err, result) => {
+
+            if (result === undefined || result.length === 0) {
+
+                reject({ error: '👎  !' })
+            } else {
+
+                console.log('result from db : ', result);
+                resolve(result);
+            }
+
         })
     })
 }
