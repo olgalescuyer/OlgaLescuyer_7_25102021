@@ -2,6 +2,8 @@ const userModel = require('../models/userModel');
 const db = require('../db/db-connect');
 const mysql = require('mysql');
 
+const { validationResult } = require('express-validator');
+
 require("dotenv").config();
 // masque
 
@@ -10,16 +12,21 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 exports.signup = (req, res, next) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     // I grab the values of req :
     // const { first_name, last_name, email, password } = req.body;
 
-    console.log(req.body.firstName);
+    console.log(req.body);
 
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
     const password = req.body.password;
-
 
     bcrypt.hash(password, 10)
 
@@ -27,6 +34,8 @@ exports.signup = (req, res, next) => {
             console.log(hash);
 
             let sqlInserts = [firstName, lastName, email, hash];
+
+            console.log(sqlInserts);
 
             userModel.insertIntoUser(sqlInserts)
 

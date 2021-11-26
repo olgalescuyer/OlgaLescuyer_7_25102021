@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 });
 
 // parser URL-encoded bodies ( as sent by HTML forms) 
-// app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: false }));
 // Parse JSON bodies ( as sent by API clients)
 app.use(express.json());
 
