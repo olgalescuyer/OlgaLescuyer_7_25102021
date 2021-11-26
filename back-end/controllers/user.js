@@ -94,7 +94,7 @@ exports.getOneUser = (req, res, next) => {
     const idFromToken = req.bearerToken.userId;
     // console.log(idFromToken);
 
-    // save the id in a params of the method :
+    // save the id in a params of the method or idFromToken :
     userModel.findUserById(idFromToken)
         .then(user => res.status(200).json(user[0]))
         .catch(error => res.status(404).json({ error }));
@@ -103,8 +103,36 @@ exports.getOneUser = (req, res, next) => {
 
 exports.modifyOneUser = (req, res, next) => {
 
+    const userObject = req.body;
+    console.log(userObject);
+
+    const firstName = userObject.firstName;
+    const lastName = userObject.lastName;
+    const email = userObject.email;
+
+    const sqlInserts = [firstName, lastName, email];
+
+    const userId = req.bearerToken.userId;
+
+    userModel.updateOneUser(sqlInserts, userId)
+        .then(response => res.status(200).json({ message: 'User modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+
 };
 
 exports.deleteOneUser = (req, res, next) => {
+
+    const userIdFromToken = req.bearerToken.userId;
+    const userIdFromParams = req.params.id;
+
+    if (userIdFromParams == userIdFromToken) {
+
+        userModel.deleteOneUserByUser(userIdFromToken)
+            .then(response => res.status(200).json({ message: 'User supprimé !' }))
+            .catch(error => res.status(500).json({ error }));
+    } else {
+
+        res.status(400).json({ message: 'user Id from params not valid !' })
+    }
 
 };
