@@ -1,7 +1,5 @@
 const { check } = require('express-validator');
 
-// .blacklist(input, '\\[\\]')
-
 exports.signupValidator = [
 
     check('firstName')
