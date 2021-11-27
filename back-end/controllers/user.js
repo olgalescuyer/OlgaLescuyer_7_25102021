@@ -52,6 +52,11 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     // const { u_email, password } = req.body;
     // or :
     const email = req.body.email;
@@ -63,9 +68,7 @@ exports.login = (req, res, next) => {
         .then((user) => {
 
             console.log('response from userModel :', user[0].u_password);
-            console.log('user is an ', typeof user)
-
-            // res.status(200).json(user[0]); // !!!! don't touch it
+            // console.log('user is an ', typeof user)
 
             bcrypt.compare(req.body.password, user[0].u_password)
 
@@ -95,22 +98,25 @@ exports.login = (req, res, next) => {
 
 exports.getOneUser = (req, res, next) => {
 
-    // console.log(req.params);
-    // grabs the id from params of request ?? :
-    // const id = req.params.id;
+    const userIdFromParams = req.params.id;
 
-    // or from token ? :
-    const idFromToken = req.bearerToken.userId;
-    // console.log(idFromToken);
+    // or from token ? or both ? :
+    const userIdFromToken = req.bearerToken.userId;
+    // console.log(userIdFromToken);
 
-    // save the id in a params of the method or idFromToken :
-    userModel.findUserById(idFromToken)
-        .then(user => res.status(200).json(user[0]))
-        .catch(error => res.status(404).json({ error }));
-
+    if (userIdFromParams == userIdFromToken) {
+        // save the id in a params of the method or idFromToken :
+        userModel.findUserById(userIdFromToken)
+            .then(user => res.status(200).json(user[0]))
+            .catch(error => res.status(404).json({ error }));
+    } else {
+        res.status(400).json({ message: 'user Id from params not valid !' });
+    }
 };
 
 exports.modifyOneUser = (req, res, next) => {
+
+    const userIdFromParams = req.params.id;
 
     const userObject = req.body;
     console.log(userObject);
@@ -121,12 +127,18 @@ exports.modifyOneUser = (req, res, next) => {
 
     const sqlInserts = [firstName, lastName, email];
 
-    const userId = req.bearerToken.userId;
+    const userIdFromToken = req.bearerToken.userId;
 
-    userModel.updateOneUser(sqlInserts, userId)
-        .then(response => res.status(200).json({ message: 'User modifié !' }))
-        .catch(error => res.status(400).json({ error }));
+    if (userIdFromParams == userIdFromToken) {
 
+        // save the id in a params of the method or userIdFromToken :
+        userModel.updateOneUser(sqlInserts, userIdFromToken)
+            .then(response => res.status(200).json({ message: 'User modifié !' }))
+            .catch(error => res.status(400).json({ error }));
+
+    } else {
+        res.status(400).json({ message: 'user Id from params not valid !' });
+    }
 };
 
 exports.deleteOneUser = (req, res, next) => {
