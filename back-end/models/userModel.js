@@ -15,7 +15,7 @@ exports.insertIntoUser = (sqlInserts) => {
         db.query(sql, (err, result) => {
 
             if (err) reject({ error: 'Vous avez déjà un compte !' });
-            resolve({ message: 'Utilisateur créé !' })
+            resolve({ message: 'Utilisateur créé !' });
 
         })
     })
@@ -34,7 +34,7 @@ exports.findByEmail = (email) => {
                 reject({ error: '👎 Utilisateur non trouvé !' })
             } else {
 
-                console.log('result from db : ', result);
+                // console.log('result from db : ', result);
                 resolve(result);
             }
 
