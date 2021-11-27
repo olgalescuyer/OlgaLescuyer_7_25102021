@@ -85,8 +85,6 @@ exports.updateOneUser = (sqlInserts, userId) => {
 
     sql = mysql.format(sql, sqlInserts);
 
-
-
     return new Promise((resolve, reject) => {
 
         db.query(sql, sqlInserts, (err, result) => {
@@ -107,7 +105,7 @@ exports.updateOneUser = (sqlInserts, userId) => {
 
 exports.deleteOneUserByUser = (userId) => {
 
-    let sql = `DELETE FROM user WHERE u_id = ` + db.escape(userId);
+    const sql = `DELETE FROM user WHERE u_id = ` + db.escape(userId);
 
     return new Promise((resolve, reject) => {
 

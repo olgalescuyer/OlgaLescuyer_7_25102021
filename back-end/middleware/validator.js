@@ -1,21 +1,21 @@
 const { check } = require('express-validator');
 
+// .blacklist(input, '\\[\\]')
+
 exports.signupValidator = [
 
     check('firstName')
     .trim()
     .notEmpty()
     .withMessage('First Name Required')
-    .matches(/^[a-zA-Z\u0080-\u024F\s\,-]/i)
-    // .matches(/^[a-zA-Z ]*$/)
+    .matches(/^[a-zA-Z -]*$/)
     .withMessage('Only Characters with white space are allowed'),
 
     check('lastName')
     .trim()
     .notEmpty()
     .withMessage('Last Name Required')
-    .matches(/^[a-zA-Z\u0080-\u024F\s\,-]/i)
-    // .matches(/^[a-zA-Z ]*$/)
+    .matches(/^[a-zA-Z -]*$/)
     .withMessage('Only Characters with white space are allowed'),
 
     check('email')
@@ -26,6 +26,7 @@ exports.signupValidator = [
 
     check('password')
     .trim()
+    .blacklist('{}$')
     .isStrongPassword()
     .withMessage('👀 Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol')
     // .matches('[0-9]')
@@ -34,7 +35,7 @@ exports.signupValidator = [
     // .withMessage('with 1 Lowercase')
     // .matches('[A-Z]')
     // .withMessage('with 1 Uppercase')
-    // .matches('[~`!@#$%^&*()-_+={}[]|;:"<>,./?]')
+    // .matches('[~`!@#%^&*()-_+=[]|;:"<>,./?]')
     // .withMessage('with 1 symbol')
 
     // .escape()
