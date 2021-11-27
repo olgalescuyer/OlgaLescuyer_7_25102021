@@ -13,22 +13,6 @@ exports.insertIntoUser = (sqlInserts) => {
     return new Promise((resolve, reject) => {
 
         db.query(sql, (err, result) => {
-            console.log('coucou');
-
-            // if (result === undefined) {
-
-
-            //     reject({ error: 'undefined' })
-
-            // } else if (result.length === 0) {
-
-            //     reject({ error: 'email déjà existe !' })
-            // } else {
-
-            //     console.log('result from db : ', result);
-            //     resolve(result);
-            // }
-
 
             if (err) reject({ error: 'Vous avez déjà un compte !' });
             resolve({ message: 'Utilisateur créé !' })
