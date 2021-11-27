@@ -1,24 +1,36 @@
+const postModel = require('../models/postModel');
 const fs = require('fs');
 // file system for  images
 
 exports.createPost = (req, res, next) => {
 
-    const postData = JSON.parse(req.body.postData);
+    const title = req.body.title;
+    const text = req.body.text;
+    const image = req.body.image;
+    // console.log(req.body);
 
-    const post = new Post({
-        ...postData,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        date: date.getFullYear() + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes()
+    const userIdFromToken = req.bearerToken.userId;
+    // console.log(userIdFromToken);
 
-    });
+    const sqlInserts = [title, text, image, userIdFromToken];
+    // console.log(sqlInserts);
 
-    let sql = 'INSERT INTO post SET ?';
-    db.query(sql, post, (error, result) => {
-        if (error) {
-            return res.status(400).json({ error: error });
-        }
-        return res.status(201).json({ message: "The post has been created !" })
-    });
+    postModel.insertIntoPost(sqlInserts)
+        .then((response) => {
+            res.status(201).json({ response });
+            // console.log(response);
+        })
+        .catch(error => res.status(500).json({ error }));
+
+
+    // const post = new Post({
+    //     ...postData,
+    //     image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    //     date: date.getFullYear() + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes()
+
+    // });
+
+
 
 };
 
@@ -39,10 +51,7 @@ exports.deleteOnePost = (req, res, next) => {
     const id = req.params.id;
     const userId = req.u_id;
 
-    let sql = 'DELETE FROM post WHERE id = ?';
-    db.query(sql, id, (err, result) => {
 
-    })
 };
 
 exports.getAllPosts = (req, res, next) => {
