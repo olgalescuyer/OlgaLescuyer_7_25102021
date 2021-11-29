@@ -23,11 +23,104 @@ exports.insertIntoPost = (sqlInserts) => {
             }
         });
 
+
+    })
+}
+
+exports.findOnePostByIds = (sqlInserts) => {
+
+    let sql = 'SELECT * FROM post WHERE p_id = ? AND p_fk_user_id = ?;';
+    sql = mysql.format(sql, sqlInserts);
+    // console.log(sql);
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, sqlInserts, (err, result) => {
+
+            if (result === undefined || result.length === 0) {
+                // console.log(result);
+
+                reject({ error: '👎 Article non trouvée !' })
+            } else {
+
+                // console.log('result from db : ', result);
+                resolve(result);
+            }
+        })
+    })
+}
+
+
+exports.updateOnePost = (req, res, next) => {
+
+
+    let sql = 'UPDATE post SET p_title = ?, p_text = ?, p_image = ? WHERE p_id = ? AND p_fk_user_id = ?';
+
+    sql = mysql.format(sql, sqlInserts);
+    // console.log(sql);
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, sqlInserts, (err, result) => {
+
+            // checks if the result has a .changedRows :
+            if (result === undefined || result.changedRows === 0) {
+
+                // console.log(result);
+
+                reject({ error: '👎 Article a été déjà modifiée !' })
+            } else {
+
+                // console.log('result from db : ', result);
+                resolve(result);
+            }
+
+        })
+
     })
 
 }
 
-// if (error) {
-//     return res.status(400).json({ error: error });
-// }
-// return res.status(201).json({ message: "The post has been created !" })
+exports.findAllPosts = () => {
+
+    const sql = 'SELECT * FROM post ';
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, (err, result) => {
+
+            if (result === undefined || result.length === 0) {
+
+                reject({ error: '👎  !' })
+            } else {
+
+                // console.log('result from db : ', result);
+                resolve(result);
+            }
+
+        })
+    })
+}
+
+exports.deleteOnePostByUser = (sqlInserts) => {
+
+    let sql = 'DELETE FROM post WHERE p_id = ? AND p_fk_user_id = ?';
+
+    sql = mysql.format(sql, sqlInserts);
+
+    return new Promise((resolve, reject) => {
+
+        db.query(sql, (err, result) => {
+
+            if (result === undefined) {
+
+                reject({ error: '👎  !' })
+            } else {
+
+                console.log('result from db : ', result);
+                resolve(result);
+            }
+        })
+    })
+
+}
