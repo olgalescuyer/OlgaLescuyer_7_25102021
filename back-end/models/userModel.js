@@ -78,7 +78,7 @@ exports.updateOneUser = (sqlInserts, userId) => {
                 reject({ error: '👎  !' })
             } else {
 
-                console.log('result from db : ', result);
+                // console.log('result from db : ', result);
                 resolve(result);
             }
 
@@ -100,7 +100,7 @@ exports.deleteOneUserByUser = (userId) => {
                 reject({ error: '👎  !' })
             } else {
 
-                console.log('result from db : ', result);
+                // console.log('result from db : ', result);
                 resolve(result);
             }
 

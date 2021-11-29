@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
     // I grab the values of req :
     // const { first_name, last_name, email, password } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -35,7 +35,7 @@ exports.signup = (req, res, next) => {
 
             let sqlInserts = [firstName, lastName, email, hash];
 
-            console.log(sqlInserts);
+            // console.log(sqlInserts);
 
             userModel.insertIntoUser(sqlInserts)
 
@@ -52,22 +52,17 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
 
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(400).json({ errors: errors.array() });
-    // }
-
     // const { u_email, password } = req.body;
     // or :
     const email = req.body.email;
     const password = req.body.password;
 
-    console.log('req.body : ', email, password);
+    // console.log('req.body : ', email, password);
 
     userModel.findByEmail(email)
         .then((user) => {
 
-            console.log('response from userModel :', user[0].u_password);
+            // console.log('response from userModel :', user[0].u_password);
             // console.log('user is an ', typeof user)
 
             bcrypt.compare(req.body.password, user[0].u_password)
@@ -77,7 +72,7 @@ exports.login = (req, res, next) => {
                     console.log(valid)
 
                     if (!valid) {
-                        console.log('Password is incorrect');
+                        // console.log('Password is incorrect');
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
 
@@ -99,6 +94,7 @@ exports.login = (req, res, next) => {
 exports.getOneUser = (req, res, next) => {
 
     const userIdFromParams = req.params.id;
+    // console.log(userIdFromParams);
 
     // or from token ? or both ? :
     const userIdFromToken = req.bearerToken.userId;
@@ -119,7 +115,7 @@ exports.modifyOneUser = (req, res, next) => {
     const userIdFromParams = req.params.id;
 
     const userObject = req.body;
-    console.log(userObject);
+    // console.log(userObject);
 
     const firstName = userObject.firstName;
     const lastName = userObject.lastName;
@@ -131,7 +127,7 @@ exports.modifyOneUser = (req, res, next) => {
 
     if (userIdFromParams == userIdFromToken) {
 
-        // save the id in a params of the method or userIdFromToken :
+        // saves the id in a params of the method or userIdFromToken :
         userModel.updateOneUser(sqlInserts, userIdFromToken)
             .then(response => res.status(200).json({ message: 'User modifié !' }))
             .catch(error => res.status(400).json({ error }));

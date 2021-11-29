@@ -12,9 +12,9 @@ module.exports = (req, res, next) => {
 
         // verify : for decode token ( payload + tokenSecret) =>
         req.bearerToken = jwt.verify(token, process.env.TOKEN);
-        console.log(req.bearerToken);
+        // console.log(req.bearerToken);
 
-        // I don't understand this :
+        // I don't understand this condition :
         // if (req.body.id && req.body.id !== userId) {
 
         //     throw 'User ID non valable';
