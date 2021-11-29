@@ -9,9 +9,9 @@ const { createPost, modifyOnePost, deleteOnePost, getAllPosts, getOnePost, manag
 router.post('/', auth, createPost); // add a new post
 router.put('/:id', auth, multer, modifyOnePost); // modify one post
 router.delete('/:id', auth, multer, deleteOnePost); // delete one post
-router.get('/', auth, multer, getAllPosts); // get all the posts
-router.get('/:id', auth, multer, getOnePost); // get one post
+router.get('/', auth, getAllPosts); // get all the posts
+router.get('/:id', auth, getOnePost); // get one post
 
-router.post('/:id/like', auth, manageLike); // like a post
+router.post('/:id/like', auth, manageLike); // like-dislike one post
 
 module.exports = router;
