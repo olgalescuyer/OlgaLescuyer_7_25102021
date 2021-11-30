@@ -6,14 +6,14 @@ exports.signupValidator = [
     .trim()
     .notEmpty()
     .withMessage('First Name Required')
-    .matches(/^[a-zA-Z -]*$/)
+    .matches(/^[a-zA-Z\u0080-\u024F\s\,-]*$/)
     .withMessage('Only Characters with white space are allowed'),
 
     check('lastName')
     .trim()
     .notEmpty()
     .withMessage('Last Name Required')
-    .matches(/^[a-zA-Z -]*$/)
+    .matches(/^[a-zA-Z\u0080-\u024F\s\,-]*$/)
     .withMessage('Only Characters with white space are allowed'),
 
     check('email')
