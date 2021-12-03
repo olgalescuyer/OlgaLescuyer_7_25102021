@@ -117,7 +117,7 @@ exports.deleteOnePostByUser = (sqlInserts) => {
                 reject({ error: '👎  !' })
             } else {
 
-                console.log('result from db : ', result);
+                // console.log('result from db : ', result);
                 resolve(result);
             }
         })
