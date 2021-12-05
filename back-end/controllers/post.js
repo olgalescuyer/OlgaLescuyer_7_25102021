@@ -2,80 +2,54 @@ const postModel = require('../models/postModel');
 const fs = require('fs');
 // file system for  images
 
+const { validationResult } = require('express-validator');
+
 exports.createPost = (req, res, next) => {
+    const postData = JSON.parse(req.body.post);
+    // console.log(postData);
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+    // console.log(imageUrl);
 
-    const title = req.body.title;
-    const text = req.body.text;
-    const image = req.body.image;
-    // console.log(req.body);
-
-    const userIdFromToken = req.bearerToken.userId;
-    // console.log(userIdFromToken);
-
-    const sqlInserts = [title, text, image, userIdFromToken];
+    const sqlInserts = [postData.title, postData.text, imageUrl, req.bearerToken.userId];
     // console.log(sqlInserts);
 
     postModel.insertIntoPost(sqlInserts)
         .then((response) => {
-            res.status(201).json({ response });
+            res.status(201).json({ message: 'Post créé !' });
             // console.log(response);
         })
-        .catch(error => res.status(500).json({ error }));
-
-
-    // const post = new Post({
-    //     ...postData,
-    //     image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    //     date: date.getFullYear() + "-" + month + "-" + day + " " + date.getHours() + ":" + date.getMinutes()
-
-    // });
+        .catch(error => res.status(500).json({ error: '👎 !' }));
 
 };
 
 exports.modifyOnePost = (req, res, next) => {
-
-    const { title, text, image, userId, postId } = req.body;
-    // console.log(req.body);
-
-    const userIdFromToken = req.bearerToken.userId;
-    // console.log(userIdFromToken);
-
-    // const postIdFromParams = req.params.id;
-    // console.log(postIdFromParams);
-
-    sqlInserts = [title, text, image, postId, userIdFromToken];
-    // console.log(sqlInserts);
-
-    if (userId == userIdFromToken) {
-
-        postModel.updateOnePost(sqlInserts)
-            .then(response => res.status(200).json({ message: 'Post modifié !' }))
-            .catch(error => res.status(400).json({ error }));
-    } else {
-
-        res.status(400).json({ message: 'user Id from body not valid !' });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const postObject = req.file ? {
+        ...JSON.parse(req.body.post),
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : {...req.body };
+
+    const sqlInserts = [postObject.title, postObject.text, postObject.image, req.params.id, req.bearerToken.userId];
+    console.log('sqlInserts :', sqlInserts);
+
+    postModel.updateOnePost(sqlInserts)
+        .then(response => res.status(200).json({ message: 'Post modifié !' }))
+        .catch(error => res.status(400).json({ error }));
 
 };
 
 exports.deleteOnePost = (req, res, next) => {
 
-    const postIdFromBody = req.body.postId;
-    const userIdFromBody = req.body.userId;
+    const sqlInserts = [req.params.id, req.bearerToken.userId];
 
-    const userIdFromToken = req.bearerToken.userId;
-    // console.log(userIdFromToken);
+    postModel.deleteOnePostByUser(sqlInserts)
+        .then(response => res.status(200).json({ message: 'Article supprimée !' }))
+        .catch(error => res.status(400).json({ error }));
 
-    const sqlInserts = [postIdFromBody, userIdFromBody];
-
-    if (userIdFromBody == userIdFromToken) {
-
-        postModel.deleteOnePostByUser(sqlInserts)
-            .then(response => res.status(200).json({ message: 'Article supprimée !' }))
-            .catch(error => res.status(400).json({ error }));
-    } else {
-        res.status(400).json({ message: 'user Id from body not valid !' });
-    }
 
 };
 
@@ -104,5 +78,14 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.manageLike = (req, res, next) => {
+
+    const userIdFromToken = req.bearerToken.userId;
+    // console.log(userIdFromToken);
+
+    const postIdFromParams = req.params.id;
+    // console.log(postIdFromParams);
+
+    const like = req.body.like;
+
 
 };
