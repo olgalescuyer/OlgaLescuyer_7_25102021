@@ -12,18 +12,13 @@ exports.insertIntoPost = (sqlInserts) => {
         db.query(sql, (error, result) => {
 
             if (result === undefined || result.length === 0) {
-
-                reject({ error: '👎 !' })
+                reject(error);
 
             } else {
-
                 // console.log('post result.insertId from db : ', result.insertId);
-
-                resolve({ message: 'Post créé !' })
+                resolve(result);
             }
         });
-
-
     })
 }
 
@@ -31,7 +26,7 @@ exports.findOnePostByIds = (sqlInserts) => {
 
     let sql = 'SELECT * FROM post WHERE p_id = ? AND p_fk_user_id = ?;';
     sql = mysql.format(sql, sqlInserts);
-    // console.log(sql);
+    console.log(sql);
 
     return new Promise((resolve, reject) => {
 
@@ -51,8 +46,7 @@ exports.findOnePostByIds = (sqlInserts) => {
 }
 
 
-exports.updateOnePost = (req, res, next) => {
-
+exports.updateOnePost = (sqlInserts) => {
 
     let sql = 'UPDATE post SET p_title = ?, p_text = ?, p_image = ? WHERE p_id = ? AND p_fk_user_id = ?';
 
@@ -61,24 +55,21 @@ exports.updateOnePost = (req, res, next) => {
 
     return new Promise((resolve, reject) => {
 
-        db.query(sql, sqlInserts, (err, result) => {
+        db.query(sql, (error, result) => {
 
             // checks if the result has a .changedRows :
             if (result === undefined || result.changedRows === 0) {
 
-                // console.log(result);
+                console.log(result);
 
-                reject({ error: '👎 Article a été déjà modifiée !' })
+                reject({ error })
             } else {
 
                 // console.log('result from db : ', result);
                 resolve(result);
             }
-
         })
-
     })
-
 }
 
 exports.findAllPosts = () => {
@@ -97,7 +88,6 @@ exports.findAllPosts = () => {
                 // console.log('result from db : ', result);
                 resolve(result);
             }
-
         })
     })
 }
@@ -112,15 +102,13 @@ exports.deleteOnePostByUser = (sqlInserts) => {
 
         db.query(sql, (err, result) => {
 
-            if (result === undefined) {
-
+            if (result === undefined || result.affectedRows === 0) {
+                // console.log(result);
                 reject({ error: '👎  !' })
             } else {
-
                 // console.log('result from db : ', result);
                 resolve(result);
             }
         })
     })
-
 }
