@@ -1,6 +1,4 @@
 const userModel = require('../models/userModel');
-const db = require('../db/db-connect');
-const mysql = require('mysql');
 
 const { validationResult } = require('express-validator');
 
@@ -10,20 +8,16 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-
-
 exports.signup = (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     // grabs the values of req :
     // console.log(req.body);
     bcrypt.hash(req.body.password, 10)
-
-    .then((hash) => {
+        .then((hash) => {
             let sqlInserts = [req.body.firstName, req.body.lastName, req.body.email, hash];
             // console.log(sqlInserts);
 
@@ -37,6 +31,11 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
     // const { u_email, password } = req.body;
     // or :
@@ -88,6 +87,11 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyOneUser = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     // for returne a number from params :
     const userIdFromParams = parseInt(req.params.id, 10);
     // console.log('userIdFromParams :', userIdFromParams);
@@ -122,8 +126,6 @@ exports.deleteOneUser = (req, res, next) => {
     const userIdFromParams = parseInt(req.params.id, 10);
     // console.log('userIdFromParams :', userIdFromParams);
     const userIdFromToken = req.bearerToken.userId;
-
-
 
     if (userIdFromParams === userIdFromToken) {
 
