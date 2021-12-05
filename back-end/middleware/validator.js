@@ -40,14 +40,17 @@ exports.signupValidator = [
 
 ]
 
-
-
 exports.loginValidator = [
+    check('email')
+    .isEmail()
+    .normalizeEmail()
+    .matches(/^([a-z\u0080-\u024F\d\.-]+)@([groupomania\d-]+)\.([fr]{2})/)
+    .withMessage('👎 It must be something like this : your.name@groupomania.fr'),
 
-
-]
-
-exports.profileValidator = [
-
+    check('password')
+    .trim()
+    .blacklist('{}$')
+    .isStrongPassword()
+    .withMessage('👀 Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol')
 
 ]
