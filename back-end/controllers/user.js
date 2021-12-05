@@ -7,9 +7,10 @@ const { validationResult } = require('express-validator');
 require("dotenv").config();
 // masque
 
-
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
+
 
 exports.signup = (req, res, next) => {
 
@@ -18,31 +19,16 @@ exports.signup = (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    // I grab the values of req :
-    // const { first_name, last_name, email, password } = req.body;
-
+    // grabs the values of req :
     // console.log(req.body);
-
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    bcrypt.hash(password, 10)
+    bcrypt.hash(req.body.password, 10)
 
     .then((hash) => {
-            console.log(hash);
-
-            let sqlInserts = [firstName, lastName, email, hash];
-
+            let sqlInserts = [req.body.firstName, req.body.lastName, req.body.email, hash];
             // console.log(sqlInserts);
 
             userModel.insertIntoUser(sqlInserts)
-
-            .then((response) => {
-                    res.status(201).json({ response });
-                    console.log(response);
-                })
+                .then(response => res.status(201).json({ response }))
                 .catch(error => res.status(400).json({ error }));
 
         })
@@ -61,21 +47,13 @@ exports.login = (req, res, next) => {
 
     userModel.findByEmail(email)
         .then((user) => {
-
-            // console.log('response from userModel :', user[0].u_password);
-            // console.log('user is an ', typeof user)
-
             bcrypt.compare(req.body.password, user[0].u_password)
-
-            .then(valid => {
-
-                    console.log(valid)
-
+                .then(valid => {
+                    // console.log(valid)
                     if (!valid) {
                         // console.log('Password is incorrect');
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
-
                     res.status(200).json({
                         userId: user[0].u_id,
                         role: user[0].u_admin === 1 ? 'admin' : 'membre',
@@ -85,52 +63,54 @@ exports.login = (req, res, next) => {
                     });
                 })
                 .catch((error) => res.status(500).json({ error }));
-
         })
         .catch((error) => res.status(404).json({ error }));
-
 };
 
 exports.getOneUser = (req, res, next) => {
+    // for returne a number from params :
+    const userIdFromParams = parseInt(req.params.id, 10);
+    // console.log('userIdFromParams :', typeof userIdFromParams);
 
-    const userIdFromParams = req.params.id;
-    // console.log(userIdFromParams);
-
-    // or from token ? or both ? :
     const userIdFromToken = req.bearerToken.userId;
-    // console.log(userIdFromToken);
+    // console.log('userIdFromToken :', typeof userIdFromToken);
 
-    if (userIdFromParams == userIdFromToken) {
-        // save the id in a params of the method or idFromToken :
+    // strictly Conditional Statement :
+    if (userIdFromParams === userIdFromToken) {
+
         userModel.findUserById(userIdFromToken)
             .then(user => res.status(200).json(user[0]))
             .catch(error => res.status(404).json({ error }));
+
     } else {
         res.status(400).json({ message: 'user Id from params not valid !' });
     }
 };
 
 exports.modifyOneUser = (req, res, next) => {
-
-    const userIdFromParams = req.params.id;
-
-    const userObject = req.body;
-    // console.log(userObject);
-
-    const firstName = userObject.firstName;
-    const lastName = userObject.lastName;
-    const email = userObject.email;
-
-    const sqlInserts = [firstName, lastName, email];
-
+    // for returne a number from params :
+    const userIdFromParams = parseInt(req.params.id, 10);
+    // console.log('userIdFromParams :', userIdFromParams);
     const userIdFromToken = req.bearerToken.userId;
+    // console.log(userIdFromToken);
 
-    if (userIdFromParams == userIdFromToken) {
+    const sqlInserts = [req.body.firstName, req.body.lastName, req.body.password];
+    console.log(sqlInserts);
 
-        // saves the id in a params of the method or userIdFromToken :
-        userModel.updateOneUser(sqlInserts, userIdFromToken)
-            .then(response => res.status(200).json({ message: 'User modifié !' }))
-            .catch(error => res.status(400).json({ error }));
+    if (userIdFromParams === userIdFromToken) {
+
+        bcrypt.hash(req.body.password, 10)
+
+        .then((hash) => {
+                let sqlInserts = [req.body.firstName, req.body.lastName, hash];
+                // console.log(sqlInserts);
+
+                userModel.updateOneUser(sqlInserts, userIdFromToken)
+                    .then(response => res.status(200).json({ message: 'User modifié !' }))
+                    .catch(error => res.status(400).json({ error: '👎  !' }));
+
+            })
+            .catch(error => res.status(500).json({ error }));
 
     } else {
         res.status(400).json({ message: 'user Id from params not valid !' });
@@ -138,15 +118,18 @@ exports.modifyOneUser = (req, res, next) => {
 };
 
 exports.deleteOneUser = (req, res, next) => {
-
+    // for returne a number from params :
+    const userIdFromParams = parseInt(req.params.id, 10);
+    // console.log('userIdFromParams :', userIdFromParams);
     const userIdFromToken = req.bearerToken.userId;
-    const userIdFromParams = req.params.id;
 
-    if (userIdFromParams == userIdFromToken) {
+
+
+    if (userIdFromParams === userIdFromToken) {
 
         userModel.deleteOneUserByUser(userIdFromToken)
             .then(response => res.status(200).json({ message: 'User supprimé !' }))
-            .catch(error => res.status(500).json({ error }));
+            .catch(error => res.status(500).json({ error: '👎  !' }));
     } else {
 
         res.status(400).json({ message: 'user Id from params not valid !' })

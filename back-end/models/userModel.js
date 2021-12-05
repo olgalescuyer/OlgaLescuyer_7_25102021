@@ -65,17 +65,18 @@ exports.findUserById = (id) => {
 
 exports.updateOneUser = (sqlInserts, userId) => {
 
-    let sql = `UPDATE user SET u_first_name = ?, u_last_name = ?, u_email = ? WHERE u_id = ` + db.escape(userId);
+    let sql = `UPDATE user SET u_first_name = ?, u_last_name = ?, u_password = ? WHERE u_id = ` + db.escape(userId);
 
     sql = mysql.format(sql, sqlInserts);
+    // console.log(sql);
 
     return new Promise((resolve, reject) => {
 
-        db.query(sql, sqlInserts, (err, result) => {
+        db.query(sql, (err, result) => {
 
-            if (result === undefined || result.length === 0) {
-
-                reject({ error: '👎  !' })
+            if (result === undefined || result.changedRows === 0) {
+                // console.log('result from db : ', result.changedRows);
+                reject(err)
             } else {
 
                 // console.log('result from db : ', result);
@@ -95,12 +96,11 @@ exports.deleteOneUserByUser = (userId) => {
 
         db.query(sql, (err, result) => {
 
-            if (result === undefined || result.length === 0) {
-
-                reject({ error: '👎  !' })
+            if (result === undefined || result.affectedRows === 0) {
+                // console.log('result from db reject : ', result);
+                reject({ err })
             } else {
-
-                // console.log('result from db : ', result);
+                // console.log('result from db resolve : ', result);
                 resolve(result);
             }
 
