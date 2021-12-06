@@ -1,4 +1,5 @@
 const postModel = require('../models/postModel');
+const likeModel = require('../models/likeModel');
 const fs = require('fs');
 // file system for  images
 
@@ -14,8 +15,8 @@ exports.createPost = (req, res, next) => {
     // console.log(sqlInserts);
 
     postModel.insertIntoPost(sqlInserts)
-        .then((response) => {
-            res.status(201).json({ message: 'Post créé !' });
+        .then((postId) => {
+            res.status(201).json({ postId, message: 'Post créé !' });
             // console.log(response);
         })
         .catch(error => res.status(500).json({ error: '👎 !' }));
@@ -105,13 +106,14 @@ exports.getOnePost = (req, res, next) => {
 
 exports.manageLike = (req, res, next) => {
 
-    const userIdFromToken = req.bearerToken.userId;
-    // console.log(userIdFromToken);
+    const sqlInserts = [req.bearerToken.userId, req.params.id, req.body.like]
+        // console.log(sqlInserts);
 
-    const postIdFromParams = req.params.id;
-    // console.log(postIdFromParams);
-
-    const like = req.body.like;
-
+    likeModel.insertIntoLike(sqlInserts)
+        .then((response) => {
+            res.status(201).json({ message: 'Like/dislike inregistré !' });
+            // console.log(response);
+        })
+        .catch(error => res.status(500).json({ error }));
 
 };
