@@ -37,15 +37,9 @@ exports.login = (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    // const { u_email, password } = req.body;
-    // or :
-    const email = req.body.email;
-    const password = req.body.password;
-
-    // console.log('req.body : ', email, password);
-
-    userModel.findByEmail(email)
+    userModel.findByEmail(req.body.email)
         .then((user) => {
+            // console.log(user);
             bcrypt.compare(req.body.password, user[0].u_password)
                 .then(valid => {
                     // console.log(valid)
@@ -98,18 +92,14 @@ exports.modifyOneUser = (req, res, next) => {
     const userIdFromToken = req.bearerToken.userId;
     // console.log(userIdFromToken);
 
-    const sqlInserts = [req.body.firstName, req.body.lastName, req.body.password];
-    console.log(sqlInserts);
-
     if (userIdFromParams === userIdFromToken) {
 
         bcrypt.hash(req.body.password, 10)
-
-        .then((hash) => {
-                let sqlInserts = [req.body.firstName, req.body.lastName, hash];
+            .then((hash) => {
+                const sqlInserts = [req.body.firstName, req.body.lastName, req.body.email, hash, userIdFromToken];
                 // console.log(sqlInserts);
 
-                userModel.updateOneUser(sqlInserts, userIdFromToken)
+                userModel.updateOneUser(sqlInserts)
                     .then(response => res.status(200).json({ message: 'User modifié !' }))
                     .catch(error => res.status(400).json({ error: '👎  !' }));
 

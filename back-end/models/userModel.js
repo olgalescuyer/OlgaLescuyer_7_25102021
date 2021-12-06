@@ -22,7 +22,7 @@ exports.insertIntoUser = (sqlInserts) => {
 }
 
 exports.findByEmail = (email) => {
-
+    // console.log(email);
     const sql = `SELECT * FROM user WHERE u_email = ?`;
 
     return new Promise((resolve, reject) => {
@@ -30,11 +30,11 @@ exports.findByEmail = (email) => {
         db.query(sql, [email], (err, result) => {
 
             if (result === undefined || result.length === 0) {
-
+                // console.log(result, sql);
                 reject({ error: '👎 Utilisateur non trouvé !' })
             } else {
 
-                // console.log('result from db : ', result);
+                console.log('result from db : ', result);
                 resolve(result);
             }
 
@@ -63,19 +63,19 @@ exports.findUserById = (id) => {
     })
 }
 
-exports.updateOneUser = (sqlInserts, userId) => {
+exports.updateOneUser = (sqlInserts) => {
 
-    let sql = `UPDATE user SET u_first_name = ?, u_last_name = ?, u_password = ? WHERE u_id = ` + db.escape(userId);
+    let sql = `REPLACE INTO user ( u_first_name, u_last_name, u_email, u_password, u_id ) VALUES (?, ?, ?, ?, ?)`;
 
     sql = mysql.format(sql, sqlInserts);
-    // console.log(sql);
+    console.log(sql);
 
     return new Promise((resolve, reject) => {
 
         db.query(sql, (err, result) => {
 
-            if (result === undefined || result.changedRows === 0) {
-                // console.log('result from db : ', result.changedRows);
+            if (result === undefined || result.affectedRows === 0) {
+                // console.log('result from db : ', result);
                 reject(err)
             } else {
 
