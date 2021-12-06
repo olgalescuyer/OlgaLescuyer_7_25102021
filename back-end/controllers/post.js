@@ -23,22 +23,36 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyOnePost = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+    const sqlInserts = [req.params.id, req.bearerToken.userId];
 
-    const postObject = req.file ? {
-        ...JSON.parse(req.body.post),
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : {...req.body };
+    postModel.findOnePostByIds(sqlInserts)
+        .then(post => {
+            const filename = post[0].p_image.split('/images/')[1];
+            // console.log(filename);
+            fs.unlink(`images/${filename}`, (err => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    // console.log(`\nDeleted file: ${filename}`);
 
-    const sqlInserts = [postObject.title, postObject.text, postObject.image, req.params.id, req.bearerToken.userId];
-    console.log('sqlInserts :', sqlInserts);
+                    const postObject = req.file ? {
+                        ...JSON.parse(req.body.post),
+                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                    } : {...req.body };
 
-    postModel.updateOnePost(sqlInserts)
-        .then(response => res.status(200).json({ message: 'Post modifié !' }))
-        .catch(error => res.status(400).json({ error }));
+                    const sqlInserts = [postObject.title, postObject.text, postObject.image, req.params.id, req.bearerToken.userId];
+                    // console.log('sqlInserts :', sqlInserts);
+
+                    postModel.updateOnePost(sqlInserts)
+                        .then(response => res.status(200).json({ message: 'Post modifié !' }))
+                        .catch(error => res.status(500).json({ error }));
+
+                }
+            }))
+        })
+
+
+    .catch(error => res.status(400).json({ error }));
 
 };
 
@@ -46,12 +60,24 @@ exports.deleteOnePost = (req, res, next) => {
 
     const sqlInserts = [req.params.id, req.bearerToken.userId];
 
-    postModel.deleteOnePostByUser(sqlInserts)
-        .then(response => res.status(200).json({ message: 'Article supprimée !' }))
-        .catch(error => res.status(400).json({ error }));
+    postModel.findOnePostByIds(sqlInserts)
+        .then(post => {
+            const filename = post[0].p_image.split('/images/')[1];
+            // console.log(filename);
+            fs.unlink(`images/${filename}`, (err => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    // console.log(`\nDeleted file: ${filename}`);
 
-
-};
+                    postModel.deleteOnePostByUser(sqlInserts)
+                        .then(response => res.status(200).json({ message: 'Article supprimée !' }))
+                        .catch(error => res.status(400).json({ error }));
+                }
+            }))
+        })
+        .catch(error => res.status(500).json({ error }));
+}
 
 exports.getAllPosts = (req, res, next) => {
 

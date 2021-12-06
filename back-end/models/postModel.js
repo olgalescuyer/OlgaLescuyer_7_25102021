@@ -26,8 +26,7 @@ exports.findOnePostByIds = (sqlInserts) => {
 
     let sql = 'SELECT * FROM post WHERE p_id = ? AND p_fk_user_id = ?;';
     sql = mysql.format(sql, sqlInserts);
-    console.log(sql);
-
+    // console.log(sql);
     return new Promise((resolve, reject) => {
 
         db.query(sql, sqlInserts, (err, result) => {
@@ -44,7 +43,6 @@ exports.findOnePostByIds = (sqlInserts) => {
         })
     })
 }
-
 
 exports.updateOnePost = (sqlInserts) => {
 
