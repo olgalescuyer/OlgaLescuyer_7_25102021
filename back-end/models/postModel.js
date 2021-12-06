@@ -11,12 +11,13 @@ exports.insertIntoPost = (sqlInserts) => {
 
         db.query(sql, (error, result) => {
 
-            if (result === undefined || result.length === 0) {
+            if (result === undefined || result.affectedRows === 0) {
                 reject(error);
 
             } else {
-                // console.log('post result.insertId from db : ', result.insertId);
-                resolve(result);
+                // console.log('post result from db : ', result);
+                console.log(result.length);
+                resolve(result.insertId);
             }
         });
     })
@@ -102,7 +103,7 @@ exports.deleteOnePostByUser = (sqlInserts) => {
 
             if (result === undefined || result.affectedRows === 0) {
                 // console.log(result);
-                reject({ error: '👎  !' })
+                reject({ error })
             } else {
                 // console.log('result from db : ', result);
                 resolve(result);

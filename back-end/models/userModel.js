@@ -14,8 +14,9 @@ exports.insertIntoUser = (sqlInserts) => {
 
         db.query(sql, (err, result) => {
 
-            if (err) reject({ error: 'Vous avez déjà un compte !' });
-            resolve({ message: 'Utilisateur créé !' });
+            if (err) reject(err);
+            resolve(result);
+
 
         })
     })
@@ -34,7 +35,7 @@ exports.findByEmail = (email) => {
                 reject({ error: '👎 Utilisateur non trouvé !' })
             } else {
 
-                console.log('result from db : ', result);
+                // console.log('result from db : ', result);
                 resolve(result);
             }
 
@@ -68,7 +69,7 @@ exports.updateOneUser = (sqlInserts) => {
     let sql = `REPLACE INTO user ( u_first_name, u_last_name, u_email, u_password, u_id ) VALUES (?, ?, ?, ?, ?)`;
 
     sql = mysql.format(sql, sqlInserts);
-    console.log(sql);
+    // console.log(sql);
 
     return new Promise((resolve, reject) => {
 
