@@ -23,14 +23,14 @@ exports.insertIntoPost = (sqlInserts) => {
     })
 }
 
-exports.findOnePostByIds = (sqlInserts) => {
+exports.findOnePostByIds = (postId) => {
 
-    let sql = 'SELECT * FROM post WHERE p_id = ? AND p_fk_user_id = ?;';
-    sql = mysql.format(sql, sqlInserts);
-    // console.log(sql);
+    let sql = 'SELECT * FROM post WHERE p_id = ? ';
+
+
     return new Promise((resolve, reject) => {
 
-        db.query(sql, sqlInserts, (err, result) => {
+        db.query(sql, [postId], (err, result) => {
 
             if (result === undefined || result.length === 0) {
                 // console.log(result);
@@ -91,15 +91,13 @@ exports.findAllPosts = () => {
     })
 }
 
-exports.deleteOnePostByUser = (sqlInserts) => {
+exports.deleteOnePostByUser = (postId) => {
 
-    let sql = 'DELETE FROM post WHERE p_id = ? AND p_fk_user_id = ?';
-
-    sql = mysql.format(sql, sqlInserts);
+    let sql = 'DELETE FROM post WHERE p_id = ? ';
 
     return new Promise((resolve, reject) => {
 
-        db.query(sql, (err, result) => {
+        db.query(sql, [postId], (err, result) => {
 
             if (result === undefined || result.affectedRows === 0) {
                 // console.log(result);
