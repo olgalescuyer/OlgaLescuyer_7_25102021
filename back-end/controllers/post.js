@@ -10,6 +10,7 @@ exports.createPost = (req, res, next) => {
     // console.log(postData);
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     // console.log(imageUrl);
+    // console.log(req.file.filename);
 
     const sqlInserts = [postData.title, postData.text, imageUrl, req.bearerToken.userId];
     // console.log(sqlInserts);
@@ -24,32 +25,39 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyOnePost = (req, res, next) => {
-    const sqlInserts = [req.params.id, req.bearerToken.userId];
 
-    postModel.findOnePostByIds(sqlInserts)
+    postModel.findOnePostByIds(req.params.id)
         .then(post => {
-            const filename = post[0].p_image.split('/images/')[1];
-            // console.log(filename);
-            fs.unlink(`images/${filename}`, (err => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    // console.log(`\nDeleted file: ${filename}`);
 
-                    const postObject = req.file ? {
-                        ...JSON.parse(req.body.post),
-                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                    } : {...req.body };
+            if (post[0].p_fk_user_id === req.bearerToken.userId) {
 
-                    const sqlInserts = [postObject.title, postObject.text, postObject.image, req.params.id, req.bearerToken.userId];
-                    // console.log('sqlInserts :', sqlInserts);
+                const filename = post[0].p_image.split('/images/')[1];
 
-                    postModel.updateOnePost(sqlInserts)
-                        .then(response => res.status(200).json({ message: 'Post modifié !' }))
-                        .catch(error => res.status(500).json({ error }));
+                fs.unlink(`images/${filename}`, (err => {
+                    if (err) {
+                        console.log('not ok for unlink');
+                        console.log(err);
+                    } else {
+                        // console.log(`\nDeleted file: ${filename}`);
 
-                }
-            }))
+                        const postObject = req.file ? {
+                            ...JSON.parse(req.body.post),
+                            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                        } : {...req.body };
+
+                        const sqlInserts = [postObject.title, postObject.text, postObject.image, req.params.id, req.bearerToken.userId];
+                        // console.log('sqlInserts :', sqlInserts);
+
+                        postModel.updateOnePost(sqlInserts)
+                            .then(response => res.status(200).json({ message: 'Post modifié !' }))
+                            .catch(error => res.status(500).json({ error }));
+
+                    }
+                }))
+            } else {
+                res.status(400).json({ message: 'Id from token is not a valid for this operation' })
+            }
+
         })
 
 
@@ -59,23 +67,32 @@ exports.modifyOnePost = (req, res, next) => {
 
 exports.deleteOnePost = (req, res, next) => {
 
-    const sqlInserts = [req.params.id, req.bearerToken.userId];
+    const postId = [req.params.id]
 
-    postModel.findOnePostByIds(sqlInserts)
+    postModel.findOnePostByIds(postId)
         .then(post => {
-            const filename = post[0].p_image.split('/images/')[1];
-            // console.log(filename);
-            fs.unlink(`images/${filename}`, (err => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    // console.log(`\nDeleted file: ${filename}`);
 
-                    postModel.deleteOnePostByUser(sqlInserts)
-                        .then(response => res.status(200).json({ message: 'Article supprimée !' }))
-                        .catch(error => res.status(400).json({ error }));
-                }
-            }))
+            if (post[0].p_fk_user_id === req.bearerToken.userId) {
+
+                const filename = post[0].p_image.split('/images/')[1];
+                // console.log(filename);
+                fs.unlink(`images/${filename}`, (err => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // console.log(`\nDeleted file: ${filename}`);
+
+                        postModel.deleteOnePostByUser(postId)
+                            .then(response => res.status(200).json({ message: 'Article supprimée !' }))
+                            .catch(error => res.status(400).json({ error }));
+                    }
+                }))
+
+            } else {
+                res.status(400).json({ message: 'Id from token is not a valid' })
+            }
+
+
         })
         .catch(error => res.status(500).json({ error }));
 }
