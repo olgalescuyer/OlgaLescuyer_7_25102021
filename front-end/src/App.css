@@ -1,0 +1,16 @@
+.w-custom-limit-400 {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.w-custom-limit-200 {
+    max-width: 200px;
+}
+
+.w-custom-limit-800 {
+    max-width: 800px;
+}
+
+body {
+    background: #92868C;
+}
