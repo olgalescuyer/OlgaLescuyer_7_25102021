@@ -8,7 +8,7 @@ const Btns = ({ login, signup }) => {
         Confirmer les modifications
       </Button>
 
-      <Button variant="secondary" className="w-100">
+      <Button variant="outline-secondary" className="w-100">
         Supprimer le compte
       </Button>
     </>

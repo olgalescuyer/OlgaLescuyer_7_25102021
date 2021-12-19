@@ -3,14 +3,14 @@ import Button from "react-bootstrap/Button";
 
 const Btns = () => {
   return (
-    <>
+    <div>
       <Button variant="primary" className="">
-        Publier
+        Modifier
       </Button>
       <Button variant="outline-secondary" type="submit" className="ms-3">
-        Annuler
+        Supprimer
       </Button>
-    </>
+    </div>
   );
 };
 

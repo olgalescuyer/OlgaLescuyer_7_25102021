@@ -5,15 +5,12 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Btns from "./Btns.jsx";
 
 const FormProfile = () => {
-
-   
-
   return (
     <Form className="w-custom-limit-400">
-       <Form.Group className="position-relative mb-3" controlId="firstName">
+      <Form.Group className="position-relative mb-3" controlId="firstName">
         <FloatingLabel
           controlId="firstName"
-          label="Prénom"
+          label="Prénom(var)"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -30,7 +27,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="lastName">
         <FloatingLabel
           controlId="lastName"
-          label="Nom"
+          label="Nom(var)"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -47,7 +44,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr"
+          label="your.name@groupomania.fr(var)"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -64,7 +61,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password"
+          label="Password(var*****)"
           className="text-muted fst-italic"
         >
           <Form.Control

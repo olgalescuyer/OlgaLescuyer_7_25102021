@@ -1,28 +1,24 @@
 import React from "react";
 import { PersonFillIcon } from "@primer/octicons-react";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const HeaderPost = () => {
   return (
-    <Container>
-      <Row>
-        <Col className="d-flex justify-content-center">
-          <div
-            className="w-100 d-flex justify-content-center"
-            style={{ background: "white" }}
-          >
-            <PersonFillIcon size={24} verticalAlign="middle" />
-          </div>
-        </Col>
-        <Col xs={5}>
-          <p>User Name</p>
-        </Col>
-        <Col xs={5}>
-          <p className="text-end">Create a post(v)</p>
-        </Col>
-      </Row>
+    <Container fluid className="gx-0">
+      <div className="position-relative d-flex align-items-center mb-3">
+        <div
+          className="d-flex justify-content-center align-items-center rounded-circle"
+          style={{ background: "white", width: "60px", height: "60px" }}
+        >
+          <PersonFillIcon size={24} />
+        </div>
+
+        <span className="ps-3 fw-bold">User Name</span>
+
+        <span className="position-absolute top-0 end-0 text-muted fst-italic">
+          Create a post - time(var)
+        </span>
+      </div>
     </Container>
   );
 };

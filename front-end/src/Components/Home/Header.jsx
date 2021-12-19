@@ -16,10 +16,10 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="/profile/:id" className="text-end">
+              <Nav.Link href="/profile/:id" className="fw-bold text-end">
                 Profile
               </Nav.Link>
-              <Nav.Link href="/login" className="text-end">
+              <Nav.Link href="/login" className="fw-bold text-end">
                 Déconnexion
               </Nav.Link>
             </Nav>
