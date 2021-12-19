@@ -7,7 +7,7 @@ import Btns from "./Btns.jsx";
 
 const FormPost = () => {
   return (
-    <Form className="rounded p-3 mb-1 custom-color-body">
+    <Form className="rounded p-3 mb-2 color-custom-body">
       <HeaderPost />
       <Form.Group className="mb-3 text-muted fst-italic" controlId="title">
         <FloatingLabel controlId="title" label="Titre">
