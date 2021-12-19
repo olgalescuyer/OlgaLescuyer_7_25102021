@@ -15,3 +15,14 @@
     /* background: #92868C; */
     background: #c4c4c4;
 }
+
+.custom-icon {
+    color: inherit;
+    opacity: 1;
+    transition: all 1s ease-in-out;
+}
+
+.custom-icon:hover {
+    color: inherit;
+    opacity: 0.7;
+}
