@@ -1,17 +1,17 @@
 import React from "react";
-import { PersonFillIcon } from "@primer/octicons-react";
+import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 
 const HeaderPost = () => {
   return (
     <Container fluid className="gx-0">
       <div className="position-relative d-flex align-items-center mb-3">
-        <div
-          className="d-flex justify-content-center align-items-center rounded-circle"
+        <a href="/profile/id" title="cliquez pour modifier avatar"
+          className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
           style={{ background: "white", width: "60px", height: "60px" }}
         >
-          <PersonFillIcon size={24} />
-        </div>
+          <BsPersonFill size={36} />
+        </a>
 
         <span className="ps-3 fw-bold">User Name</span>
 
