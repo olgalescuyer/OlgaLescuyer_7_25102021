@@ -11,6 +11,7 @@
     max-width: 800px;
 }
 
-body {
-    background: #92868C;
+.custom-color-body {
+    /* background: #92868C; */
+    background: #c4c4c4;
 }

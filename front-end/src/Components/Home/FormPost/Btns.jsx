@@ -4,12 +4,11 @@ import Button from "react-bootstrap/Button";
 const Btns = () => {
   return (
     <>
-      <Button variant="secondary" type="submit" className=" ">
-        Annuler
-      </Button>
-
-      <Button variant="primary" className="ms-4">
+      <Button variant="primary" className="">
         Publier
+      </Button>
+      <Button variant="outline-secondary" type="submit" className="ms-3">
+        Annuler
       </Button>
     </>
   );

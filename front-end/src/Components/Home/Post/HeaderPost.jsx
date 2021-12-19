@@ -6,22 +6,20 @@ import Col from "react-bootstrap/Col";
 
 const HeaderPost = () => {
   return (
-    <Container>
-      <Row>
-        <Col className="d-flex justify-content-center">
+    <Container fluid>
+      <Row className="align-items-center mb-3">
+        <Col xs={2} className=" gx-0" >
           <div
-            className="w-100 d-flex justify-content-center"
-            style={{ background: "white" }}
+            className="d-flex justify-content-center align-items-center rounded-circle"
+            style={{ background: "white", width: "60px", height: "60px" }}
           >
-            <PersonFillIcon size={24} verticalAlign="middle" />
+            <PersonFillIcon size={24} />
           </div>
         </Col>
-        <Col xs={5}>
-          <p>User Name</p>
+        <Col className="">
+          <span className="fw-bold">User Name</span>
         </Col>
-        <Col xs={5}>
-          <p className="text-end">Create a post(v)</p>
-        </Col>
+      
       </Row>
     </Container>
   );
