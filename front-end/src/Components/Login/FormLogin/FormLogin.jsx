@@ -1,18 +1,31 @@
-import React from "react";
+import React, {useState} from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import FormLoginBtns from "./FormLoginBtns.jsx";
 
 const FormLogin = () => {
-  const queryStringUrl = window.location.pathname;
-  console.log(queryStringUrl);
-  const nameRoute = queryStringUrl.slice(1);
-  console.log(nameRoute);
+  const [dataUser, setDataUser] = useState({
+    email: "",
+    password: "",
+  });
+  console.log(dataUser);
+
+  function handleChange(event) {
+    // console.log(event.target.value)
+    event.preventDefault();
+
+    setDataUser((prevDataUser) => {
+      return {
+        ...prevDataUser,
+        [event.target.name]: event.target.value,
+      };
+    });
+  }
 
   return (
     <Form className="">
-      <Form.Group className="position-relative mb-3" controlId="email">
+      <Form.Group className="position-relative" controlId="email">
         <FloatingLabel
           controlId="email"
           label="your.name@groupomania.fr"
@@ -22,6 +35,9 @@ const FormLogin = () => {
             type="email"
             className="border-top-0 border-end-0 border-start-0"
             placeholder="email"
+            name="email"
+            onChange={handleChange}
+            value={dataUser.email}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -39,6 +55,9 @@ const FormLogin = () => {
             type="password"
             className="border-top-0 border-end-0 border-start-0 "
             placeholder="paassword"
+            name="paassword"
+            onChange={handleChange}
+            value={dataUser.paassword}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
