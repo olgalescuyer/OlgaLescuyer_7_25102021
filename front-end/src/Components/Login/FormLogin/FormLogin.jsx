@@ -1,19 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-
 import FormLoginBtns from "./FormLoginBtns.jsx";
+import axios from "axios";
 
 const FormLogin = () => {
   const [dataUser, setDataUser] = useState({
     email: "",
     password: "",
   });
-  console.log(dataUser);
+  // console.log(dataUser);
 
-  function handleChange(event) {
+  const handleChange = (event) => {
     // console.log(event.target.value)
-    event.preventDefault();
 
     setDataUser((prevDataUser) => {
       return {
@@ -21,10 +20,28 @@ const FormLogin = () => {
         [event.target.name]: event.target.value,
       };
     });
-  }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const data = JSON.stringify(dataUser);
+    submitToApi(dataUser);
+  };
+
+  const submitToApi = (data) => {
+    console.log(data);
+    axios
+      .post("http://localhost:3000/api/auth/login", data)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
-    <Form className="">
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="position-relative" controlId="email">
         <FloatingLabel
           controlId="email"
@@ -55,9 +72,9 @@ const FormLogin = () => {
             type="password"
             className="border-top-0 border-end-0 border-start-0 "
             placeholder="paassword"
-            name="paassword"
+            name="password"
             onChange={handleChange}
-            value={dataUser.paassword}
+            value={dataUser.password}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
