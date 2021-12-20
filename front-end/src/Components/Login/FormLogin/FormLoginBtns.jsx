@@ -1,13 +1,32 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FormLoginBtns = ({ login, signup }) => {
   const navigate = useNavigate();
 
+  // const handleClick = (e) => {
+
+  //   e.preventDefault();
+  //   getApi();
+  //    navigate("/");
+  // }
+
+  // const getApi = () => {
+
+  //   axios.get('http://localhost:3000/api/posts')
+  //   .then(response => {
+  //     console.log(response);
+  
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+  // }
   return (
     <>
-      <Button variant="primary" type="submit" className="w-100">
+      <Button variant="primary" type="submit" className="w-100" >
         {login}
       </Button>
       <br />
