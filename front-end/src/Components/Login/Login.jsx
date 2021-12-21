@@ -7,9 +7,13 @@ import FormLogin from "./FormLogin/FormLogin";
 export default function Login() {
   return (
     <Container className="w-custom-limit-400">
-      <Logo />
-      <div className="h4 text-center mb-4">Vous avez déjà un compte ?</div>
-      <FormLogin />
+      <header>
+        <Logo />
+      </header>
+      <main>
+        <span className="d-block h4 text-center mb-4">Vous avez déjà un compte ?</span>
+        <FormLogin />
+      </main>
     </Container>
   );
 }

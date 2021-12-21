@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import axios from "axios";
 
 import HeaderPost from "../Post/HeaderPost";
 import Btns from "./Btns.jsx";
 
 const FormPost = () => {
+ 
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
@@ -17,7 +19,7 @@ const FormPost = () => {
     // console.log(event.target.value)
 
     setDataPost((prevDataPost) => {
-      // console.log(prevDataPost);
+      console.log(prevDataPost);
       return {
         ...prevDataPost,
         [event.target.name]: event.target.value,
@@ -27,8 +29,24 @@ const FormPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(dataPost);
-    // submitToApi(dataUser)
+
+    if (dataPost.title) {
+      console.log(dataPost);
+      submitToApi(dataPost);
+    } else {
+      console.log("title is empty");
+    }
+  };
+
+  const submitToApi = (data) => {
+    axios
+      .post("http://localhost:3000/api/posts", data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
