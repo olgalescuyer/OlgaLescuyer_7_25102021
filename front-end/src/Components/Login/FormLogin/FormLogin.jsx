@@ -11,6 +11,11 @@ const FormLogin = () => {
   });
   // console.log(dataUser);
 
+  const inputRegex = {
+    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
+  };
+
   const handleChange = (event) => {
     // console.log(event.target.value)
 
@@ -24,18 +29,27 @@ const FormLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const data = JSON.stringify(dataUser);
-    submitToApi(dataUser);
+    if (
+      inputRegex.email.test(dataUser.email) &&
+      inputRegex.password.test(dataUser.password)
+    ) {
+      submitToApi(dataUser);
+    } else {
+      console.log(
+        " password:Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol; email:It must be something like this : your.name@groupomania.fr "
+      );
+    }
   };
 
   const submitToApi = (data) => {
     console.log(data);
+
     axios
       .post("http://localhost:3000/api/auth/login", data)
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };

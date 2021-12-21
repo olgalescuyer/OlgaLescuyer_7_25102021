@@ -11,7 +11,14 @@ const FormSignup = () => {
     email: "",
     password: "",
   });
-  console.log(dataUser);
+  // console.log(dataUser);
+
+  const inputRegex = {
+    firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+    lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
+  };
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -27,25 +34,17 @@ const FormSignup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const inputRegex = {
-      firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-      lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-      password:
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      email:
-      /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
-    };
-
     if (
       inputRegex.firstName.test(dataUser.firstName) &&
       inputRegex.lastName.test(dataUser.lastName) &&
       inputRegex.email.test(dataUser.email) &&
       inputRegex.password.test(dataUser.password)
     ) {
-     submitToApi(dataUser);
+      submitToApi(dataUser);
     } else {
-      console.log(dataUser.email, inputRegex.email.test(dataUser.email))
-      console.log("do some func here for warnings in the form fields !");
+      console.log(
+        "userName: Only Characters with white space are allowed; password:Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol; email:It must be something like this : your.name@groupomania.fr "
+      );
     }
   };
 
