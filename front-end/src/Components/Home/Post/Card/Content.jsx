@@ -1,7 +1,23 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Container from "react-bootstrap/Container";
+import axios from 'axios';
 
 const Content = () => {
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_GP_API_URL)
+    .then((res) => {
+        
+        console.log(posts);
+        setPosts();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+// + .map -->
   return (
     <Container fluid>
       <section>
