@@ -1,14 +1,22 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+
+import Logo from "../Logo";
 
 export default function NotFound() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    return (
-        <div>
-            <h1>Oops, cette page n'existe pas</h1>
-            <button className="btn btn-primary" onClick={() => navigate("/")}>Retourner à la page d'accueil</button>
-        </div>
-    )
+  return (
+    <Container>
+      <Container className="d-flex justify-content-center flex-column w-custom-limit-400 mt-4">
+        <Logo />
+        <h1 className="text-center mt-4">Oops, cette page n'existe pas...</h1>
+        <Button className="btn btn-primary mt-4" onClick={() => navigate("/")}>
+          Retourner à la page d'accueil
+        </Button>
+      </Container>
+    </Container>
+  );
 }
