@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-
 import FormSignupBtns from "./FormSignupBtns.jsx";
-
 import axios from "axios";
 
 const FormSignup = () => {
@@ -13,7 +11,7 @@ const FormSignup = () => {
     email: "",
     password: "",
   });
-  // console.log(dataUser);
+  console.log(dataUser);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -28,18 +26,38 @@ const FormSignup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const data = JSON.stringify(dataUser);
-    submitToApi(dataUser);
+
+    const inputRegex = {
+      firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+      lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+      password:
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+      email:
+      /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
+    };
+
+    if (
+      inputRegex.firstName.test(dataUser.firstName) &&
+      inputRegex.lastName.test(dataUser.lastName) &&
+      inputRegex.email.test(dataUser.email) &&
+      inputRegex.password.test(dataUser.password)
+    ) {
+     submitToApi(dataUser);
+    } else {
+      console.log(dataUser.email, inputRegex.email.test(dataUser.email))
+      console.log("do some func here for warnings in the form fields !");
+    }
   };
 
   const submitToApi = (data) => {
-    console.log(data);
+    // console.log(data);
+
     axios
       .post("http://localhost:3000/api/auth/signup", data)
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
