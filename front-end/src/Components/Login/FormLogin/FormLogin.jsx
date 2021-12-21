@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import axios from "axios";
 
 const FormLogin = () => {
+  const navigate = useNavigate();
   const [dataUser, setDataUser] = useState({
     email: "",
     password: "",
@@ -34,6 +36,7 @@ const FormLogin = () => {
       inputRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
+      navigate("/");
     } else {
       console.log(
         " password:Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol; email:It must be something like this : your.name@groupomania.fr "

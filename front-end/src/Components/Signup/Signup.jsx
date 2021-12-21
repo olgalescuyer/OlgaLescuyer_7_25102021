@@ -7,8 +7,13 @@ import FormSignup from "./FormSignup/FormSignup";
 const Signup = () => {
   return (
     <Container className="w-custom-limit-400">
-      <Logo />
-      <FormSignup />
+      <header>
+        <Logo />
+      </header>
+
+      <main>
+        <FormSignup />
+      </main>
     </Container>
   );
 };
