@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import axios from "axios";
+
 
 const FormLogin = () => {
   const navigate = useNavigate();
@@ -50,7 +51,11 @@ const FormLogin = () => {
     axios
       .post("http://localhost:3000/api/auth/login", data)
       .then((response) => {
-        console.log(response);
+        const jwt = response.data.token;
+        console.log("response from back", jwt);
+        localStorage.setItem('user', JSON.stringify(jwt)); 
+        window.location.reload(); 
+        
       })
       .catch((error) => {
         console.log(error);
