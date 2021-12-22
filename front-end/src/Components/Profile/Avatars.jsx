@@ -11,11 +11,11 @@ const Avatars = () => {
     return (
 
         <div className="d-flex justify-content-between mb-3 w-custom-limit-400">
-            <div className="border border-secondary border-2 rounded-circle"><img src={chicken} alt="" style={{width: "50px", height: "50px"}}/></div>
-            <div className="border border-secondary border-2 rounded-circle"><img src={dog} alt="" style={{width: "50px", height: "50px"}}/></div>
-            <div className="border border-secondary border-2 rounded-circle"><img src={panda} alt="" style={{width: "50px", height: "50px"}}/></div>
-            <div className="border border-secondary border-2 rounded-circle"><img src={tiger} alt="" style={{width: "50px", height: "50px"}}/></div>
-            <div className="border border-secondary border-2 rounded-circle"><img src={unicorn} alt=""style={{width: "50px", height: "50px"}} /></div>
+            <div className="border border-secondary border-2 rounded-circle"><img src={chicken} alt={chicken} style={{width: "50px", height: "50px"}}/></div>
+            <div className="border border-secondary border-2 rounded-circle"><img src={dog} alt={dog} style={{width: "50px", height: "50px"}}/></div>
+            <div className="border border-secondary border-2 rounded-circle"><img src={panda} alt={panda} style={{width: "50px", height: "50px"}}/></div>
+            <div className="border border-secondary border-2 rounded-circle"><img src={tiger} alt={tiger} style={{width: "50px", height: "50px"}}/></div>
+            <div className="border border-secondary border-2 rounded-circle"><img src={unicorn} alt={unicorn}style={{width: "50px", height: "50px"}} /></div>
         </div>
     );
 };
