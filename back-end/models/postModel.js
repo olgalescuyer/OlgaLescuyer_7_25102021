@@ -73,7 +73,7 @@ exports.updateOnePost = (sqlInserts) => {
 
 exports.findAllPosts = () => {
 
-    const sql = 'SELECT * FROM post ORDER BY p_time DESC';
+    const sql = 'SELECT * FROM post INNER JOIN user ON post.p_fk_user_id = user.u_id ORDER BY p_time DESC';
 
     return new Promise((resolve, reject) => {
 
