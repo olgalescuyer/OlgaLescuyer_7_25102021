@@ -7,7 +7,7 @@ const { validationResult } = require('express-validator');
 
 exports.createPost = (req, res, next) => {
     const postData = JSON.parse(req.body.post);
-    // console.log(postData);
+    console.log(req.body.post);
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     // console.log(imageUrl);
     // console.log(req.file.filename);

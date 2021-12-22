@@ -9,6 +9,8 @@ module.exports = (req, res, next) => {
         // split : return an array with 'Bearer' & token =>
         // I grab only token :
         const token = req.headers.authorization.split(' ')[1];
+        // console.log(req.headers);
+        // console.log(token);
 
         // verify : for decode token ( payload + tokenSecret) =>
         req.bearerToken = jwt.verify(token, process.env.TOKEN);

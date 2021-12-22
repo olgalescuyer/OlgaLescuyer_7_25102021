@@ -12,15 +12,15 @@ const FormPost = () => {
     title: "",
     text: "",
     imageUrl: "",
-    userId: userId
+    userId: userId,
   });
-  console.log(dataPost);
+  // console.log(dataPost);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
 
     setDataPost((prevDataPost) => {
-      console.log(prevDataPost);
+      // console.log(prevDataPost);
       return {
         ...prevDataPost,
         [event.target.name]: event.target.value,
@@ -39,9 +39,22 @@ const FormPost = () => {
     }
   };
 
-  const submitToApi = (data) => {
-    axios
-      .post("http://localhost:3000/api/posts", data)
+  const submitToApi = (dataPost) => {
+    const token = localStorage.getItem("user");
+    const postData = JSON.stringify(dataPost)
+    console.log(postData);
+   console.log(JSON.parse(token));
+    const options = {
+      method: "post",
+      url: "http://localhost:3000/api/posts",
+
+      headers: { Authorization: `Bearer ${JSON.parse(token)}` },
+
+      data: postData,
+    };
+    console.log(options);
+
+    axios(options)
       .then((response) => {
         console.log(response);
       })
@@ -63,16 +76,16 @@ const FormPost = () => {
     axios
       .get(url, config)
       .then((response) => {
-        console.log(response.data.u_first_name);
+        // console.log(response.data.u_first_name);
         let dataArr = response.data;
-        console.log(dataArr);
+        // console.log(dataArr);
         setDataUser(dataArr);
       })
 
       .catch((error) => {
         console.log(error);
       });
-  }, [setDataUser]);
+  }, []);
 
   return (
     <Form
@@ -92,7 +105,7 @@ const FormPost = () => {
             </a>
 
             <span className="ps-3 fw-bold">
-              {dataUser.u_first_name} {dataUser.u_last_name}
+              {dataUser.u_first_name + " " + dataUser.u_last_name}
             </span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">

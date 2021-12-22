@@ -2,8 +2,7 @@ import React from "react";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 
-const HeaderPost = ({createdAt}) => {
-
+const HeaderPost = ({ firstName, lastName, createdAt }) => {
   return (
     <header>
       <Container fluid className="gx-0">
@@ -17,10 +16,10 @@ const HeaderPost = ({createdAt}) => {
             <BsPersonFill size={36} />
           </a>
 
-          <span className="ps-3 fw-bold">User Name</span>
+          <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
 
           <span className="position-absolute top-0 end-0 text-muted fst-italic">
-            posted by {createdAt}
+            posted by {createdAt.substring(0, 10)}
           </span>
         </div>
       </Container>
