@@ -8,6 +8,7 @@ import FormPost from "./FormPost/FormPost";
 import Card from "./Post/Card/Card.jsx";
 
 const Home = () => {
+  
   const [dataPost, setDataPost] = useState([]);
 
   useEffect(() => {
@@ -20,9 +21,12 @@ const Home = () => {
     axios
       .get("http://localhost:3000/api/posts", config)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
+        let dataArr = response.data;
+        console.log(dataArr);
+        setDataPost(dataArr);
       })
-     
+
       .catch((error) => {
         console.log(error);
       });
@@ -34,15 +38,20 @@ const Home = () => {
       <Header userId={"userId"} />
       <main>
         <FormPost />
-        <Card
-          title={"Lorem ipsum dolor sit amet."}
-          text={"Lorem ipsum dolor sit amet consectetur adipisicing elit."}
-          imageUrl={"imageUrl"}
-          userName={"userName"}
-          avatar={"avatar"}
-          createdAt={"createdAt"}
-          likes={"likes"}
-        />
+        {dataPost.map((post) => {
+          return (
+            <Card
+              title={post.p_title}
+              text={post.p_text}
+              imageUrl={post.p_image}
+              user={post.p_fk_user_id}
+              avatar={"avatar"}
+              createdAt={post.p_time}
+              likes={"likes"}
+              key={post.p_id}
+            />
+          );
+        })}
       </main>
     </Container>
   );

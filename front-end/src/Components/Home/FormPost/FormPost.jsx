@@ -1,19 +1,20 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import axios from "axios";
-
-import HeaderPost from "../Post/HeaderPost";
+import { BsPersonFill } from "react-icons/bs";
+import Container from "react-bootstrap/Container";
 import Btns from "./Btns.jsx";
 
 const FormPost = () => {
- 
+  const userId = localStorage.getItem("userId");
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
     imageUrl: "",
+    userId: userId
   });
-  // console.log(dataPost);
+  console.log(dataPost);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -49,12 +50,58 @@ const FormPost = () => {
       });
   };
 
+  const [dataUser, setDataUser] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("user");
+    // const userId = localStorage.getItem("userId");
+
+    let config = { headers: { Authorization: `Bearer ${JSON.parse(token)}` } };
+
+    const url = "http://localhost:3000/api/auth/" + userId;
+    // console.log(url);
+    axios
+      .get(url, config)
+      .then((response) => {
+        console.log(response.data.u_first_name);
+        let dataArr = response.data;
+        console.log(dataArr);
+        setDataUser(dataArr);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [setDataUser]);
+
   return (
     <Form
       className="rounded p-3 mb-2 color-custom-body"
       onSubmit={handleSubmit}
     >
-      <HeaderPost />
+      <header>
+        <Container fluid className="gx-0">
+          <div className="position-relative d-flex align-items-center mb-3">
+            <a
+              href="/profile/id"
+              title="cliquez pour modifier avatar"
+              className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
+              style={{ background: "white", width: "60px", height: "60px" }}
+            >
+              <BsPersonFill size={36} />
+            </a>
+
+            <span className="ps-3 fw-bold">
+              {dataUser.u_first_name} {dataUser.u_last_name}
+            </span>
+
+            <span className="position-absolute top-0 end-0 text-muted fst-italic">
+              Create a post
+            </span>
+          </div>
+        </Container>
+      </header>
+
       <Form.Group className="mb-3 text-muted fst-italic" controlId="title">
         <FloatingLabel controlId="title" label="Titre">
           <Form.Control

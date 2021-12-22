@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 
-const Content = ({ title, text }) => {
+const Content = ({ title, text, imageUrl }) => {
   return (
     <Container fluid>
       <section>
@@ -10,8 +10,8 @@ const Content = ({ title, text }) => {
         <p>{text}</p>
 
         <div className="mb-3">
-          <img src="" alt="" />
-          Image is here
+          <img src={imageUrl} alt={imageUrl} />
+         
         </div>
       </section>
     </Container>
