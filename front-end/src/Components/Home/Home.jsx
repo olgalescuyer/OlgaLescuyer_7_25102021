@@ -8,7 +8,6 @@ import FormPost from "./FormPost/FormPost";
 import Card from "./Post/Card/Card.jsx";
 
 const Home = () => {
-  
   const [dataPost, setDataPost] = useState([]);
 
   useEffect(() => {
@@ -21,9 +20,9 @@ const Home = () => {
     axios
       .get("http://localhost:3000/api/posts", config)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
         let dataArr = response.data;
-        console.log(dataArr);
+        // console.log(dataArr);
         setDataPost(dataArr);
       })
 
@@ -44,7 +43,9 @@ const Home = () => {
               title={post.p_title}
               text={post.p_text}
               imageUrl={post.p_image}
-              user={post.p_fk_user_id}
+              userId={post.p_fk_user_id}
+              firstName={post.u_first_name}
+              lastName={post.u_last_name}
               avatar={"avatar"}
               createdAt={post.p_time}
               likes={"likes"}
