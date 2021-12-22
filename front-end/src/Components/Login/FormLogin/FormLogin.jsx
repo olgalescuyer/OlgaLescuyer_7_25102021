@@ -52,8 +52,12 @@ const FormLogin = () => {
       .post("http://localhost:3000/api/auth/login", data)
       .then((response) => {
         const jwt = response.data.token;
-        console.log("response from back", jwt);
+        const userId = response.data.userId;
+        const role = response.data.role;
+        console.log("response from back", response);
         localStorage.setItem('user', JSON.stringify(jwt)); 
+        localStorage.setItem('userId', JSON.stringify(userId)); 
+        localStorage.setItem('role', JSON.stringify(role)); 
         window.location.reload(); 
         
       })
