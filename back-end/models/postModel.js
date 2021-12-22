@@ -73,7 +73,7 @@ exports.updateOnePost = (sqlInserts) => {
 
 exports.findAllPosts = () => {
 
-    const sql = 'SELECT * FROM post ';
+    const sql = 'SELECT * FROM post ORDER BY p_time DESC';
 
     return new Promise((resolve, reject) => {
 
