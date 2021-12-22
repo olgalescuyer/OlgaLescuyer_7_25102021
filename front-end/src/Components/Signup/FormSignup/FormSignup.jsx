@@ -1,5 +1,5 @@
-import React, { useState} from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormSignupBtns from "./FormSignupBtns.jsx";

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import Container from "react-bootstrap/Container";
 
 import Header from "./Header.jsx";
@@ -10,11 +11,18 @@ const Home = () => {
   const [dataPost, setDataPost] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("user");
+
+    let config = { headers: { Authorization: `Bearer ${JSON.parse(token)}` } };
+    // console.log(config);
+    // console.log(token);
+
     axios
-      .get("http://localhost:3000/api/posts")
+      .get("http://localhost:3000/api/posts", config)
       .then((response) => {
         console.log(response);
       })
+     
       .catch((error) => {
         console.log(error);
       });

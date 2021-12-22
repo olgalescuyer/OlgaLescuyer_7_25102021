@@ -13,7 +13,7 @@ const FormPost = () => {
     text: "",
     imageUrl: "",
   });
-  console.log(dataPost);
+  // console.log(dataPost);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
