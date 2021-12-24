@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 
-import Logo from "../Logo.jsx";
-import FormLogin from "./FormLogin/FormLogin";
+import Logo from "../Components/Logo.jsx";
+import FormLogin from "../Components/Login/FormLogin/FormLogin";
 
 export default function Login() {
   return (

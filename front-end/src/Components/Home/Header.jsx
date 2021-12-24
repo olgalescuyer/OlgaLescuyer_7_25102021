@@ -2,8 +2,9 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
+
+import authService from "../../services/auth.service";
 
 const Header = () => {
 
@@ -12,7 +13,7 @@ const Header = () => {
     <header>
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="/" className="w-custom-limit-200">
+          <Navbar.Brand href="/home" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -21,7 +22,7 @@ const Header = () => {
               <Nav.Link href="/profile/:id" className="fw-bold text-end">
                 Profile
               </Nav.Link>
-              <Nav.Link href="/login" className="fw-bold text-end">
+              <Nav.Link href="/login" className="fw-bold text-end" onClick={() => authService.logout()}>
                 Déconnexion
               </Nav.Link>
             </Nav>

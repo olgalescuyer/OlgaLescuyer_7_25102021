@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 
-import Logo from "../Logo.jsx";
-import FormSignup from "./FormSignup/FormSignup";
+import Logo from "../Components/Logo.jsx";
+import FormSignup from "../Components/Signup/FormSignup/FormSignup";
 
 const Signup = () => {
   return (

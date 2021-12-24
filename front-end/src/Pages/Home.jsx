@@ -3,20 +3,18 @@ import axios from "axios";
 
 import Container from "react-bootstrap/Container";
 
-import Header from "./Header.jsx";
-import FormPost from "./FormPost/FormPost";
-import Card from "./Post/Card/Card.jsx";
+import Header from "../Components/Home/Header.jsx";
+import FormPost from "../Components/Home/FormPost/FormPost";
+import Card from "../Components/Home/Post/Card/Card.jsx";
+
+import authHeader from "../services/auth-header";
 
 const Home = () => {
   const [dataPost, setDataPost] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("user");
-
-    let config = { headers: { Authorization: `Bearer ${JSON.parse(token)}` } };
-    // console.log(config);
-    // console.log(token);
-
+   
+    const config = { headers: authHeader() };
     axios
       .get("http://localhost:3000/api/posts", config)
       .then((response) => {

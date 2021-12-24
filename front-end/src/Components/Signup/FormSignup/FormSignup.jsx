@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormSignupBtns from "./FormSignupBtns.jsx";
-import axios from "axios";
+
+
+import authService from "../../../services/auth.service";
 
 const FormSignup = () => {
   const navigate = useNavigate();
+
   const [dataUser, setDataUser] = useState({
     firstName: "",
     lastName: "",
@@ -14,13 +17,6 @@ const FormSignup = () => {
     password: "",
   });
   // console.log(dataUser);
-
-  const inputRegex = {
-    firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-    lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
-  };
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -31,6 +27,13 @@ const FormSignup = () => {
         [event.target.name]: event.target.value,
       };
     });
+  };
+
+  const inputRegex = {
+    firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+    lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
+    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
   };
 
   const handleSubmit = (e) => {
@@ -54,8 +57,7 @@ const FormSignup = () => {
   const submitToApi = (data) => {
     // console.log(data);
 
-    axios
-      .post("http://localhost:3000/api/auth/signup", data)
+    authService.signup(data)
       .then((response) => {
         console.log(response);
       })
