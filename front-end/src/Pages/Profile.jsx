@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 
-import Header from "./Header.jsx";
-import Content from "./Content.jsx";
+import Header from "../Components/Profile/Header.jsx";
+import Content from "../Components/Profile/Content.jsx";
 
 const Profile = () => {
   return (

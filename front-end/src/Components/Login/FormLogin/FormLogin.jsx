@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
-import axios from "axios";
-
+import authService from "../../../services/auth.service";
 
 const FormLogin = () => {
   const navigate = useNavigate();
+
   const [dataUser, setDataUser] = useState({
     email: "",
     password: "",
@@ -46,20 +46,18 @@ const FormLogin = () => {
   };
 
   const submitToApi = (data) => {
-    console.log(data);
+    // console.log(data);
 
-    axios
-      .post("http://localhost:3000/api/auth/login", data)
+    authService
+      .login(data)
       .then((response) => {
-        const jwt = response.data.token;
-        const userId = response.data.userId;
-        const role = response.data.role;
-        console.log("response from back", response);
-        localStorage.setItem('user', JSON.stringify(jwt)); 
-        localStorage.setItem('userId', JSON.stringify(userId)); 
-        localStorage.setItem('role', JSON.stringify(role)); 
-        window.location.reload(); 
-        
+        // console.log("response from back", response);
+
+        localStorage.setItem("user", JSON.stringify(response.data.token));
+        localStorage.setItem("userId", JSON.stringify(response.data.userId));
+        localStorage.setItem("role", JSON.stringify(response.data.role));
+
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

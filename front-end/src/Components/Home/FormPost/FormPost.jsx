@@ -30,9 +30,16 @@ const FormPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // if(imageUrl.length !== 0)
+    // const message = JSON.stringify({title: "", text:""})
+    // data = new FormData()
+    // data.append('image', imageUrl )
+    // data.append('post', message)
+    // else
+    // data = {title: "", text: ""};
 
     if (dataPost.title) {
-      console.log(dataPost);
+      // console.log(dataPost);
       submitToApi(dataPost);
     } else {
       console.log("title is empty");
@@ -41,9 +48,9 @@ const FormPost = () => {
 
   const submitToApi = (dataPost) => {
     const token = localStorage.getItem("user");
-    const postData = JSON.stringify(dataPost)
-    console.log(postData);
-   console.log(JSON.parse(token));
+    const postData = JSON.stringify(dataPost);
+    // console.log(postData);
+    console.log(JSON.parse(token));
     const options = {
       method: "post",
       url: "http://localhost:3000/api/posts",
