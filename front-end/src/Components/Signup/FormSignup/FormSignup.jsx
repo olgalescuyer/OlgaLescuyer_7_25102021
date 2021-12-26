@@ -5,7 +5,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormSignupBtns from "./FormSignupBtns.jsx";
 
 
-import authService from "../../../services/auth.service";
+import authService from "../../../services/authService";
 
 const FormSignup = () => {
   const navigate = useNavigate();

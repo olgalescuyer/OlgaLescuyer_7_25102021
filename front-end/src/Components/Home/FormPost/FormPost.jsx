@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import axios from "axios";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Btns from "./Btns.jsx";
+import userService from "../../../services/userService.js";
 
 const FormPost = () => {
   const userId = localStorage.getItem("userId");
+
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
     imageUrl: "",
-    userId: userId,
   });
   // console.log(dataPost);
 
@@ -38,30 +38,47 @@ const FormPost = () => {
     // else
     // data = {title: "", text: ""};
 
-    if (dataPost.title) {
-      // console.log(dataPost);
-      submitToApi(dataPost);
-    } else {
+    
+
+    if (dataPost.imageUrl.length !== 0 && dataPost.title) {
+      const message = JSON.stringify({
+        title: dataPost.title,
+        text: dataPost.text,
+      });
+
+      const imagefile = document.querySelector("#imageUrl");
+      console.log("post:", message);
+      console.log("image:", imagefile.files[0]);
+
+      const formData = new FormData();
+      formData.append("post", message);
+      formData.append("image", imagefile.files[0]);
+
+      submitToApi(formData);
+    } else if(dataPost.title) {
+      const titletext = JSON.stringify({
+        title: dataPost.title,
+        text: dataPost.text,
+      });
+      const mformData = new FormData();
+      mformData.append("post", titletext);
+      // console.log(mformData);
+      submitToApi(mformData);
+    } else{
       console.log("title is empty");
     }
+
+    // if (dataPost.title) {
+    //   // console.log(dataPost);
+    //   submitToApi(dataPost);
+    // } else {
+    //   console.log("title is empty");
+    // }
   };
 
-  const submitToApi = (dataPost) => {
-    const token = localStorage.getItem("user");
-    const postData = JSON.stringify(dataPost);
-    // console.log(postData);
-    console.log(JSON.parse(token));
-    const options = {
-      method: "post",
-      url: "http://localhost:3000/api/posts",
-
-      headers: { Authorization: `Bearer ${JSON.parse(token)}` },
-
-      data: postData,
-    };
-    console.log(options);
-
-    axios(options)
+  const submitToApi = (data) => {
+    userService
+      .postOnePost(data)
       .then((response) => {
         console.log(response);
       })
@@ -73,26 +90,16 @@ const FormPost = () => {
   const [dataUser, setDataUser] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("user");
-    // const userId = localStorage.getItem("userId");
-
-    let config = { headers: { Authorization: `Bearer ${JSON.parse(token)}` } };
-
-    const url = "http://localhost:3000/api/auth/" + userId;
-    // console.log(url);
-    axios
-      .get(url, config)
+    userService
+      .getOneUser(userId)
       .then((response) => {
-        // console.log(response.data.u_first_name);
-        let dataArr = response.data;
-        // console.log(dataArr);
-        setDataUser(dataArr);
+        setDataUser(response.data);
       })
 
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [dataUser]);
 
   return (
     <Form
@@ -159,6 +166,7 @@ const FormPost = () => {
           name="imageUrl"
           onChange={handleChange}
           className="text-muted fst-italic"
+          accept="image/*"
         />
       </Form.Group>
 

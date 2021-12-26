@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
 import Container from "react-bootstrap/Container";
-
 import Header from "../Components/Home/Header.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
 import Card from "../Components/Home/Post/Card/Card.jsx";
-
-import authHeader from "../services/auth-header";
+import userService from "../services/userService.js";
 
 const Home = () => {
   const [dataPost, setDataPost] = useState([]);
 
   useEffect(() => {
-   
-    const config = { headers: authHeader() };
-    axios
-      .get("http://localhost:3000/api/posts", config)
+    userService
+      .getAllPosts()
       .then((response) => {
-        console.log(response);
-        let dataArr = response.data;
-        // console.log(dataArr);
-        setDataPost(dataArr);
+        // console.log(response);
+        setDataPost(response.data);
       })
 
       .catch((error) => {
