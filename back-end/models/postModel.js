@@ -16,7 +16,7 @@ exports.insertIntoPost = (sqlInserts) => {
 
             } else {
                 // console.log('post result from db : ', result);
-                console.log(result.length);
+                // console.log("result length : ", result.length);
                 resolve(result.insertId);
             }
         });

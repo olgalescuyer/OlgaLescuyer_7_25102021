@@ -4,12 +4,13 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import Btns from "./Btns.jsx";
 
-const FormProfile = () => {
+const FormProfile = (props) => {
+  console.log(props.firstName)
   const [dataUser, setDataUser] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+    firstName: props.firstName,
+    lastName: props.lastName,
+    email: props.email,
+    password: props.password,
   });
   console.log(dataUser);
 
@@ -55,7 +56,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="firstName">
         <FloatingLabel
           controlId="firstName"
-          label="Prénom(var)"
+          label="Prénom"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -75,7 +76,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="lastName">
         <FloatingLabel
           controlId="lastName"
-          label="Nom(var)"
+          label="Nom"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -95,7 +96,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr(var)"
+          label="your.name@groupomania.fr"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -115,7 +116,7 @@ const FormProfile = () => {
       <Form.Group className="position-relative mb-3" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password(var*****)"
+          label="Password"
           className="text-muted fst-italic"
         >
           <Form.Control

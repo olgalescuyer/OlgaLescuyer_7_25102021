@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
-import authService from "../../../services/auth.service";
+import authService from "../../../services/authService";
 
 const FormLogin = () => {
   const navigate = useNavigate();

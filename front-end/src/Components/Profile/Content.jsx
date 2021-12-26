@@ -1,32 +1,16 @@
-import React, {useState,useEffect} from "react";
-import axios from "axios";
+import React from "react";
 import Container from "react-bootstrap/Container";
-
 import FormProfile from "./FormProfile/FormProfile";
 import Avatars from "./Avatars";
 
-const Content = () => {
-
-const [user, setUser] = useState();
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/auth/:id")
-      .then((user) => {
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [setUser]);
-
+const Content = ({userId, firstName, lastName, email, password}) => {
   return (
     <main>
-      <Container>
-        <h1 className="text-center fs-3">Bonjour (user) !</h1>
-        <p className="text-center">Choisis ton avatar</p>
+      <Container className="mt-4">
+        <h1 className="text-center fs-3">Bonjour {firstName + ' ' + lastName} !</h1>
+        <p className="text-center">Choisis ton avatar </p>
         <Avatars />
-        <FormProfile user={user}/>
+        <FormProfile userId={userId} firstName={firstName} lastName={lastName} email={email} password={password}/>
       </Container>
     </main>
   );

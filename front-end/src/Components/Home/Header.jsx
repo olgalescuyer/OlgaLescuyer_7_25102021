@@ -4,11 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 
-import authService from "../../services/auth.service";
+import authService from "../../services/authService";
 
 const Header = () => {
-
-  // here I need the id of the user for a link to his profile !
+  const userId = JSON.parse(localStorage.getItem("userId"));
+  const url = "/profile/" + userId; 
+  
   return (
     <header>
       <Navbar bg="light" expand="lg">
@@ -19,7 +20,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link href="/profile/:id" className="fw-bold text-end">
+              <Nav.Link href={url} className="fw-bold text-end">
                 Profile
               </Nav.Link>
               <Nav.Link href="/login" className="fw-bold text-end" onClick={() => authService.logout()}>
