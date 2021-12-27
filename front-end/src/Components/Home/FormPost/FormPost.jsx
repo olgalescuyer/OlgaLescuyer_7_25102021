@@ -30,15 +30,8 @@ const FormPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if(imageUrl.length !== 0)
-    // const message = JSON.stringify({title: "", text:""})
-    // data = new FormData()
-    // data.append('image', imageUrl )
-    // data.append('post', message)
-    // else
-    // data = {title: "", text: ""};
 
-    
+    const imagefile = document.querySelector("#imageUrl");
 
     if (dataPost.imageUrl.length !== 0 && dataPost.title) {
       const message = JSON.stringify({
@@ -46,34 +39,23 @@ const FormPost = () => {
         text: dataPost.text,
       });
 
-      const imagefile = document.querySelector("#imageUrl");
-      console.log("post:", message);
-      console.log("image:", imagefile.files[0]);
-
       const formData = new FormData();
       formData.append("post", message);
       formData.append("image", imagefile.files[0]);
 
       submitToApi(formData);
-    } else if(dataPost.title) {
+    } else if (dataPost.title) {
       const titletext = JSON.stringify({
         title: dataPost.title,
         text: dataPost.text,
       });
       const mformData = new FormData();
       mformData.append("post", titletext);
-      // console.log(mformData);
+
       submitToApi(mformData);
-    } else{
+    } else {
       console.log("title is empty");
     }
-
-    // if (dataPost.title) {
-    //   // console.log(dataPost);
-    //   submitToApi(dataPost);
-    // } else {
-    //   console.log("title is empty");
-    // }
   };
 
   const submitToApi = (data) => {
@@ -99,7 +81,7 @@ const FormPost = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [dataUser]);
+  }, []);
 
   return (
     <Form
@@ -130,7 +112,7 @@ const FormPost = () => {
       </header>
 
       <Form.Group className="mb-3 text-muted fst-italic" controlId="title">
-        <FloatingLabel controlId="title" label="Titre">
+        <FloatingLabel controlId="title" label="Titre (max 255)">
           <Form.Control
             type="text"
             placeholder="title"
@@ -146,7 +128,7 @@ const FormPost = () => {
       </Form.Group>
 
       <Form.Group className="text-muted fst-italic" controlId="text">
-        <FloatingLabel controlId="text" label="What's on your mind ?">
+        <FloatingLabel controlId="text" label="What's on your mind ? (max 255)">
           <Form.Control
             as="textarea"
             rows={3}
