@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+
 import FormSignupBtns from "./FormSignupBtns.jsx";
-// import validService from "../../../services/validService";
+
+import validService from "../../../services/validService";
 import authService from "../../../services/authService";
 
 const FormSignup = () => {
@@ -15,68 +17,77 @@ const FormSignup = () => {
     email: "",
     password: "",
   });
-  // console.log(dataUser);
 
-  const inputRegex = {
-    firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-    lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
-  };
+  const [message, setMessage] = useState({
+    firstName: "",
+    lastName: "",
+    email: " ",
+    password: "",
+  });
 
-  const invalid = {
-    firstName: "Vérifiez le prénom. Ce champ accepte uniquement les lettres.",
-    lastName: "Vérifiez le prénom. Ce champ accepte uniquement les lettres.",
-    email: "Saisissez une adresse électronique correcte ",
-    password: "Le mot de passe Doit Contenir au Moins 8 Caractères et une minute de 1 Minuscule, 1 Majuscule, 1 chiffre, 1 symbole.",
-  };
-
-  // console.log(invalid);
-
-  const validate = (userField, regex) => {
-    regex.test(userField.value) ? console.log("valid") : console.log(invalid[userField.name]);
-    // console.log(regex.test(field.value));
-  };
+  const [oneErr, setOneErr] = useState(false);
 
   const handleChange = (event) => {
-    const userField = event.target;
-    // console.log(userField);
-    // console.log(inputRegex[event.target.attributes.name.value]);
-
-    validate(userField, inputRegex[event.target.attributes.name.value]);
+    validate(
+      event.target,
+      validService.regex()[event.target.attributes.name.value]
+    );
 
     setDataUser((prevDataUser) => {
-      console.log(prevDataUser);
-
+      // console.log(prevDataUser);
       return {
         ...prevDataUser,
         [event.target.name]: event.target.value,
       };
     });
+
+    setOneErr(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // if (
-    //   inputRegex.firstName.test(dataUser.firstName) &&
-    //   inputRegex.lastName.test(dataUser.lastName) &&
-    //   inputRegex.email.test(dataUser.email) &&
-    //   inputRegex.password.test(dataUser.password)
-    // ) {
-    //   submitToApi(dataUser);
-    //   navigate("/");
-    // } else {
-    //   console.log(
-    //     "userName: Only Characters with white space are allowed; password:Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol; email:It must be something like this : your.name@groupomania.fr "
-    //   );
-
-    // }
+    if (
+      validService.regex().firstName.test(dataUser.firstName) &&
+      validService.regex().lastName.test(dataUser.lastName) &&
+      validService.regex().email.test(dataUser.email) &&
+      validService.regex().password.test(dataUser.password)
+    ) {
+      submitToApi(dataUser);
+      navigate("/");
+    } else {
+      setOneErr(true);
+    }
   };
 
-  const submitToApi = (data) => {
-    // console.log(data);
+  const validate = (userField, regex) => {
+    if (!regex.test(userField.value)) {
+      createErrMessage(userField);
+    } else {
+      setMessage("");
+    }
+  };
 
+  function createErrMessage(field) {
+    switch (field.name) {
+      case "firstName":
+        setMessage({ firstName: validService.messages().firstName });
+        break;
+      case "lastName":
+        setMessage({ lastName: validService.messages().lastName });
+        break;
+      case "email":
+        setMessage({ email: validService.messages().email });
+        break;
+      case "password":
+        setMessage({ password: validService.messages().password });
+        break;
+      default:
+        console.log("default from switch");
+    }
+  }
+
+  const submitToApi = (data) => {
     authService
       .signup(data)
       .then((response) => {
@@ -104,7 +115,7 @@ const FormSignup = () => {
             value={dataUser.firstName}
           />
           <Form.Text className="text-muted ps-2 ">
-          some warning...
+            {message.firstName}
           </Form.Text>
         </FloatingLabel>
       </Form.Group>
@@ -123,9 +134,8 @@ const FormSignup = () => {
             onChange={handleChange}
             value={dataUser.lastName}
           />
-          <Form.Text className="text-muted ps-2 ">
-            Vérifiez le prénom. Ce champ accepte uniquement les lettres.
-          </Form.Text>
+
+          <Form.Text className="text-muted ps-2 ">{message.lastName}</Form.Text>
         </FloatingLabel>
       </Form.Group>
 
@@ -143,11 +153,9 @@ const FormSignup = () => {
             onChange={handleChange}
             value={dataUser.email}
           />
+
+          <Form.Text className="text-muted ps-2 ">{message.email}</Form.Text>
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          Saisissez une adresse électronique correcte :
-          prenom.nom@groupomania.fr
-        </Form.Text>
       </Form.Group>
 
       <Form.Group className="position-relative mb-3" controlId="password">
@@ -164,13 +172,15 @@ const FormSignup = () => {
             onChange={handleChange}
             value={dataUser.password}
           />
-        </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          Le mot de passe Doit Contenir au Moins 8 Caractères et une minute de:
-          1 Minuscule, 1 Majuscule, 1 chiffre, 1 symbole.
-        </Form.Text>
-      </Form.Group>
 
+          <Form.Text className="text-muted ps-2">{message.password}</Form.Text>
+        </FloatingLabel>
+      </Form.Group>
+      {oneErr && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold alert-danger ">
+          Tous les champs doivent être remplis
+        </Form.Text>
+      )}
       <FormSignupBtns signup={`S'inscrire`} login={"Se connecter"} />
     </Form>
   );

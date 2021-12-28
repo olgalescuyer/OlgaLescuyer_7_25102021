@@ -6,8 +6,6 @@ const API_URL = "http://localhost:3000/api/";
 const config = { headers: authHeader() };
 const user = JSON.parse(localStorage.getItem("user"));
 
-const configFormData = { "content-type": "multipart/form-data" };
-
 const getOneUser = (userId) => {
   return axios.get(API_URL + "auth/" + userId, config);
 };
