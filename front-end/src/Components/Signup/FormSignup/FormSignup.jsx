@@ -10,6 +10,8 @@ import authService from "../../../services/authService";
 
 const FormSignup = () => {
   const navigate = useNavigate();
+  const validRegex = validService.regex();
+  const customMessage = validService.messages();
 
   const [dataUser, setDataUser] = useState({
     firstName: "",
@@ -28,10 +30,7 @@ const FormSignup = () => {
   const [oneErr, setOneErr] = useState(false);
 
   const handleChange = (event) => {
-    validate(
-      event.target,
-      validService.regex()[event.target.attributes.name.value]
-    );
+    validate(event.target, validRegex[event.target.attributes.name.value]);
 
     setDataUser((prevDataUser) => {
       // console.log(prevDataUser);
@@ -48,10 +47,10 @@ const FormSignup = () => {
     e.preventDefault();
 
     if (
-      validService.regex().firstName.test(dataUser.firstName) &&
-      validService.regex().lastName.test(dataUser.lastName) &&
-      validService.regex().email.test(dataUser.email) &&
-      validService.regex().password.test(dataUser.password)
+      validRegex.firstName.test(dataUser.firstName) &&
+      validRegex.lastName.test(dataUser.lastName) &&
+      validRegex.email.test(dataUser.email) &&
+      validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
       navigate("/");
@@ -71,16 +70,16 @@ const FormSignup = () => {
   function createErrMessage(field) {
     switch (field.name) {
       case "firstName":
-        setMessage({ firstName: validService.messages().firstName });
+        setMessage({ firstName: customMessage.firstName });
         break;
       case "lastName":
-        setMessage({ lastName: validService.messages().lastName });
+        setMessage({ lastName: customMessage.lastName });
         break;
       case "email":
-        setMessage({ email: validService.messages().email });
+        setMessage({ email: customMessage.email });
         break;
       case "password":
-        setMessage({ password: validService.messages().password });
+        setMessage({ password: customMessage.password });
         break;
       default:
         console.log("default from switch");
