@@ -30,6 +30,8 @@ const FormSignup = () => {
   const [oneErr, setOneErr] = useState(false);
 
   const handleChange = (event) => {
+    event.preventDefault();
+    // userField = event.target
     validate(event.target, validRegex[event.target.attributes.name.value]);
 
     setDataUser((prevDataUser) => {
@@ -98,7 +100,7 @@ const FormSignup = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="pb-4">
       <Form.Group className="position-relative" controlId="firstName">
         <FloatingLabel
           controlId="firstName"
@@ -113,7 +115,7 @@ const FormSignup = () => {
             onChange={handleChange}
             value={dataUser.firstName}
           />
-          <Form.Text className="text-muted ps-2 ">
+          <Form.Text className="text-danger ps-2 ">
             {message.firstName}
           </Form.Text>
         </FloatingLabel>
@@ -134,14 +136,14 @@ const FormSignup = () => {
             value={dataUser.lastName}
           />
 
-          <Form.Text className="text-muted ps-2 ">{message.lastName}</Form.Text>
+          <Form.Text className="text-danger ps-2">{message.lastName}</Form.Text>
         </FloatingLabel>
       </Form.Group>
 
       <Form.Group className="position-relative" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr"
+          label="nom.prenom@groupomania.fr"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -153,11 +155,11 @@ const FormSignup = () => {
             value={dataUser.email}
           />
 
-          <Form.Text className="text-muted ps-2 ">{message.email}</Form.Text>
+          <Form.Text className="text-danger ps-2">{message.email}</Form.Text>
         </FloatingLabel>
       </Form.Group>
 
-      <Form.Group className="position-relative mb-3" controlId="password">
+      <Form.Group className="position-relative" controlId="password">
         <FloatingLabel
           controlId="password"
           label="Password"
@@ -172,12 +174,12 @@ const FormSignup = () => {
             value={dataUser.password}
           />
 
-          <Form.Text className="text-muted ps-2">{message.password}</Form.Text>
+          <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
         </FloatingLabel>
       </Form.Group>
       {oneErr && (
-        <Form.Text className="d-block rounded text-center p-2 fw-bold alert-danger ">
-          Tous les champs doivent être remplis
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          Tous les champs doivent être remplis correctement
         </Form.Text>
       )}
       <FormSignupBtns signup={`S'inscrire`} login={"Se connecter"} />
