@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Btns from "./Btns.jsx";
 import userService from "../../../services/userService.js";
+import { UserContext } from "../../../Context/UserContext";
 
-const FormPost = () => {
+const FormPost = ({ onValidate }) => {
+  const { authHeader } = useContext(UserContext);
+  const config = { headers: authHeader() };
+
   const userId = localStorage.getItem("userId");
 
   const [dataPost, setDataPost] = useState({
@@ -60,8 +64,9 @@ const FormPost = () => {
 
   const submitToApi = (data) => {
     userService
-      .postOnePost(data)
+      .postOnePost(data, config)
       .then((response) => {
+        onValidate();
         console.log(response);
       })
       .catch((error) => {
@@ -73,7 +78,7 @@ const FormPost = () => {
 
   useEffect(() => {
     userService
-      .getOneUser(userId)
+      .getOneUser(userId, config)
       .then((response) => {
         setDataUser(response.data);
       })

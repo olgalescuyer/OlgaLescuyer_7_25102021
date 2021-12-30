@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -8,10 +8,16 @@ import FormSignupBtns from "./FormSignupBtns.jsx";
 import validService from "../../../services/validService";
 import authService from "../../../services/authService";
 
+import {UserContext} from '../../../Context/UserContext'
+
 const FormSignup = () => {
   const navigate = useNavigate();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
+
+  const {toggleAuth} = useContext(UserContext);
+
+  // const {toggleAuth} = useContext(UserContext)
 
   const [dataUser, setDataUser] = useState({
     firstName: "",
@@ -43,6 +49,7 @@ const FormSignup = () => {
     });
 
     setOneErr(false);
+
   };
 
   const handleSubmit = (e) => {
@@ -93,6 +100,7 @@ const FormSignup = () => {
       .signup(data)
       .then((response) => {
         console.log(response);
+        toggleAuth();
       })
       .catch((error) => {
         console.log(error);
