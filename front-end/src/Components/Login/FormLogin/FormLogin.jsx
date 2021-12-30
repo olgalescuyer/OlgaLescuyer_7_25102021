@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import authService from "../../../services/authService";
+import {UserContext} from '../../../Context/UserContext';
 
 const FormLogin = () => {
   const navigate = useNavigate();
+
+  const {toggleAuth} = useContext(UserContext);
 
   const [dataUser, setDataUser] = useState({
     email: "",
@@ -40,7 +43,7 @@ const FormLogin = () => {
       navigate("/");
     } else {
       console.log(
-        " password:Password Must Be at Least 8 Characters & a min of: 1 Lowercase, 1 Uppercase, 1 number, 1 symbol; email:It must be something like this : your.name@groupomania.fr "
+        "not ok from handle submit"
       );
     }
   };
@@ -51,13 +54,14 @@ const FormLogin = () => {
     authService
       .login(data)
       .then((response) => {
-        // console.log("response from back", response);
+        console.log("response from back", response);
 
         localStorage.setItem("user", JSON.stringify(response.data.token));
         localStorage.setItem("userId", JSON.stringify(response.data.userId));
         localStorage.setItem("role", JSON.stringify(response.data.role));
 
-        window.location.reload();
+        // window.location.reload();
+        toggleAuth();
       })
       .catch((error) => {
         console.log(error);

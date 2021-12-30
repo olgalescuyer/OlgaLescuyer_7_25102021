@@ -5,14 +5,15 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Btns from "./Btns.jsx";
 
 const FormProfile = (props) => {
-  console.log(props.firstName)
+  console.log(props.firstName);
   const [dataUser, setDataUser] = useState({
     firstName: props.firstName,
     lastName: props.lastName,
     email: props.email,
     password: props.password,
   });
-  console.log(dataUser);
+
+  
 
   const inputRegex = {
     firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,

@@ -10,23 +10,28 @@ import NotFound from "./Pages/NotFound";
 
 import PrivateRoute from "./PrivateRoute";
 
+import { UserProvider } from "./Context/UserContext";
+
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          index
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/profile/:id" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </UserProvider>
     </div>
   );
 }

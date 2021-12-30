@@ -1,12 +1,18 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate, useLocation, Route } from "react-router-dom";
 
-import useAuth from "./services/use-auth";
+import { UserContext } from "./Context/UserContext";
+
 
 const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-  // console.log(auth);
-  return auth ? children : <Navigate to="/login" />;
+  const { auth, authHeader } = useContext(UserContext);
+  const authSecondly = authHeader(); 
+
+  console.log("auth from context : ", auth);
+  console.log("auth from localStorage : ", authSecondly);
+
+  return auth || authSecondly ? children : <Navigate to="/login" />;
+  
 };
 
 export default PrivateRoute;

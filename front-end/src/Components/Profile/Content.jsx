@@ -1,9 +1,11 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import FormProfile from "./FormProfile/FormProfile";
+
 import Avatars from "./Avatars";
 
 const Content = ({userId, firstName, lastName, email, password}) => {
+ 
   return (
     <main>
       <Container className="mt-4">
