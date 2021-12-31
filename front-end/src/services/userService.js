@@ -9,7 +9,6 @@ const getOneUser = (userId, config) => {
 };
 
 const getAllPosts = (config) => {
-  console.log(config);
   return axios.get(API_URL + "posts", config);
 };
 
@@ -21,11 +20,9 @@ const postOnePost = (postData) => {
       Authorization: "Bearer " + user,
       "content-type": "multipart/form-data",
     },
-
     data: postData,
   };
-  console.log("options from services axios : ", options);
-
+  // console.log(options);
   return axios(options);
 };
 

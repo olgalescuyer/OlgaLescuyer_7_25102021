@@ -10,6 +10,7 @@ import { UserContext } from "../../../Context/UserContext";
 const FormPost = ({ onValidate }) => {
   const { authHeader } = useContext(UserContext);
   const config = { headers: authHeader() };
+  // console.log(config);
 
   const userId = localStorage.getItem("userId");
 
@@ -64,7 +65,7 @@ const FormPost = ({ onValidate }) => {
 
   const submitToApi = (data) => {
     userService
-      .postOnePost(data, config)
+      .postOnePost(data)
       .then((response) => {
         onValidate();
         console.log(response);

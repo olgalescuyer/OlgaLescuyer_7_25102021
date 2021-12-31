@@ -2,28 +2,24 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-
 import FormSignupBtns from "./FormSignupBtns.jsx";
-
 import validService from "../../../services/validService";
 import authService from "../../../services/authService";
 
-import {UserContext} from '../../../Context/UserContext'
+// import {UserContext} from '../../../Context/UserContext'
 
-const FormSignup = () => {
+const FormSignup = ({ authenticate }) => {
   const navigate = useNavigate();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
-
-  const {toggleAuth} = useContext(UserContext);
-
-  // const {toggleAuth} = useContext(UserContext)
+  // console.log(authenticate);
 
   const [dataUser, setDataUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
+    admin: 0,
   });
 
   const [message, setMessage] = useState({
@@ -49,7 +45,6 @@ const FormSignup = () => {
     });
 
     setOneErr(false);
-
   };
 
   const handleSubmit = (e) => {
@@ -62,7 +57,8 @@ const FormSignup = () => {
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      navigate("/",{ replace: true });
+      authenticate();
+      navigate("/", { replace: true });
     } else {
       setOneErr(true);
     }
@@ -100,7 +96,6 @@ const FormSignup = () => {
       .signup(data)
       .then((response) => {
         console.log(response);
-        toggleAuth();
       })
       .catch((error) => {
         console.log(error);
