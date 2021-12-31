@@ -4,12 +4,10 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import authService from "../../../services/authService";
-import {UserContext} from '../../../Context/UserContext';
+// import {UserContext} from '../../../Context/UserContext';
 
-const FormLogin = () => {
+const FormLogin = ({ authenticate }) => {
   const navigate = useNavigate();
-
-  const {toggleAuth} = useContext(UserContext);
 
   const [dataUser, setDataUser] = useState({
     email: "",
@@ -40,11 +38,10 @@ const FormLogin = () => {
       inputRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      navigate("/");
+      authenticate();
+      navigate("/", { replace: true });
     } else {
-      console.log(
-        "not ok from handle submit"
-      );
+      console.log("not ok from handle submit");
     }
   };
 
@@ -61,7 +58,6 @@ const FormLogin = () => {
         localStorage.setItem("role", JSON.stringify(response.data.role));
 
         // window.location.reload();
-        toggleAuth();
       })
       .catch((error) => {
         console.log(error);

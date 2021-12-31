@@ -18,11 +18,11 @@ exports.signup = (req, res, next) => {
     // console.log(req.body);
     bcrypt.hash(req.body.password, 10)
         .then((hash) => {
-            let sqlInserts = [req.body.firstName, req.body.lastName, req.body.email, hash];
+            let sqlInserts = [req.body.firstName, req.body.lastName, req.body.email, hash, req.body.admin];
             // console.log(sqlInserts);
 
             userModel.insertIntoUser(sqlInserts)
-                .then(response => res.status(201).json({ response: 'Utilisateur créé !' }))
+                .then(response => res.status(201).json({ response }))
                 .catch(error => res.status(400).json({ message: 'Vous avez déjà un compte !' }));
 
         })
