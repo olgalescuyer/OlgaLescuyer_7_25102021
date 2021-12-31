@@ -62,7 +62,7 @@ const FormSignup = () => {
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      navigate("/");
+      navigate("/",{ replace: true });
     } else {
       setOneErr(true);
     }

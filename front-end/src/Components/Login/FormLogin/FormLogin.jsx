@@ -40,7 +40,7 @@ const FormLogin = () => {
       inputRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      navigate("/");
+      navigate("/",{ replace: true });
     } else {
       console.log(
         "not ok from handle submit"
