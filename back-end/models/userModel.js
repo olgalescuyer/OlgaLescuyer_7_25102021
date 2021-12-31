@@ -3,7 +3,7 @@ const mysql = require('mysql');
 
 exports.insertIntoUser = (sqlInserts) => {
 
-    let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password) VALUES ( ?, ?, ?, ? )`;
+    let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password, u_admin) VALUES ( ?, ?, ?, ?, ? )`;
 
     //From doc : Preparing Queries. You can use mysql.format to prepare a query 
     // with multiple insertion points, utilizing the proper escaping 
