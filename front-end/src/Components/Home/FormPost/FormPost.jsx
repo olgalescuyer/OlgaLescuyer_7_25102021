@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
@@ -11,9 +11,9 @@ const FormPost = ({ onValidate }) => {
   const { authHeader } = useContext(UserContext);
   const config = { headers: authHeader() };
   // console.log(config);
-
   const userId = localStorage.getItem("userId");
-
+  const refImg = useRef();
+  // console.log(refImg.current.value);
 
   const [dataPost, setDataPost] = useState({
     title: "",
@@ -21,6 +21,11 @@ const FormPost = ({ onValidate }) => {
     imageUrl: "",
   });
   // console.log(dataPost);
+
+  const cancelCourse = () => {
+    setDataPost({ title: "", text: "", imageUrl: "" });
+    refImg.current.value = "";
+  };
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -69,7 +74,7 @@ const FormPost = ({ onValidate }) => {
       .postOnePost(data)
       .then((response) => {
         onValidate();
-        // console.log(response);
+        cancelCourse();
       })
       .catch((error) => {
         console.log(error);
@@ -156,6 +161,7 @@ const FormPost = ({ onValidate }) => {
           onChange={handleChange}
           className="text-muted fst-italic"
           accept="image/*"
+          ref={refImg}
         />
       </Form.Group>
 
