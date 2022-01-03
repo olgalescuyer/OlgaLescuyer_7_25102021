@@ -4,10 +4,14 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import authService from "../../../services/authService";
+import validService from "../../../services/validService";
+
 // import {UserContext} from '../../../Context/UserContext';
 
 const FormLogin = ({ authenticate }) => {
   const navigate = useNavigate();
+  const validRegex = validService.regex();
+  const customMessage = validService.messages();
 
   const [dataUser, setDataUser] = useState({
     email: "",
@@ -15,13 +19,16 @@ const FormLogin = ({ authenticate }) => {
   });
   // console.log(dataUser);
 
-  const inputRegex = {
-    password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
-  };
+  const [message, setMessage] = useState({
+    email: " ",
+    password: "",
+  });
+
+  const [oneErr, setOneErr] = useState(false);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
+    validate(event.target, validRegex[event.target.attributes.name.value]);
 
     setDataUser((prevDataUser) => {
       return {
@@ -29,21 +36,44 @@ const FormLogin = ({ authenticate }) => {
         [event.target.name]: event.target.value,
       };
     });
+    setOneErr(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      inputRegex.email.test(dataUser.email) &&
-      inputRegex.password.test(dataUser.password)
+      validRegex.email.test(dataUser.email) &&
+      validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
       authenticate();
       navigate("/", { replace: true });
     } else {
+      setOneErr(true);
       console.log("not ok from handle submit");
     }
   };
+
+  const validate = (userField, regex) => {
+    if (!regex.test(userField.value)) {
+      createErrMessage(userField);
+    } else {
+      setMessage("");
+    }
+  };
+
+  function createErrMessage(field) {
+    switch (field.name) {
+      case "email":
+        setMessage({ email: customMessage.email });
+        break;
+      case "password":
+        setMessage({ password: customMessage.password });
+        break;
+      default:
+        console.log("default from switch");
+    }
+  }
 
   const submitToApi = (data) => {
     // console.log(data);
@@ -57,7 +87,7 @@ const FormLogin = ({ authenticate }) => {
         localStorage.setItem("userId", JSON.stringify(response.data.userId));
         localStorage.setItem("role", JSON.stringify(response.data.role));
 
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
