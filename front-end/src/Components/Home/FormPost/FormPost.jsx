@@ -13,7 +13,7 @@ const FormPost = ({ onValidate }) => {
   // console.log(config);
 
   const userId = localStorage.getItem("userId");
-  
+
 
   const [dataPost, setDataPost] = useState({
     title: "",
@@ -69,7 +69,7 @@ const FormPost = ({ onValidate }) => {
       .postOnePost(data)
       .then((response) => {
         onValidate();
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.log(error);
