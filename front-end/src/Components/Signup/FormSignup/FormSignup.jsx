@@ -93,8 +93,9 @@ const FormSignup = ({ authenticate }) => {
     authService
       .signup(data)
       .then((response) => {
+        console.log(response);
         localStorage.setItem("user", JSON.stringify(response.data.token));
-        
+        localStorage.setItem("userId", JSON.stringify(response.data.userId));
         authenticate();
         navigate("/", { replace: true });
       })

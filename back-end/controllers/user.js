@@ -31,6 +31,7 @@ exports.signup = (req, res, next) => {
         .insertIntoUser(sqlInserts)
         .then((dataUser) =>
           res.status(201).json({
+            userId: dataUser.insertId,
             token: jwt.sign({ userId: dataUser.insertId }, process.env.TOKEN, {
               expiresIn: "24h",
             }),

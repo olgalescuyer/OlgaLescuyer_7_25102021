@@ -13,6 +13,7 @@ const FormPost = ({ onValidate }) => {
   // console.log(config);
 
   const userId = localStorage.getItem("userId");
+  
 
   const [dataPost, setDataPost] = useState({
     title: "",
