@@ -24,8 +24,9 @@ const FormLogin = ({ authenticate }) => {
     password: "",
   });
 
-  const [oneErr, setOneErr] = useState(false);
-  const [notValid, setNotValid] = useState(false);
+  const [messageValidation, setMessageValidation] = useState("");
+  // const [oneErr, setOneErr] = useState(false);
+  // const [notValid, setNotValid] = useState(false);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -37,8 +38,7 @@ const FormLogin = ({ authenticate }) => {
         [event.target.name]: event.target.value,
       };
     });
-    setOneErr(false);
-    setNotValid(false);
+    setMessageValidation("");
   };
 
   const handleSubmit = (e) => {
@@ -50,7 +50,7 @@ const FormLogin = ({ authenticate }) => {
     ) {
       submitToApi(dataUser);
     } else {
-      setOneErr(true);
+      setMessageValidation("Tous les champs doivent être remplis correctement");
 
       console.log("not ok from handle submit");
     }
@@ -94,7 +94,9 @@ const FormLogin = ({ authenticate }) => {
         }
       })
       .catch((error) => {
-        setNotValid(true);
+        setMessageValidation(
+          "La combinaison nom d'utilisateur et mot de passe ne correspond à aucun compte de Groupomania.fr"
+        );
         console.log(error);
       });
   };
@@ -136,17 +138,10 @@ const FormLogin = ({ authenticate }) => {
           <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
         </FloatingLabel>
       </Form.Group>
-      {oneErr && (
-        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-          Tous les champs doivent être remplis correctement
-        </Form.Text>
-      )}
-      {notValid && (
-        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-          La combinaison nom d'utilisateur et mot de passe ne correspond à aucun
-          compte de Groupomania.fr
-        </Form.Text>
-      )}
+
+      <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+        {messageValidation}
+      </Form.Text>
 
       <FormLoginBtns login={"Se connecter"} signup={`S'inscrire`} />
     </Form>
