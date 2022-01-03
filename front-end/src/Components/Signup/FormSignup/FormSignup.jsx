@@ -57,8 +57,8 @@ const FormSignup = ({ authenticate }) => {
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      authenticate();
-      navigate("/", { replace: true });
+      // authenticate();
+      // navigate("/", { replace: true });
     } else {
       setOneErr(true);
     }
@@ -94,8 +94,8 @@ const FormSignup = ({ authenticate }) => {
   const submitToApi = (data) => {
     authService
       .signup(data)
-      .then((response) => {
-        console.log(response);
+      .then((data) => {
+        console.log(data.data);
       })
       .catch((error) => {
         console.log(error);
