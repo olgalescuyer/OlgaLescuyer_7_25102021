@@ -25,6 +25,7 @@ const FormLogin = ({ authenticate }) => {
   });
 
   const [oneErr, setOneErr] = useState(false);
+  const [notValid, setNotValid] = useState(false);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -37,19 +38,20 @@ const FormLogin = ({ authenticate }) => {
       };
     });
     setOneErr(false);
+    setNotValid(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (
       validRegex.email.test(dataUser.email) &&
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      authenticate();
-      navigate("/", { replace: true });
     } else {
       setOneErr(true);
+
       console.log("not ok from handle submit");
     }
   };
@@ -83,13 +85,16 @@ const FormLogin = ({ authenticate }) => {
       .then((response) => {
         console.log("response from back", response);
 
-        localStorage.setItem("user", JSON.stringify(response.data.token));
-        localStorage.setItem("userId", JSON.stringify(response.data.userId));
-        localStorage.setItem("role", JSON.stringify(response.data.role));
-
-        window.location.reload();
+        if (response) {
+          localStorage.setItem("user", JSON.stringify(response.data.token));
+          localStorage.setItem("userId", JSON.stringify(response.data.userId));
+          localStorage.setItem("role", JSON.stringify(response.data.role));
+          // authenticate();
+          // navigate("/", { replace: true });
+        }
       })
       .catch((error) => {
+        setNotValid(true);
         console.log(error);
       });
   };
@@ -99,7 +104,7 @@ const FormLogin = ({ authenticate }) => {
       <Form.Group className="position-relative" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr"
+          label="nom.prenom@groupomania.fr"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -110,16 +115,14 @@ const FormLogin = ({ authenticate }) => {
             onChange={handleChange}
             value={dataUser.email}
           />
+          <Form.Text className="text-danger ps-2">{message.email}</Form.Text>
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
-        </Form.Text>
       </Form.Group>
 
       <Form.Group className="position-relative mb-3" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password"
+          label="Mot de passe"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -130,11 +133,20 @@ const FormLogin = ({ authenticate }) => {
             onChange={handleChange}
             value={dataUser.password}
           />
+          <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
-        </Form.Text>
       </Form.Group>
+      {oneErr && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          Tous les champs doivent être remplis correctement
+        </Form.Text>
+      )}
+      {notValid && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          La combinaison nom d'utilisateur et mot de passe ne correspond à aucun
+          compte de Groupomania.fr
+        </Form.Text>
+      )}
 
       <FormLoginBtns login={"Se connecter"} signup={`S'inscrire`} />
     </Form>

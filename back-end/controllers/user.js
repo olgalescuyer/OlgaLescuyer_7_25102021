@@ -22,7 +22,7 @@ exports.signup = (req, res, next) => {
             // console.log(sqlInserts);
 
             userModel.insertIntoUser(sqlInserts)
-                .then(response => res.status(201).json({ response }))
+                .then(dataUser => res.status(201).json({ dataUser, message: "User créé !" }))
                 .catch(error => res.status(400).json({ message: 'Vous avez déjà un compte !' }));
 
         })
