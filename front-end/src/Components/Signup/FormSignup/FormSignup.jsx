@@ -57,8 +57,8 @@ const FormSignup = ({ authenticate }) => {
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      // authenticate();
-      // navigate("/", { replace: true });
+      authenticate();
+      navigate("/", { replace: true });
     } else {
       setOneErr(true);
     }
@@ -165,7 +165,7 @@ const FormSignup = ({ authenticate }) => {
       <Form.Group className="position-relative" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password"
+          label="Mot de passe"
           className="text-muted fst-italic"
         >
           <Form.Control
