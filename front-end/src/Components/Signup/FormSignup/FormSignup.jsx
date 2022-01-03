@@ -30,6 +30,7 @@ const FormSignup = ({ authenticate }) => {
   });
 
   const [oneErr, setOneErr] = useState(false);
+  // const [messageValidation, setMessageValidation] = useState("");
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -65,6 +66,7 @@ const FormSignup = ({ authenticate }) => {
   const validate = (userField, regex) => {
     if (!regex.test(userField.value)) {
       createErrMessage(userField);
+      return;
     } else {
       setMessage("");
     }
@@ -93,7 +95,7 @@ const FormSignup = ({ authenticate }) => {
     authService
       .signup(data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         localStorage.setItem("user", JSON.stringify(response.data.token));
         localStorage.setItem("userId", JSON.stringify(response.data.userId));
         authenticate();

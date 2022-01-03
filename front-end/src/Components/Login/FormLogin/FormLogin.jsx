@@ -25,8 +25,6 @@ const FormLogin = ({ authenticate }) => {
   });
 
   const [messageValidation, setMessageValidation] = useState("");
-  // const [oneErr, setOneErr] = useState(false);
-  // const [notValid, setNotValid] = useState(false);
 
   const handleChange = (event) => {
     // console.log(event.target.value)
