@@ -57,8 +57,6 @@ const FormSignup = ({ authenticate }) => {
       validRegex.password.test(dataUser.password)
     ) {
       submitToApi(dataUser);
-      authenticate();
-      navigate("/", { replace: true });
     } else {
       setOneErr(true);
     }
@@ -94,8 +92,12 @@ const FormSignup = ({ authenticate }) => {
   const submitToApi = (data) => {
     authService
       .signup(data)
-      .then((data) => {
-        console.log(data.data);
+      .then((response) => {
+        console.log(response);
+        localStorage.setItem("user", JSON.stringify(response.data.token));
+        localStorage.setItem("userId", JSON.stringify(response.data.userId));
+        authenticate();
+        navigate("/", { replace: true });
       })
       .catch((error) => {
         console.log(error);

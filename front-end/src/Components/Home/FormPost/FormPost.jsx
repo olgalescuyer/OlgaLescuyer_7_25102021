@@ -14,6 +14,7 @@ const FormPost = ({ onValidate }) => {
 
   const userId = localStorage.getItem("userId");
 
+
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
@@ -68,7 +69,7 @@ const FormPost = ({ onValidate }) => {
       .postOnePost(data)
       .then((response) => {
         onValidate();
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -111,7 +112,7 @@ const FormPost = ({ onValidate }) => {
             </span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
-              Create a post
+              Créer une publication
             </span>
           </div>
         </Container>
@@ -134,7 +135,7 @@ const FormPost = ({ onValidate }) => {
       </Form.Group>
 
       <Form.Group className="text-muted fst-italic" controlId="text">
-        <FloatingLabel controlId="text" label="What's on your mind ? (max 255)">
+        <FloatingLabel controlId="text" label="À quoi pensez-vous ? (max 255)">
           <Form.Control
             as="textarea"
             rows={3}
