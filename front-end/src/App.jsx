@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -7,6 +7,7 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
+import NotFound from "./Pages/NotFound";
 
 // import NotFound from "./Pages/NotFound";
 // import PrivateRoute from "./PrivateRoute";
@@ -23,7 +24,9 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("authUser", auth);
-  },[auth]);
+  }, [auth]);
+
+  const { id } = useParams();
 
   return (
     <div className="App">
@@ -43,12 +46,12 @@ function App() {
           )}
           {auth && (
             <>
-              <Route index element={<Home />} />
+              <Route index path="/" element={<Home />} />
               <Route path="/profile/:id" element={<Profile />} />
             </>
           )}
 
-          <Route path="*" element={<Navigate to={auth ? "/" : "/login"} />} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </UserProvider>
     </div>

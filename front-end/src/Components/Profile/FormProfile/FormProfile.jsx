@@ -4,16 +4,14 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import Btns from "./Btns.jsx";
 
-const FormProfile = (props) => {
-  console.log(props.firstName);
+const FormProfile = ({ firstName, lastName, email, password }) => {
   const [dataUser, setDataUser] = useState({
-    firstName: props.firstName,
-    lastName: props.lastName,
-    email: props.email,
-    password: props.password,
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
   });
-
-  
+  // console.log(dataUser);
 
   const inputRegex = {
     firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
@@ -97,7 +95,7 @@ const FormProfile = (props) => {
       <Form.Group className="position-relative mb-3" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr"
+          label="nom.prenom@groupomania.fr"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -117,7 +115,7 @@ const FormProfile = (props) => {
       <Form.Group className="position-relative mb-3" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password"
+          label="Mot de passe"
           className="text-muted fst-italic"
         >
           <Form.Control
