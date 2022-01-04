@@ -1,23 +1,28 @@
-import React, {useEffect, useState} from "react";
-import { useParams} from 'react-router-dom';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Header from "../Components/Profile/Header.jsx";
-import Content from "../Components/Profile/Content.jsx";
+
 import userService from "../services/userService.js";
+import { UserContext } from "../Context/UserContext";
+import FormProfile from "../Components/Profile/FormProfile/FormProfile";
+
+import Avatars from "../Components/Profile/Avatars";
 
 const Profile = () => {
-  const [user, setUser] = useState([]);
+  const { authHeader } = useContext(UserContext);
+  const config = { headers: authHeader() };
+  const { id } = useParams();
+  
+  const [user, setUser] = useState({});
 
-  const {id} = useParams();
- 
   useEffect(() => {
     userService
-      .getOneUser(id)
+      .getOneUser(id, config)
       .then((response) => {
-        console.log(response);
-        const data = response.data;
-       
-        setUser(data);
+        // console.log(response.data);
+
+        setUser(response.data);
       })
 
       .catch((error) => {
@@ -27,8 +32,23 @@ const Profile = () => {
 
   return (
     <Container className="w-custom-limit-800">
-      <Header/>
-      <Content userId={user.u_id} firstName={user.u_first_name} lastName={user.u_last_name} email={user.u_email} password={user.u_password}/>
+      <Header />
+      <main>
+        <Container className="mt-4">
+          <h1 className="text-center fs-3">
+            Bonjour {user.u_first_name + " " + user.u_last_name} !
+          </h1>
+          <p className="text-center">Choisis ton avatar </p>
+          <Avatars />
+          <FormProfile
+            userId={user.u_id}
+            firstName={user.u_first_name}
+            lastName={user.u_last_name}
+            email={user.u_email}
+            password={user.u_password}
+          />
+        </Container>
+      </main>
     </Container>
   );
 };

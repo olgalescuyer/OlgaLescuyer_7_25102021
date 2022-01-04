@@ -4,16 +4,14 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import Btns from "./Btns.jsx";
 
-const FormProfile = (props) => {
-  console.log(props.firstName);
+const FormProfile = ({ firstName, lastName, email, password }) => {
   const [dataUser, setDataUser] = useState({
-    firstName: props.firstName,
-    lastName: props.lastName,
-    email: props.email,
-    password: props.password,
+    first_name: firstName,
+    last_name: lastName,
+    u_email: email,
+    u_password: password,
   });
-
-  
+  // console.log(dataUser);
 
   const inputRegex = {
     firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
@@ -66,7 +64,7 @@ const FormProfile = (props) => {
             placeholder="firstName"
             name="firstName"
             onChange={handleChange}
-            value={dataUser.firstName}
+            value={firstName}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -86,7 +84,7 @@ const FormProfile = (props) => {
             placeholder="lastName"
             name="lastName"
             onChange={handleChange}
-            value={dataUser.lastName}
+            value={lastName}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -97,7 +95,7 @@ const FormProfile = (props) => {
       <Form.Group className="position-relative mb-3" controlId="email">
         <FloatingLabel
           controlId="email"
-          label="your.name@groupomania.fr"
+          label="nom.prenom@groupomania.fr"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -106,7 +104,7 @@ const FormProfile = (props) => {
             placeholder="email"
             name="email"
             onChange={handleChange}
-            value={dataUser.email}
+            value={email}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -117,7 +115,7 @@ const FormProfile = (props) => {
       <Form.Group className="position-relative mb-3" controlId="password">
         <FloatingLabel
           controlId="password"
-          label="Password"
+          label="Mot de passe"
           className="text-muted fst-italic"
         >
           <Form.Control
@@ -126,7 +124,7 @@ const FormProfile = (props) => {
             placeholder="paassword"
             name="password"
             onChange={handleChange}
-            value={dataUser.password}
+            value={password}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">

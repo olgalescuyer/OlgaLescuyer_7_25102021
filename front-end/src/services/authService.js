@@ -12,6 +12,7 @@ const login = (data) => {
 
 const logout = () => {
   localStorage.clear();
+ 
 };
 
 export default  { signup, login, logout };

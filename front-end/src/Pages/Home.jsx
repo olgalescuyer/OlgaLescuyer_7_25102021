@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import Container from "react-bootstrap/Container";
+import Card from "../Components/Home/Post/Card/Card.jsx";
 import Header from "../Components/Home/Header.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
-import Card from "../Components/Home/Post/Card/Card.jsx";
+
 import userService from "../services/userService.js";
 import { UserContext } from "../Context/UserContext";
 

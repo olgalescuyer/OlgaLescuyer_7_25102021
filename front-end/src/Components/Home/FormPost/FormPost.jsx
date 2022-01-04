@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import {Link} from "react-router-dom"
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
@@ -8,10 +9,10 @@ import userService from "../../../services/userService.js";
 import { UserContext } from "../../../Context/UserContext";
 
 const FormPost = ({ onValidate }) => {
-  const { authHeader } = useContext(UserContext);
+  const { authHeader, id } = useContext(UserContext);
   const config = { headers: authHeader() };
   // console.log(config);
-  const userId = localStorage.getItem("userId");
+ 
   const refImg = useRef();
   // console.log(refImg.current.value);
 
@@ -85,7 +86,7 @@ const FormPost = ({ onValidate }) => {
 
   useEffect(() => {
     userService
-      .getOneUser(userId, config)
+      .getOneUser(id, config)
       .then((response) => {
         setDataUser(response.data);
       })
@@ -103,14 +104,14 @@ const FormPost = ({ onValidate }) => {
       <header>
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-3">
-            <a
-              href="/profile/id"
+            <Link
+             to={`/profile/${id}`}
               title="cliquez pour modifier avatar"
               className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
               style={{ background: "white", width: "60px", height: "60px" }}
             >
               <BsPersonFill size={36} />
-            </a>
+            </Link>
 
             <span className="ps-3 fw-bold">
               {dataUser.u_first_name + " " + dataUser.u_last_name}
