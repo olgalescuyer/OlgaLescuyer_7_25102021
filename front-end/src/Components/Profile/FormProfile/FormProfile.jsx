@@ -6,10 +6,10 @@ import Btns from "./Btns.jsx";
 
 const FormProfile = ({ firstName, lastName, email, password }) => {
   const [dataUser, setDataUser] = useState({
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
+    first_name: firstName,
+    last_name: lastName,
+    u_email: email,
+    u_password: password,
   });
   // console.log(dataUser);
 
@@ -64,7 +64,7 @@ const FormProfile = ({ firstName, lastName, email, password }) => {
             placeholder="firstName"
             name="firstName"
             onChange={handleChange}
-            value={dataUser.firstName}
+            value={firstName}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -84,7 +84,7 @@ const FormProfile = ({ firstName, lastName, email, password }) => {
             placeholder="lastName"
             name="lastName"
             onChange={handleChange}
-            value={dataUser.lastName}
+            value={lastName}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -104,7 +104,7 @@ const FormProfile = ({ firstName, lastName, email, password }) => {
             placeholder="email"
             name="email"
             onChange={handleChange}
-            value={dataUser.email}
+            value={email}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -124,7 +124,7 @@ const FormProfile = ({ firstName, lastName, email, password }) => {
             placeholder="paassword"
             name="password"
             onChange={handleChange}
-            value={dataUser.password}
+            value={password}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">

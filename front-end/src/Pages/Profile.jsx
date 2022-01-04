@@ -13,7 +13,7 @@ const Profile = () => {
   const { authHeader } = useContext(UserContext);
   const config = { headers: authHeader() };
   const { id } = useParams();
-
+  
   const [user, setUser] = useState({});
 
   useEffect(() => {

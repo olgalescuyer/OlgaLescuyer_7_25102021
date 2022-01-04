@@ -9,9 +9,6 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
 
-// import NotFound from "./Pages/NotFound";
-// import PrivateRoute from "./PrivateRoute";
-
 import { UserProvider } from "./Context/UserContext";
 
 function App() {
@@ -27,6 +24,7 @@ function App() {
   }, [auth]);
 
   const { id } = useParams();
+  // console.log(id);
 
   return (
     <div className="App">
@@ -34,6 +32,7 @@ function App() {
         <Routes>
           {!auth && (
             <>
+              <Route path="/" element={<Navigate to={"/login"} />} />
               <Route
                 path="/login"
                 element={<Login authenticate={() => setAuth(true)} />}
@@ -44,6 +43,7 @@ function App() {
               />
             </>
           )}
+
           {auth && (
             <>
               <Route index path="/" element={<Home />} />
@@ -51,7 +51,7 @@ function App() {
             </>
           )}
 
-          <Route path="*" element={<NotFound/>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserProvider>
     </div>

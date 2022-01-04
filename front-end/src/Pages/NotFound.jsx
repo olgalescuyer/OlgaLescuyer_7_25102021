@@ -13,7 +13,7 @@ export default function NotFound() {
     <Container>
       <Container className="d-flex justify-content-center flex-column w-custom-limit-400 mt-4">
         <Logo />
-        <h1 className="text-center text-light mt-4">Oops, cette page n'existe pas...</h1>
+        <h1 className="text-center  mt-4">Oops, cette page n'existe pas...</h1>
         <Button className="btn btn-primary mt-4" onClick={() => navigate("/")}>
           Retourner à la page d'accueil
         </Button>
