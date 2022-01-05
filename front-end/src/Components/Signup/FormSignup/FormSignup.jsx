@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -10,6 +10,8 @@ import authService from "../../../services/authService";
 
 const FormSignup = ({ authenticate }) => {
   const navigate = useNavigate();
+  const refInputPass = useRef();
+  const refInputControlPass = useRef();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
   // console.log(authenticate);
@@ -19,6 +21,7 @@ const FormSignup = ({ authenticate }) => {
     lastName: "",
     email: "",
     password: "",
+    controlPassword: "",
     admin: 0,
   });
 
@@ -30,11 +33,22 @@ const FormSignup = ({ authenticate }) => {
   });
 
   const [oneErr, setOneErr] = useState(false);
-  // const [messageValidation, setMessageValidation] = useState("");
+  const [messageValidation, setMessageValidation] = useState("");
 
   const handleChange = (event) => {
     event.preventDefault();
+    setMessageValidation("");
+  //  console.log("ref ",refInputPass.current.value);
+  //  console.log("ref control ",refInputControlPass.current.value);
+
+   if(refInputPass.current.value !== refInputControlPass.current.value){
+    setMessageValidation("Mots de passe ne correspondent pas")
+   }else{
+    setMessageValidation("")
+   }
+   
     // userField = event.target
+
     validate(event.target, validRegex[event.target.attributes.name.value]);
 
     setDataUser((prevDataUser) => {
@@ -55,7 +69,8 @@ const FormSignup = ({ authenticate }) => {
       validRegex.firstName.test(dataUser.firstName) &&
       validRegex.lastName.test(dataUser.lastName) &&
       validRegex.email.test(dataUser.email) &&
-      validRegex.password.test(dataUser.password)
+      validRegex.password.test(dataUser.password) &&
+      validRegex.controlPassword.test(dataUser.controlPassword)
     ) {
       submitToApi(dataUser);
     } else {
@@ -85,6 +100,9 @@ const FormSignup = ({ authenticate }) => {
         break;
       case "password":
         setMessage({ password: customMessage.password });
+        break;
+      case "controlPassword":
+        setMessage({ controlPassword: customMessage.controlPassword });
         break;
       default:
         console.log("default from switch");
@@ -179,9 +197,33 @@ const FormSignup = ({ authenticate }) => {
             name="password"
             onChange={handleChange}
             value={dataUser.password}
+            ref={refInputPass}
           />
 
           <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
+        </FloatingLabel>
+      </Form.Group>
+
+      <Form.Group className="position-relative" controlId="controlPassword">
+        <FloatingLabel
+          controlId="controlPassword"
+          label="Confirmation de mot de passe"
+          className="text-muted fst-italic"
+        >
+          <Form.Control
+            type="password"
+            className="border-top-0 border-end-0 border-start-0 "
+            placeholder="controlPassword"
+            name="controlPassword"
+            onChange={handleChange}
+            value={dataUser.controlPassword}
+            ref={refInputControlPass}
+          />
+
+          <Form.Text className="text-danger ps-2">
+            {message.controlPassword}
+            {messageValidation}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
       {oneErr && (

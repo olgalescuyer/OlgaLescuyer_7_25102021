@@ -144,7 +144,7 @@ const FormPost = ({ onValidate }) => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className="text-muted fst-italic" controlId="text">
+      <Form.Group className=" position-relative text-muted fst-italic" controlId="text">
         <FloatingLabel controlId="text" label="À quoi pensez-vous ? (max 255)">
           <Form.Control
             as="textarea"
@@ -156,6 +156,9 @@ const FormPost = ({ onValidate }) => {
             value={dataPost.text}
           />
         </FloatingLabel>
+        <Form.Text className="d-block position-absolute ps-2 bottom-0 end-0 fw-bold text-danger ">
+          {messageValidation}
+        </Form.Text>
       </Form.Group>
 
       <Form.Group controlId="imageUrl" className="mb-3">
@@ -171,9 +174,7 @@ const FormPost = ({ onValidate }) => {
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
         <Btns onCancel={cancelCourse}/>
-        <Form.Text className="d-block position-absolute bottom-0 end-0  p-2 ps-4 fw-bold text-end text-danger ">
-          {messageValidation}
-        </Form.Text>
+       
       </Container>
     </Form>
   );
