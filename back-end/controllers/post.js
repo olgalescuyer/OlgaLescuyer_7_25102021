@@ -86,8 +86,6 @@ exports.modifyOnePost = (req, res, next) => {
 
 exports.deleteOnePost = (req, res, next) => {
   const postId = [req.params.id];
-  // const role = [req.params];
-  // console.log(req);
 
   const deletePost = (postId) => {
     postModel
@@ -115,8 +113,10 @@ exports.deleteOnePost = (req, res, next) => {
   postModel
     .findOnePostByIds(postId)
     .then((post) => {
-      console.log(post[0].p_fk_user_id);
-      if (post[0].p_fk_user_id === req.bearerToken.userId || post[0].p_fk_user_id === 74) {
+      if (
+        post[0].p_fk_user_id === req.bearerToken.userId ||
+        req.bearerToken.userId === 127
+      ) {
         post[0].p_image ? deleteImg(post[0].p_image) : deletePost(postId);
       } else {
         res.status(400).json({ message: "Id from token is not a valid" });
