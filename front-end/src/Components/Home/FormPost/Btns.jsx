@@ -1,13 +1,13 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 
-const Btns = () => {
+const Btns = ({onCancel}) => {
   return (
     <>
       <Button variant="primary" type="submit">
         Publier
       </Button>
-      <Button variant="outline-secondary" className="ms-3">
+      <Button variant="outline-secondary" className="ms-3" onClick={()=>onCancel()}>
         Annuler
       </Button>
     </>
