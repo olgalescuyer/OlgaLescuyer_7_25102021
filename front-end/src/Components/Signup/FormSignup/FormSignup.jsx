@@ -70,7 +70,9 @@ const FormSignup = ({ authenticate }) => {
       validRegex.lastName.test(dataUser.lastName) &&
       validRegex.email.test(dataUser.email) &&
       validRegex.password.test(dataUser.password) &&
-      validRegex.controlPassword.test(dataUser.controlPassword)
+      validRegex.controlPassword.test(dataUser.controlPassword) &&
+      refInputPass.current.value === refInputControlPass.current.value
+
     ) {
       submitToApi(dataUser);
     } else {
