@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../../../Context/UserContext";
 import Button from "react-bootstrap/Button";
 import userService from "../../../../services/userService";
@@ -6,19 +6,11 @@ import userService from "../../../../services/userService";
 const Btns = ({ userId, postId, onValidate }) => {
   const { authHeader, id, role } = useContext(UserContext);
   const config = { headers: authHeader() };
-//   console.log(config);
-  const [post, setPost] = useState(postId);
-  //   console.log(post);
 
   const handleClick = (e) => {
     userService
       .deleteOnePost(postId, config)
-      .then((response) =>
-       {console.log(response);
-      onValidate();
-      }
-
-       )
+      .then((response) => onValidate())
       .catch((err) => console.log(err));
   };
 
