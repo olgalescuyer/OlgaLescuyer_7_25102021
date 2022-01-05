@@ -68,7 +68,6 @@ const FormPost = ({ onValidate }) => {
 
       submitToApi(mformData);
     } else {
-      console.log("title is empty");
       setMessageValidation(
         "Votre publication doit contenir un titre et soit le text descriptif soit une image"
       );
@@ -125,7 +124,6 @@ const FormPost = ({ onValidate }) => {
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
             </span>
-          
           </div>
         </Container>
       </header>
@@ -171,8 +169,8 @@ const FormPost = ({ onValidate }) => {
           ref={refImg}
         />
       </Form.Group>
-      <Container fluid className="d-flex position-relative ">
-        <Btns />
+      <Container fluid className="d-flex position-relative g-0">
+        <Btns onCancel={cancelCourse}/>
         <Form.Text className="d-block position-absolute bottom-0 end-0  p-2 ps-4 fw-bold text-end text-danger ">
           {messageValidation}
         </Form.Text>
