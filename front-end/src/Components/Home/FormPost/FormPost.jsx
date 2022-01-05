@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
@@ -12,7 +12,7 @@ const FormPost = ({ onValidate }) => {
   const { authHeader, id } = useContext(UserContext);
   const config = { headers: authHeader() };
   // console.log(config);
- 
+
   const refImg = useRef();
   // console.log(refImg.current.value);
 
@@ -30,7 +30,7 @@ const FormPost = ({ onValidate }) => {
 
   const handleChange = (event) => {
     // console.log(event.target.value)
-
+    setMessageValidation("");
     setDataPost((prevDataPost) => {
       // console.log(prevDataPost);
       return {
@@ -39,6 +39,8 @@ const FormPost = ({ onValidate }) => {
       };
     });
   };
+
+  const [messageValidation, setMessageValidation] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,7 +58,7 @@ const FormPost = ({ onValidate }) => {
       formData.append("image", imagefile.files[0]);
 
       submitToApi(formData);
-    } else if (dataPost.title) {
+    } else if (dataPost.title && dataPost.text) {
       const titletext = JSON.stringify({
         title: dataPost.title,
         text: dataPost.text,
@@ -67,6 +69,9 @@ const FormPost = ({ onValidate }) => {
       submitToApi(mformData);
     } else {
       console.log("title is empty");
+      setMessageValidation(
+        "Votre publication doit contenir un titre et soit le text descriptif soit une image"
+      );
     }
   };
 
@@ -105,7 +110,7 @@ const FormPost = ({ onValidate }) => {
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-3">
             <Link
-             to={`/profile/${id}`}
+              to={`/profile/${id}`}
               title="cliquez pour modifier avatar"
               className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
               style={{ background: "white", width: "60px", height: "60px" }}
@@ -120,6 +125,7 @@ const FormPost = ({ onValidate }) => {
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
             </span>
+          
           </div>
         </Container>
       </header>
@@ -165,8 +171,12 @@ const FormPost = ({ onValidate }) => {
           ref={refImg}
         />
       </Form.Group>
-
-      <Btns />
+      <Container fluid className="d-flex position-relative ">
+        <Btns />
+        <Form.Text className="d-block position-absolute bottom-0 end-0  p-2 ps-4 fw-bold text-end text-danger ">
+          {messageValidation}
+        </Form.Text>
+      </Container>
     </Form>
   );
 };

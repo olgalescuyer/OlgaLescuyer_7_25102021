@@ -15,6 +15,7 @@ const Card = ({
   firstName,
   lastName,
   createdAt,
+  onValidate
 }) => {
   return (
     <Container fluid className="rounded p-3 mb-2 color-custom-body">
@@ -62,7 +63,7 @@ const Card = ({
       </Container>
       <Container fluid className="d-flex justify-content-between gx-0">
         <Icons />
-        <Btns userId={userId} postId={postId} />
+        <Btns userId={userId} postId={postId} onValidate={onValidate}/>
       </Container>
     </Container>
   );
