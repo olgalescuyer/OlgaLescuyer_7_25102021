@@ -8,11 +8,11 @@ const Btns = ({ userId }) => {
   if (userId === id) {
     return (
       <div>
-        <Button variant="primary" className="">
-          Modifier
-        </Button>
-        <Button variant="outline-secondary" type="submit" className="ms-3">
+        <Button variant="outline-secondary" type="submit" className="">
           Supprimer
+        </Button>
+        <Button variant="primary" className="ms-3">
+          Modifier
         </Button>
       </div>
     );
