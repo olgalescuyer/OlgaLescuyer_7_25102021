@@ -5,7 +5,6 @@ const API_URL = "http://localhost:3000/api/";
 const user = JSON.parse(localStorage.getItem("user"));
 
 const getOneUser = (userId, config) => {
-
   return axios.get(API_URL + "auth/" + userId, config);
 };
 
@@ -27,4 +26,9 @@ const postOnePost = (postData) => {
   return axios(options);
 };
 
-export default { getOneUser, getAllPosts, postOnePost };
+const deleteOnePost = (postId, config) => {
+ 
+  return axios.delete(API_URL + "posts/" + postId, config);
+};
+
+export default { getOneUser, getAllPosts, postOnePost, deleteOnePost };

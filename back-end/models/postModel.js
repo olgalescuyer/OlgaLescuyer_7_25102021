@@ -26,14 +26,14 @@ exports.insertIntoPost = (sqlInserts) => {
 exports.findOnePostByIds = (postId) => {
 
     let sql = 'SELECT * FROM post WHERE p_id = ? ';
-
+// console.log("from model :",postId);
 
     return new Promise((resolve, reject) => {
 
-        db.query(sql, [postId], (err, result) => {
+        db.query(sql, [postId], (error, result) => {
 
             if (result === undefined || result.length === 0) {
-                // console.log(result);
+                // console.log("err",error);
 
                 reject({ error: '👎 Article non trouvée !' })
             } else {

@@ -7,6 +7,7 @@ import Btns from "./Btns";
 import ReactTimeAgo from "react-time-ago";
 
 const Card = ({
+  postId,
   title,
   text,
   imageUrl,
@@ -61,7 +62,7 @@ const Card = ({
       </Container>
       <Container fluid className="d-flex justify-content-between gx-0">
         <Icons />
-        <Btns userId={userId} />
+        <Btns userId={userId} postId={postId} />
       </Container>
     </Container>
   );
