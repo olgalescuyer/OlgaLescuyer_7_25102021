@@ -4,6 +4,8 @@ const regex = () => {
     lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
     email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
     password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    controlPassword:
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
   };
 };
 
@@ -14,7 +16,9 @@ const messages = () => {
     email:
       "Saisissez une adresse électronique correcte : nom.prenom@groupomania.fr ",
     password:
-      "Le mot de passe Doit Contenir au Moins 8 Caractères et une minute de 1 Minuscule, 1 Majuscule, 1 chiffre, 1 symbole.",
+      "Le mot de passe doit contenir au moins 8 Caractères et  1 minuscule, 1 majuscule, 1 chiffre, 1 symbole.",
+    controlPassword:
+      "Le mot de passe doit contenir au moins 8 Caractères et  1 minuscule, 1 majuscule, 1 chiffre, 1 symbole.",
   };
 };
 
