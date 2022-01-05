@@ -12,7 +12,7 @@ exports.createPost = (req, res, next) => {
 
   let imageUrl = req.file;
   imageUrl === undefined
-    ? imageUrl = null
+    ? (imageUrl = null)
     : (imageUrl = `${req.protocol}://${req.get("host")}/images/${
         req.file.filename
       }`);
@@ -86,31 +86,43 @@ exports.modifyOnePost = (req, res, next) => {
 
 exports.deleteOnePost = (req, res, next) => {
   const postId = [req.params.id];
+  // const role = [req.params];
+  // console.log(req);
+
+  const deletePost = (postId) => {
+    postModel
+      .deleteOnePostByUser(postId)
+      .then((response) =>
+        res.status(200).json({ message: "Article supprimée !" })
+      )
+      .catch((error) => res.status(400).json({ error }));
+  };
+
+  const deleteImg = (img) => {
+    const filename = img.split("/images/")[1];
+    // console.log(filename);
+
+    fs.unlink(`images/${filename}`, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(`\nDeleted file: ${filename}`);
+        deletePost(postId);
+      }
+    });
+  };
 
   postModel
     .findOnePostByIds(postId)
     .then((post) => {
-      if (post[0].p_fk_user_id === req.bearerToken.userId) {
-        const filename = post[0].p_image.split("/images/")[1];
-        // console.log(filename);
-        fs.unlink(`images/${filename}`, (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            // console.log(`\nDeleted file: ${filename}`);
-
-            postModel
-              .deleteOnePostByUser(postId)
-              .then((response) =>
-                res.status(200).json({ message: "Article supprimée !" })
-              )
-              .catch((error) => res.status(400).json({ error }));
-          }
-        });
+      console.log(post[0].p_fk_user_id);
+      if (post[0].p_fk_user_id === req.bearerToken.userId || post[0].p_fk_user_id === 74) {
+        post[0].p_image ? deleteImg(post[0].p_image) : deletePost(postId);
       } else {
         res.status(400).json({ message: "Id from token is not a valid" });
       }
     })
+
     .catch((error) => res.status(500).json({ error }));
 };
 

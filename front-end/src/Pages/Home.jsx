@@ -45,6 +45,7 @@ const Home = () => {
         {dataPost.map((post) => {
           return (
             <Card
+              postId={post.p_id}
               title={post.p_title}
               text={post.p_text}
               imageUrl={post.p_image}
