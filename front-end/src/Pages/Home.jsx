@@ -56,6 +56,7 @@ const Home = () => {
               createdAt={post.p_time}
               likes={"likes"}
               key={post.p_id}
+              onValidate={validateHandler}
             />
           );
         })}

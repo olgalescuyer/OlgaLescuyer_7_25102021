@@ -3,7 +3,7 @@ import { UserContext } from "../../../../Context/UserContext";
 import Button from "react-bootstrap/Button";
 import userService from "../../../../services/userService";
 
-const Btns = ({ userId, postId }) => {
+const Btns = ({ userId, postId, onValidate }) => {
   const { authHeader, id, role } = useContext(UserContext);
   const config = { headers: authHeader() };
 //   console.log(config);
@@ -13,7 +13,12 @@ const Btns = ({ userId, postId }) => {
   const handleClick = (e) => {
     userService
       .deleteOnePost(postId, config)
-      .then((response) => console.log(response))
+      .then((response) =>
+       {console.log(response);
+      onValidate();
+      }
+
+       )
       .catch((err) => console.log(err));
   };
 
