@@ -7,7 +7,7 @@ const Btns = ({ userId, postId, onValidate }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
-  const id = userContext.userId;
+  const id = parseInt(userContext.userId, 10);
   const role = userContext.role;
 
   const handleClick = (e) => {

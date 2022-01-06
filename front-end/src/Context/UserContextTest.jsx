@@ -30,8 +30,6 @@ export const UserProvider = (props) => {
   };
 
   const loginHandler = (tokenStorage, userIdStorage, roleStorage) => {
-    console.log("ok");
-
     setTokenData(tokenStorage);
     localStorage.setItem("user", tokenStorage);
     localStorage.setItem("userId", userIdStorage);
