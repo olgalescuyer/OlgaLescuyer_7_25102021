@@ -25,8 +25,6 @@ export const UserProvider = (props) => {
     const userToken = localStorage.getItem("user");
 
     if (userToken) {
-      // console.log(user);
-
       return { Authorization: "Bearer " + userToken };
     }
   };
@@ -45,6 +43,7 @@ export const UserProvider = (props) => {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
+    localStorage.removeItem("authUser");
   };
 
   const contextValue = {

@@ -5,10 +5,11 @@ import Nav from "react-bootstrap/Nav";
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 import UserContextTest from "../../Context/UserContextTest";
 
-import authService from "../../services/authService";
+// import authService from "../../services/authService";
 
 const Header = () => {
   const userContext = useContext(UserContextTest);
+  // console.log(userContext.logout);
 
   const userId = JSON.parse(localStorage.getItem("userId"));
   const url = "/profile/" + userId;
@@ -33,7 +34,7 @@ const Header = () => {
               <Nav.Link
                 href="/login"
                 className="fw-bold text-end"
-                onClick={() => authService.logout()}
+                onClick={logoutHandler}
               >
                 Déconnexion
               </Nav.Link>
