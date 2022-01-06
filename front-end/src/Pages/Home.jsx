@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Post/Card/Card.jsx";
 import Header from "../Components/Home/Header.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
-
 import userService from "../services/userService.js";
-import { UserContext } from "../Context/UserContext";
+
+import UserContextTest from "../Context/UserContextTest";
 
 const Home = () => {
-  const { authHeader } = useContext(UserContext);
-  const config = { headers: authHeader() };
+  const userContext = useContext(UserContextTest);
+  const tokenAuth = userContext.authHeader();
+  const config = { headers: tokenAuth };
 
   const [dataPost, setDataPost] = useState([]);
   const [addDataPost, setAddDataPost] = useState(true);

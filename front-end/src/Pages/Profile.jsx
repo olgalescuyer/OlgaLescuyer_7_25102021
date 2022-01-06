@@ -4,14 +4,19 @@ import Container from "react-bootstrap/Container";
 import Header from "../Components/Profile/Header.jsx";
 
 import userService from "../services/userService.js";
-import { UserContext } from "../Context/UserContext";
+// import { UserContext } from "../Context/UserContext";
+import UserContextTest from "../Context/UserContextTest"
 import FormProfile from "../Components/Profile/FormProfile/FormProfile";
 
 import Avatars from "../Components/Profile/Avatars";
 
 const Profile = () => {
-  const { authHeader } = useContext(UserContext);
-  const config = { headers: authHeader() };
+  // const { authHeader } = useContext(UserContext);
+  // const config = { headers: authHeader() };
+  const userContext = useContext(UserContextTest);
+  const tokenAuth = userContext.authHeader();
+  const config = { headers: tokenAuth};
+
   const { id } = useParams();
   
   const [user, setUser] = useState({});

@@ -5,13 +5,13 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import authService from "../../../services/authService";
 import validService from "../../../services/validService";
-
-// import {UserContext} from '../../../Context/UserContext';
+import UserContextTest from "../../../Context/UserContextTest";
 
 const FormLogin = ({ authenticate }) => {
   const navigate = useNavigate();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
+  const userContext = useContext(UserContextTest);
 
   const [dataUser, setDataUser] = useState({
     email: "",
@@ -81,12 +81,13 @@ const FormLogin = ({ authenticate }) => {
     authService
       .login(data)
       .then((response) => {
-        // console.log("response from back", response);
-
         if (response) {
-          localStorage.setItem("user", JSON.stringify(response.data.token));
-          localStorage.setItem("userId", JSON.stringify(response.data.userId));
-          localStorage.setItem("role", JSON.stringify(response.data.role));
+          userContext.login(
+            response.data.token,
+            response.data.userId,
+            response.data.role
+          );
+
           authenticate();
           navigate("/", { replace: true });
         }

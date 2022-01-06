@@ -9,9 +9,13 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
 
-import { UserProvider } from "./Context/UserContext";
+import { UserProvider } from "./Context/UserContextTest";
+import UserContextTest from "./Context/UserContextTest";
 
 function App() {
+  const userContext = useContext(UserContextTest);
+
+  
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
