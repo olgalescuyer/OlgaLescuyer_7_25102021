@@ -43,7 +43,6 @@ export const UserProvider = (props) => {
     localStorage.removeItem("user");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
-    localStorage.removeItem("authUser");
   };
 
   const contextValue = {

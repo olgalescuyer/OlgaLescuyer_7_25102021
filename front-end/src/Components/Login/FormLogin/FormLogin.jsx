@@ -7,7 +7,7 @@ import authService from "../../../services/authService";
 import validService from "../../../services/validService";
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormLogin = ({ authenticate }) => {
+const FormLogin = () => {
   const navigate = useNavigate();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
@@ -81,6 +81,7 @@ const FormLogin = ({ authenticate }) => {
     authService
       .login(data)
       .then((response) => {
+        console.log(response);
         if (response) {
           userContext.login(
             response.data.token,
@@ -88,7 +89,7 @@ const FormLogin = ({ authenticate }) => {
             response.data.role
           );
 
-          authenticate();
+         
           navigate("/", { replace: true });
         }
       })
