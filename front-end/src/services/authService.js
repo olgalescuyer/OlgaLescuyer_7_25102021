@@ -10,9 +10,5 @@ const login = (data) => {
   return axios.post(API_URL + "login", data);
 };
 
-const logout = () => {
-  localStorage.clear();
- 
-};
 
-export default  { signup, login, logout };
+export default  { signup, login};

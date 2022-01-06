@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -8,6 +9,7 @@ import UserContextTest from "../../Context/UserContextTest";
 // import authService from "../../services/authService";
 
 const Header = () => {
+  const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
 
@@ -16,6 +18,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     userContext.logout();
+    navigate("/login", { replace: true })
   };
 
   return (
