@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import UserContextTest from "../../../../Context/UserContextTest";
+import UserContextTest from "../../../Context/UserContextTest";
 import Button from "react-bootstrap/Button";
-import userService from "../../../../services/userService";
+import userService from "../../../services/userService";
 
 const Btns = ({ userId, postId, onValidate }) => {
   const userContext = useContext(UserContextTest);

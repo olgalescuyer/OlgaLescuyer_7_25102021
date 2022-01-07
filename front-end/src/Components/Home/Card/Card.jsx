@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Icons from "./Icons";
-import Btns from "./Btns";
+import Btns from "./CardBtns";
 
 import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
