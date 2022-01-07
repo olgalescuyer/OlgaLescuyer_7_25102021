@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -6,15 +6,15 @@ import FormSignupBtns from "./FormSignupBtns.jsx";
 import validService from "../../../services/validService";
 import authService from "../../../services/authService";
 
-// import {UserContext} from '../../../Context/UserContext'
+import UserContextTest from "../../../Context/UserContextTest";
 
-const FormSignup = ({ authenticate }) => {
+const FormSignup = () => {
   const navigate = useNavigate();
   const refInputPass = useRef();
   const refInputControlPass = useRef();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
-  // console.log(authenticate);
+  const userContext = useContext(UserContextTest);
 
   const [dataUser, setDataUser] = useState({
     firstName: "",
@@ -38,15 +38,15 @@ const FormSignup = ({ authenticate }) => {
   const handleChange = (event) => {
     event.preventDefault();
     setMessageValidation("");
-  //  console.log("ref ",refInputPass.current.value);
-  //  console.log("ref control ",refInputControlPass.current.value);
+    //  console.log("ref ",refInputPass.current.value);
+    //  console.log("ref control ",refInputControlPass.current.value);
 
-   if(refInputPass.current.value !== refInputControlPass.current.value){
-    setMessageValidation("Mots de passe ne correspondent pas")
-   }else{
-    setMessageValidation("")
-   }
-   
+    if (refInputPass.current.value !== refInputControlPass.current.value) {
+      setMessageValidation("Mots de passe ne correspondent pas");
+    } else {
+      setMessageValidation("");
+    }
+
     // userField = event.target
 
     validate(event.target, validRegex[event.target.attributes.name.value]);
@@ -72,7 +72,6 @@ const FormSignup = ({ authenticate }) => {
       validRegex.password.test(dataUser.password) &&
       validRegex.controlPassword.test(dataUser.controlPassword) &&
       refInputPass.current.value === refInputControlPass.current.value
-
     ) {
       submitToApi(dataUser);
     } else {
@@ -116,9 +115,14 @@ const FormSignup = ({ authenticate }) => {
       .signup(data)
       .then((response) => {
         // console.log(response);
-        localStorage.setItem("user", JSON.stringify(response.data.token));
-        localStorage.setItem("userId", JSON.stringify(response.data.userId));
-        authenticate();
+        userContext.login(
+          response.data.token,
+          response.data.userId,
+          response.data.role
+        );
+        // localStorage.setItem("user", JSON.stringify(response.data.token));
+        // localStorage.setItem("userId", JSON.stringify(response.data.userId));
+
         navigate("/", { replace: true });
       })
       .catch((error) => {

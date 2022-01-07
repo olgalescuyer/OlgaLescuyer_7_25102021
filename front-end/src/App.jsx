@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -9,48 +9,27 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
 
-import { UserProvider } from "./Context/UserContext";
+import { UserProvider } from "./Context/UserContextTest";
+import UserContextTest from "./Context/UserContextTest";
 
 function App() {
-  const [auth, setAuth] = useState(null);
-
-  useEffect(() => {
-    let user = localStorage.getItem("authUser");
-    user && JSON.parse(user) ? setAuth(true) : setAuth(false);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("authUser", auth);
-  }, [auth]);
-
-  const { id } = useParams();
-  // console.log(id);
+  const userContext = useContext(UserContextTest);
 
   return (
     <div className="App">
       <UserProvider>
         <Routes>
-          {!auth && (
-            <>
-              <Route path="/" element={<Navigate to={"/login"} />} />
-              <Route
-                path="/login"
-                element={<Login authenticate={() => setAuth(true)} />}
-              />
-              <Route
-                path="/signup"
-                element={<Signup authenticate={() => setAuth(true)} />}
-              />
-            </>
-          )}
-
-          {auth && (
-            <>
-              <Route index path="/" element={<Home />} />
-              <Route path="/profile/:id" element={<Profile />} />
-            </>
-          )}
-
+          <Route
+            index
+            path="/"
+            element={!userContext.isLoggedIn ? <Home /> : <Login />}
+          />
+          <Route
+            path="/profile/:id"
+            element={!userContext.isLoggedIn ? <Profile /> : <Login />}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </UserProvider>

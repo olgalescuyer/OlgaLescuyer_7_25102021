@@ -6,12 +6,15 @@ import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Btns from "./Btns.jsx";
 import userService from "../../../services/userService.js";
-import { UserContext } from "../../../Context/UserContext";
+
+import UserContextTest from "../../../Context/UserContextTest";
 
 const FormPost = ({ onValidate }) => {
-  const { authHeader, id } = useContext(UserContext);
-  const config = { headers: authHeader() };
-  // console.log(config);
+  const userContext = useContext(UserContextTest);
+  const tokenAuth = userContext.authHeader();
+  const config = { headers: tokenAuth };
+  const id = userContext.userId;
+  //  console.log(config);
 
   const refImg = useRef();
   // console.log(refImg.current.value);
@@ -144,7 +147,10 @@ const FormPost = ({ onValidate }) => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className=" position-relative text-muted fst-italic" controlId="text">
+      <Form.Group
+        className=" position-relative text-muted fst-italic"
+        controlId="text"
+      >
         <FloatingLabel controlId="text" label="À quoi pensez-vous ? (max 255)">
           <Form.Control
             as="textarea"
@@ -173,8 +179,7 @@ const FormPost = ({ onValidate }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse}/>
-       
+        <Btns onCancel={cancelCourse} />
       </Container>
     </Form>
   );
