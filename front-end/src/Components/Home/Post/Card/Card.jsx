@@ -4,7 +4,10 @@ import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Icons from "./Icons";
 import Btns from "./Btns";
-import ReactTimeAgo from "react-time-ago";
+
+import TimeAgo from "timeago-react";
+import * as timeago from "timeago.js";
+import fr from "timeago.js/lib/lang/fr";
 
 const Card = ({
   postId,
@@ -17,6 +20,7 @@ const Card = ({
   createdAt,
   onValidate,
 }) => {
+  timeago.register("fr", fr);
   return (
     <article>
       <Container fluid className="rounded p-3 mb-2 color-custom-body">
@@ -39,39 +43,41 @@ const Card = ({
               <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
-                publiée <ReactTimeAgo date={createdAt} locale="fr-FR" />
+                publiée <TimeAgo datetime={createdAt} locale="fr" />
               </span>
             </div>
           </Container>
         </header>
-        <Container fluid>
+        <Container fluid className="g-0">
           <div>
             <h1 className="fs-2">{title}</h1>
             <p>{text}</p>
 
-            <div
-              className="mb-3"
-              style={{
-                overflow: "hidden",
-                position: "relative",
-                paddingBottom: "100%",
-              }}
-            >
-              <img
-                src={imageUrl}
-                alt={imageUrl}
-                className="img-fluid rounded"
+            {imageUrl && (
+              <div
+                className="mb-3"
                 style={{
-                  objectFit: "cover",
-                  height: "100%",
-                  width: "100%",
-                  left: "0",
-                  position: "absolute",
-                  top: "0",
+                  overflow: "hidden",
+                  position: "relative",
+                  paddingBottom: "100%",
                 }}
-                // sizes="614px"
-              />
-            </div>
+              >
+                <img
+                  src={imageUrl}
+                  alt={imageUrl}
+                  className="img-fluid rounded"
+                  style={{
+                    objectFit: "cover",
+                    height: "100%",
+                    width: "100%",
+                    left: "0",
+                    position: "absolute",
+                    top: "0",
+                  }}
+                  // sizes="614px"
+                />
+              </div>
+            )}
           </div>
         </Container>
         <Container fluid className="d-flex justify-content-between gx-0">
