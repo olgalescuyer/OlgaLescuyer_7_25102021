@@ -15,57 +15,71 @@ const Card = ({
   firstName,
   lastName,
   createdAt,
-  onValidate
+  onValidate,
 }) => {
   return (
-    <Container fluid className="rounded p-3 mb-2 color-custom-body">
-      <header>
-        <Container fluid className="gx-0">
-          <div className="position-relative d-flex align-items-center mb-3">
-            <Link
-              to={`/profile/${userId}`}
-              title="cliquez pour modifier avatar"
-              className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
+    <article>
+      <Container fluid className="rounded p-3 mb-2 color-custom-body">
+        <header>
+          <Container fluid className="gx-0">
+            <div className="position-relative d-flex align-items-center mb-3">
+              <Link
+                to={`/profile/${userId}`}
+                title="cliquez pour modifier avatar"
+                className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
+                style={{
+                  background: "white",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                <BsPersonFill size={36} />
+              </Link>
+
+              <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
+
+              <span className="position-absolute top-0 end-0 text-muted fst-italic">
+                publiée <ReactTimeAgo date={createdAt} locale="fr-FR" />
+              </span>
+            </div>
+          </Container>
+        </header>
+        <Container fluid>
+          <div>
+            <h1 className="fs-2">{title}</h1>
+            <p>{text}</p>
+
+            <div
+              className="mb-3"
               style={{
-                background: "white",
-                width: "60px",
-                height: "60px",
+                overflow: "hidden",
+                position: "relative",
+                paddingBottom: "100%",
               }}
             >
-              <BsPersonFill size={36} />
-            </Link>
-
-            <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
-
-            <span className="position-absolute top-0 end-0 text-muted fst-italic">
-              publiée <ReactTimeAgo date={createdAt} locale="fr-FR" />
-            </span>
+              <img
+                src={imageUrl}
+                alt={imageUrl}
+                className="img-fluid rounded"
+                style={{
+                  objectFit: "cover",
+                  height: "100%",
+                  width: "100%",
+                  left: "0",
+                  position: "absolute",
+                  top: "0",
+                }}
+                // sizes="614px"
+              />
+            </div>
           </div>
         </Container>
-      </header>
-      <Container fluid>
-        <div>
-          <h1 className="fs-2">{title}</h1>
-          <p>{text}</p>
-
-          <div
-            className="mb-3"
-            style={{
-              maxWidth: "300px",
-              height: "200px",
-              overflow: "hidden",
-              objectFit: "cover",
-            }}
-          >
-            <img src={imageUrl} alt={imageUrl} className="img-fluid rounded" />
-          </div>
-        </div>
+        <Container fluid className="d-flex justify-content-between gx-0">
+          <Icons />
+          <Btns userId={userId} postId={postId} onValidate={onValidate} />
+        </Container>
       </Container>
-      <Container fluid className="d-flex justify-content-between gx-0">
-        <Icons />
-        <Btns userId={userId} postId={postId} onValidate={onValidate}/>
-      </Container>
-    </Container>
+    </article>
   );
 };
 
