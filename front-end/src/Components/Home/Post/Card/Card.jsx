@@ -49,29 +49,31 @@ const Card = ({
             <h1 className="fs-2">{title}</h1>
             <p>{text}</p>
 
-            <div
-              className="mb-3"
-              style={{
-                overflow: "hidden",
-                position: "relative",
-                paddingBottom: "100%",
-              }}
-            >
-              <img
-                src={imageUrl}
-                alt={imageUrl}
-                className="img-fluid rounded"
+            {imageUrl && (
+              <div
+                className="mb-3"
                 style={{
-                  objectFit: "cover",
-                  height: "100%",
-                  width: "100%",
-                  left: "0",
-                  position: "absolute",
-                  top: "0",
+                  overflow: "hidden",
+                  position: "relative",
+                  paddingBottom: "100%",
                 }}
-                // sizes="614px"
-              />
-            </div>
+              >
+                <img
+                  src={imageUrl}
+                  alt={imageUrl}
+                  className="img-fluid rounded"
+                  style={{
+                    objectFit: "cover",
+                    height: "100%",
+                    width: "100%",
+                    left: "0",
+                    position: "absolute",
+                    top: "0",
+                  }}
+                  // sizes="614px"
+                />
+              </div>
+            )}
           </div>
         </Container>
         <Container fluid className="d-flex justify-content-between gx-0">
