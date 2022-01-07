@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
-import Btns from "./Btns.jsx";
+import Btns from "./FormPostBtns.jsx";
 import userService from "../../../services/userService.js";
 
 import UserContextTest from "../../../Context/UserContextTest";
