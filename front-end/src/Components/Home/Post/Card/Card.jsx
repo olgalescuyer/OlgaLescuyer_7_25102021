@@ -4,7 +4,10 @@ import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Icons from "./Icons";
 import Btns from "./Btns";
-import ReactTimeAgo from "react-time-ago";
+
+import TimeAgo from "timeago-react";
+import * as timeago from "timeago.js";
+import fr from "timeago.js/lib/lang/fr";
 
 const Card = ({
   postId,
@@ -17,6 +20,7 @@ const Card = ({
   createdAt,
   onValidate,
 }) => {
+  timeago.register("fr", fr);
   return (
     <article>
       <Container fluid className="rounded p-3 mb-2 color-custom-body">
@@ -39,12 +43,12 @@ const Card = ({
               <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
-                publiée <ReactTimeAgo date={createdAt} locale="fr-FR" />
+                publiée <TimeAgo datetime={createdAt} locale="fr" />
               </span>
             </div>
           </Container>
         </header>
-        <Container fluid>
+        <Container fluid className="g-0">
           <div>
             <h1 className="fs-2">{title}</h1>
             <p>{text}</p>
