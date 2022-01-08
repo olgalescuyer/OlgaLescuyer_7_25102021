@@ -4,7 +4,6 @@ import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
 import Icons from "./Icons";
 import Btns from "./CardBtns";
-import { GoKebabHorizontal } from "react-icons/go";
 
 import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
@@ -20,6 +19,7 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
+  handleToggle,
   toggle,
 }) => {
   timeago.register("fr", fr);
@@ -84,21 +84,7 @@ const Card = ({
         </Container>
         <Container fluid className="d-flex justify-content-between gx-0">
           <Icons />
-          <div className="position-relative">
-            <div className="position-absolute top-50  translate-middle">
-              <div className="text-danger" style={{ cursor: "pointer" }}> Supprimer</div>
-              <div className="text-end" style={{ cursor: "pointer" }}> Modifier</div>
-            </div>
-            <span
-              title="Options"
-              className="ps-3"
-              style={{ cursor: "pointer" }}
-            >
-              <GoKebabHorizontal size={24}></GoKebabHorizontal>
-            </span>
-          </div>
-
-          {/* <Btns userId={userId} postId={postId} onValidate={onValidate}  /> */}
+          <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>
     </article>
