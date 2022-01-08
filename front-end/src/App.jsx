@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -12,9 +12,18 @@ import NotFound from "./Pages/NotFound";
 import { UserProvider } from "./Context/UserContextTest";
 import UserContextTest from "./Context/UserContextTest";
 
-function App() {
+const RequireAuth = ({ children }) => {
   const userContext = useContext(UserContextTest);
+  const location = useLocation();
+  // console.log(userContext.isLoggedIn);
+  return userContext.isLoggedIn ? (
+    children
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
+};
 
+function App() {
   return (
     <div className="App">
       <UserProvider>
@@ -22,11 +31,19 @@ function App() {
           <Route
             index
             path="/"
-            element={!userContext.isLoggedIn ? <Home /> : <Login />}
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
           />
           <Route
             path="/profile/:id"
-            element={!userContext.isLoggedIn ? <Profile /> : <Login />}
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

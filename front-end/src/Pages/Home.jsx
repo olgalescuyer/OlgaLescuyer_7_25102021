@@ -11,6 +11,23 @@ const Home = () => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
+  const id = userContext.userId;
+
+  const [dataUser, setDataUser] = useState("");
+  const [dataId, setDataId] = useState(id);
+
+  useEffect(() => {
+    userService
+      .getOneUser(id, config)
+      .then((response) => {
+        // console.log(response);
+        setDataUser(response.data);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [dataId]);
 
   const [dataPost, setDataPost] = useState([]);
   const [addDataPost, setAddDataPost] = useState(true);
@@ -41,7 +58,11 @@ const Home = () => {
     <Container className="w-custom-limit-800 ">
       <Header userId={"userId"} />
       <main>
-        <FormPost onValidate={validateHandler} />
+        <FormPost
+          onValidate={validateHandler}
+          firstName={dataUser.u_first_name}
+          lastName={dataUser.u_last_name}
+        />
         {dataPost.map((post) => {
           return (
             <Card

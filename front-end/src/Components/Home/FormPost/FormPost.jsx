@@ -9,7 +9,7 @@ import userService from "../../../services/userService.js";
 
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormPost = ({ onValidate }) => {
+const FormPost = ({ onValidate, firstName, lastName }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
@@ -89,20 +89,7 @@ const FormPost = ({ onValidate }) => {
       });
   };
 
-  const [dataUser, setDataUser] = useState([]);
-
-  useEffect(() => {
-    userService
-      .getOneUser(id, config)
-      .then((response) => {
-        setDataUser(response.data);
-      })
-
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
+  
   return (
     <Form
       className="rounded p-3 mb-2 color-custom-body"
@@ -121,7 +108,7 @@ const FormPost = ({ onValidate }) => {
             </Link>
 
             <span className="ps-3 fw-bold">
-              {dataUser.u_first_name + " " + dataUser.u_last_name}
+              {firstName + " " + lastName}
             </span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
