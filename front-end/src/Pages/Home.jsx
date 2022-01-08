@@ -67,7 +67,6 @@ const Home = () => {
             onValidate={validateHandler}
             firstName={dataUser.u_first_name}
             lastName={dataUser.u_last_name}
-            toggle={handleToggle}
           />
         )}
         {dataPost.map((post) => {

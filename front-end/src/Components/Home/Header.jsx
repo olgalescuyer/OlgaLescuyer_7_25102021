@@ -40,10 +40,10 @@ const Header = ({toggle}) => {
               onClick={()=> toggle()}
             >
               <span className="position-absolute invisible">
-                <RiAddBoxFill size={25}></RiAddBoxFill>
+                <RiAddBoxFill size={26}></RiAddBoxFill>
               </span>
               <span className="">
-                <RiAddBoxLine size={25}></RiAddBoxLine>
+                <RiAddBoxLine size={26}></RiAddBoxLine>
               </span>
             </div>
 
