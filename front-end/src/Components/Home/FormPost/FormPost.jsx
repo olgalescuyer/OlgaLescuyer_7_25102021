@@ -13,8 +13,6 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
-  const id = userContext.userId;
-  //  console.log(config);
 
   const refImg = useRef();
   // console.log(refImg.current.value);
@@ -89,7 +87,6 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
       });
   };
 
-  
   return (
     <Form
       className="rounded p-3 mb-2 color-custom-body"
@@ -99,7 +96,7 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-3">
             <Link
-              to={`/profile/${id}`}
+              to={`/profile/:id`}
               title="cliquez pour modifier avatar"
               className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
               style={{ background: "white", width: "60px", height: "60px" }}
@@ -107,9 +104,7 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
               <BsPersonFill size={36} />
             </Link>
 
-            <span className="ps-3 fw-bold">
-              {firstName + " " + lastName}
-            </span>
+            <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
