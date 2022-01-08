@@ -16,7 +16,7 @@ const Profile = () => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
-  const id = userContext.userId;
+  const id = userContext.userId();
 
   const [user, setUser] = useState({});
 

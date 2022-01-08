@@ -19,6 +19,8 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
+  handleToggle,
+  toggle,
 }) => {
   timeago.register("fr", fr);
   return (
@@ -28,7 +30,7 @@ const Card = ({
           <Container fluid className="gx-0">
             <div className="position-relative d-flex align-items-center mb-3">
               <Link
-                to={`/profile/${userId}`}
+                to={`/profile/:id`}
                 title="cliquez pour modifier avatar"
                 className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
                 style={{

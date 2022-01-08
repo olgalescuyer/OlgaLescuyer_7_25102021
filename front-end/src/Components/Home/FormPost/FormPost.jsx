@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -9,12 +9,10 @@ import userService from "../../../services/userService.js";
 
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormPost = ({ onValidate, firstName, lastName }) => {
+const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
-  const id = userContext.userId;
-  //  console.log(config);
 
   const refImg = useRef();
   // console.log(refImg.current.value);
@@ -83,13 +81,13 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
       .then((response) => {
         onValidate();
         cancelCourse();
+        toggle();
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  
   return (
     <Form
       className="rounded p-3 mb-2 color-custom-body"
@@ -99,7 +97,7 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-3">
             <Link
-              to={`/profile/${id}`}
+              to={`/profile/:id`}
               title="cliquez pour modifier avatar"
               className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
               style={{ background: "white", width: "60px", height: "60px" }}
@@ -107,9 +105,7 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
               <BsPersonFill size={36} />
             </Link>
 
-            <span className="ps-3 fw-bold">
-              {firstName + " " + lastName}
-            </span>
+            <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
@@ -166,7 +162,7 @@ const FormPost = ({ onValidate, firstName, lastName }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} />
+        <Btns onCancel={cancelCourse} toggle={toggle}/>
       </Container>
     </Form>
   );
