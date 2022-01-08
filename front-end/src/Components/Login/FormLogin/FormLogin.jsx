@@ -81,7 +81,7 @@ const FormLogin = () => {
     authService
       .login(data)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response) {
           userContext.login(
             response.data.token,

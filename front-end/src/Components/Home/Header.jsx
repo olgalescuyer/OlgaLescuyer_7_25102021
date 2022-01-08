@@ -14,7 +14,7 @@ const Header = () => {
   // console.log(userContext.logout);
 
   const userId = JSON.parse(localStorage.getItem("userId"));
-  const url = "/profile/" + userId;
+  const url = "/profile/:id" ;
 
   const logoutHandler = () => {
     userContext.logout();
