@@ -32,6 +32,7 @@ const Header = () => {
 
           <div className="d-flex">
             <div
+              title=" Aller à la page d'accueil"
               className="position-relative "
               style={{ cursor: "pointer" }}
               onClick={() => navigate("/")}
@@ -55,6 +56,7 @@ const Header = () => {
               </span>
             </div>
             <div
+              title="Se déconnecter"
               className="position-relative ps-2"
               style={{ cursor: "pointer" }}
               onClick={logoutHandler}

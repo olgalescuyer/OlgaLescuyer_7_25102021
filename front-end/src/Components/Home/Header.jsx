@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 import UserContextTest from "../../Context/UserContextTest";
 
@@ -12,8 +11,10 @@ import { RiLogoutBoxRFill } from "react-icons/ri";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { RiUserSettingsFill } from "react-icons/ri";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { RiAddBoxFill } from "react-icons/ri";
+import { RiAddBoxLine } from "react-icons/ri";
 
-const Header = () => {
+const Header = ({toggle}) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
@@ -32,7 +33,24 @@ const Header = () => {
           </Navbar.Brand>
 
           <div className="d-flex">
-            <div className="position-relative" style={{ cursor: "pointer" }}>
+            <div
+              title="Créer une publication"
+              className="position-relative"
+              style={{ cursor: "pointer" }}
+              onClick={()=> toggle()}
+            >
+              <span className="position-absolute invisible">
+                <RiAddBoxFill size={25}></RiAddBoxFill>
+              </span>
+              <span className="">
+                <RiAddBoxLine size={25}></RiAddBoxLine>
+              </span>
+            </div>
+
+            <div
+              className="position-relative ps-2"
+              style={{ cursor: "pointer" }}
+            >
               <span className="position-absolute">
                 <RiHome2Fill size={24}></RiHome2Fill>
               </span>
@@ -41,6 +59,7 @@ const Header = () => {
               </span>
             </div>
             <div
+              title="Aller à la page de profile"
               className="position-relative ps-2"
               style={{ cursor: "pointer" }}
               onClick={() => navigate("/profile/:id")}
@@ -53,6 +72,7 @@ const Header = () => {
               </span>
             </div>
             <div
+              title="Se déconnecter"
               className="position-relaive ps-2"
               style={{ cursor: "pointer" }}
               onClick={logoutHandler}
@@ -65,22 +85,6 @@ const Header = () => {
               </span>
             </div>
           </div>
-
-          {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href={url} className="fw-bold text-end">
-                Profile
-              </Nav.Link>
-              <Nav.Link
-                href="/login"
-                className="fw-bold text-end"
-                onClick={logoutHandler}
-              >
-                Déconnexion
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse> */}
         </Container>
       </Navbar>
     </header>

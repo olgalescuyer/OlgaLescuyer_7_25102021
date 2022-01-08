@@ -19,6 +19,7 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
+  toggle,
 }) => {
   timeago.register("fr", fr);
   return (
@@ -82,7 +83,7 @@ const Card = ({
         </Container>
         <Container fluid className="d-flex justify-content-between gx-0">
           <Icons />
-          <Btns userId={userId} postId={postId} onValidate={onValidate} />
+          <Btns userId={userId} postId={postId} onValidate={onValidate}  />
         </Container>
       </Container>
     </article>

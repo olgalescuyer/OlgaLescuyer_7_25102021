@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import UserContextTest from "../../../Context/UserContextTest";
 import Button from "react-bootstrap/Button";
 import userService from "../../../services/userService";
 
-const Btns = ({ userId, postId, onValidate }) => {
+const Btns = ({ userId, postId, onValidate}) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
-  const id = parseInt(userContext.userId, 10);
-  const role = userContext.role;
+  const id = parseInt(userContext.userId(), 10);
+  const role = userContext.role();
 
   const handleClick = (e) => {
     userService

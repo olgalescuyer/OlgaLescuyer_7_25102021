@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 const UserContextTest = React.createContext({
   token: "",
-  userId: 0,
-  role: "",
+  userId: () => {},
+  role: () => {},
   isLoggedIn: false,
   login: () => {},
   logout: () => {},
@@ -12,14 +12,24 @@ const UserContextTest = React.createContext({
 
 export const UserProvider = (props) => {
   const tokenStorage = localStorage.getItem("user");
-
-  const userIdStorage = localStorage.getItem("userId");
-
-  const roleStorage = localStorage.getItem("role");
-
   const [tokenData, setTokenData] = useState(tokenStorage);
-
   const isLoggedIn = !!tokenData;
+
+  const handleUserId = () => {
+    const userIdStorage = localStorage.getItem("userId");
+
+    if (userIdStorage) {
+      return userIdStorage;
+    }
+  };
+
+  const handleUserRole = () => {
+    const roleStorage = localStorage.getItem("role");
+
+    if (roleStorage) {
+      return roleStorage;
+    }
+  };
 
   const authHeaderHandler = () => {
     const userToken = localStorage.getItem("user");
@@ -45,8 +55,8 @@ export const UserProvider = (props) => {
 
   const contextValue = {
     token: tokenData,
-    userId: userIdStorage,
-    role: roleStorage,
+    userId: handleUserId,
+    role: handleUserRole,
     isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
