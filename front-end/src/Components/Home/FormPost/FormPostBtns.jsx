@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 
-const Btns = ({ onCancel, toggle }) => {
+const Btns = ({ onCancel }) => {
   const handleClick = () => {
     onCancel();
-    toggle();
+   
   };
 
   return (

@@ -84,8 +84,6 @@ const Home = () => {
               likes={"likes"}
               key={post.p_id}
               onValidate={validateHandler}
-              handleToggle={handleToggle}
-              toggle={toggle}
             />
           );
         })}

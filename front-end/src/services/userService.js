@@ -29,5 +29,19 @@ const postOnePost = (postData) => {
 const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
 };
+const updatePost = (postId, postData) => {
 
-export default { getOneUser, getAllPosts, postOnePost, deleteOnePost };
+  const options = {
+    method: "put",
+    url: API_URL + "posts" + postId,
+    headers: {
+      Authorization: "Bearer " + user,
+      "content-type": "multipart/form-data",
+    },
+    data: postData,
+  };
+
+  return axios(options)
+}
+
+export default { getOneUser, getAllPosts, postOnePost, deleteOnePost, updatePost };

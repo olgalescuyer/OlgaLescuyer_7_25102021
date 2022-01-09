@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState,  useRef } from "react";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -7,13 +7,9 @@ import Container from "react-bootstrap/Container";
 import Btns from "./FormPostBtns.jsx";
 import userService from "../../../services/userService.js";
 
-import UserContextTest from "../../../Context/UserContextTest";
+// import UserContextTest from "../../../Context/UserContextTest";
 
 const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
-  const userContext = useContext(UserContextTest);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
-
   const refImg = useRef();
   // console.log(refImg.current.value);
 
@@ -81,7 +77,6 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
       .then((response) => {
         onValidate();
         cancelCourse();
-        toggle();
       })
       .catch((error) => {
         console.log(error);
@@ -162,7 +157,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} toggle={toggle}/>
+        <Btns onCancel={cancelCourse} />
       </Container>
     </Form>
   );
