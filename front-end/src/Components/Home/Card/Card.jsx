@@ -19,8 +19,6 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
-  handleToggle,
-  toggle,
 }) => {
   timeago.register("fr", fr);
   return (

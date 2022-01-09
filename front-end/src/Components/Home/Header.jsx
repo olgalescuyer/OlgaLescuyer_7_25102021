@@ -14,7 +14,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { RiAddBoxFill } from "react-icons/ri";
 import { RiAddBoxLine } from "react-icons/ri";
 
-const Header = ({toggle}) => {
+const Header = ({ toggle }) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
@@ -28,7 +28,7 @@ const Header = ({toggle}) => {
     <header>
       <Navbar bg="light" expand="lg">
         <Container fluid className="g-0">
-          <Navbar.Brand href="/home" className="w-custom-limit-200">
+          <Navbar.Brand href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>
 
@@ -37,7 +37,7 @@ const Header = ({toggle}) => {
               title="Créer une publication"
               className="position-relative"
               style={{ cursor: "pointer" }}
-              onClick={()=> toggle()}
+              onClick={() => toggle()}
             >
               <span className="position-absolute invisible">
                 <RiAddBoxFill size={26}></RiAddBoxFill>
