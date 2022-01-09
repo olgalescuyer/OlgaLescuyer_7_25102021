@@ -10,18 +10,25 @@ const Btns = ({ userId, postId, onValidate }) => {
   const id = parseInt(userContext.userId(), 10);
   const role = userContext.role();
 
-  const handleClick = (e) => {
+  const [item, setItem] = useState(false);
+
+  const handleStateItem = () => {
+    setItem(!item);
+  };
+
+  const handleDelete = (e) => {
     userService
       .deleteOnePost(postId, config)
       .then((response) => onValidate())
       .catch((err) => console.log(err));
   };
 
-  const [item, setItem] = useState(false);
-
-  const handleStateItem = () => {
-    setItem(!item);
-  };
+  // const handleUpdate = (e, postId, postData) => {
+  //   userService
+  //     .updatePost(postId, postData)
+  //     .then((response) => console.log(response))
+  //     .catch((err) => console.log(err));
+  // };
 
   if (userId === id) {
     return (
@@ -31,7 +38,7 @@ const Btns = ({ userId, postId, onValidate }) => {
             <div
               className="text-danger"
               style={{ cursor: "pointer" }}
-              onClick={(e) => handleClick(e, postId, config)}
+              onClick={(e) => handleDelete(e, postId, config)}
             >
               {" "}
               Supprimer
@@ -60,7 +67,7 @@ const Btns = ({ userId, postId, onValidate }) => {
             <div
               className="text-danger"
               style={{ cursor: "pointer" }}
-              onClick={(e) => handleClick(e, postId, config)}
+              onClick={(e) => handleDelete(e, postId, config)}
             >
               {" "}
               Supprimer
