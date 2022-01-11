@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import UserContextTest from "../../../Context/UserContextTest";
 import userService from "../../../services/userService";
 import { GoKebabVertical } from "react-icons/go";
+import CardModal from "./CardModal";
 
 const Btns = ({ userId, postId, onValidate }) => {
   const userContext = useContext(UserContextTest);
@@ -30,24 +31,34 @@ const Btns = ({ userId, postId, onValidate }) => {
   //     .catch((err) => console.log(err));
   // };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   if (userId === id) {
     return (
       <div className="d-flex">
         {item && (
-          <div className=" d-flex">
-            <div
-              className="text-danger"
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleDelete(e, postId, config)}
-            >
-              {" "}
-              Supprimer
+          <>
+            <div className=" d-flex">
+              <span
+                className="text-danger"
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleDelete(e, postId, config)}
+              >
+                Supprimer
+              </span>
+              <span
+                className="text-end ps-2 "
+                style={{ cursor: "pointer" }}
+                onClick={handleShow}
+              >
+                Modifier
+              </span>
             </div>
-            <div className="text-end ps-2" style={{ cursor: "pointer" }}>
-              {" "}
-              Modifier
-            </div>
-          </div>
+            <CardModal onClose={handleClose} show={show}/>
+          </>
         )}
 
         <div
@@ -64,14 +75,14 @@ const Btns = ({ userId, postId, onValidate }) => {
       <div className="d-flex">
         {item && (
           <div className="">
-            <div
+            <span
               className="text-danger"
               style={{ cursor: "pointer" }}
               onClick={(e) => handleDelete(e, postId, config)}
             >
               {" "}
               Supprimer
-            </div>
+            </span>
           </div>
         )}
 

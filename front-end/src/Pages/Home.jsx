@@ -67,9 +67,10 @@ const Home = () => {
             onValidate={validateHandler}
             firstName={dataUser.u_first_name}
             lastName={dataUser.u_last_name}
+            toggle={handleToggle}
           />
         )}
-        {dataPost.map((post) => {
+        {dataPost.map((post, index) => {
           return (
             <Card
               postId={post.p_id}
@@ -82,8 +83,9 @@ const Home = () => {
               avatar={"avatar"}
               createdAt={post.p_time}
               likes={"likes"}
-              key={post.p_id}
+              key={index}
               onValidate={validateHandler}
+            
             />
           );
         })}
