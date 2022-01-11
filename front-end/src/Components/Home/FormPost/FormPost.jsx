@@ -1,9 +1,9 @@
 import React, { useState,  useRef } from "react";
 import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { BsPersonFill } from "react-icons/bs";
-import Container from "react-bootstrap/Container";
 import Btns from "./FormPostBtns.jsx";
 import userService from "../../../services/userService.js";
 
@@ -77,6 +77,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
       .then((response) => {
         onValidate();
         cancelCourse();
+        toggle();
       })
       .catch((error) => {
         console.log(error);
@@ -157,7 +158,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} />
+        <Btns onCancel={cancelCourse} toggle={toggle}/>
       </Container>
     </Form>
   );
