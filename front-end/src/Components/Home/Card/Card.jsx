@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
-import Icons from "./Icons";
+import Likes from "./Likes";
 import Btns from "./CardBtns";
 
 import TimeAgo from "timeago-react";
@@ -19,13 +19,17 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
+  likes,
+  likeId,
+  likeUserId
 }) => {
   timeago.register("fr", fr);
+
   return (
     <article>
-      <Container fluid className="rounded p-3 mb-2 color-custom-body">
+      <Container fluid className="p-0 mb-2 color-custom-body">
         <header>
-          <Container fluid className="gx-0">
+          <Container fluid className="pt-3">
             <div className="position-relative d-flex align-items-center mb-3">
               <Link
                 to={`/profile/:id`}
@@ -48,30 +52,29 @@ const Card = ({
             </div>
           </Container>
         </header>
-        <Container fluid className="g-0">
+        <div>
           <div>
-            <h1 className="fs-2">{title}</h1>
-            <p>{text}</p>
+            <Container fluid className="">
+              <h1 className="fs-2">{title}</h1>
+              <p>{text}</p>
+            </Container>
 
             {imageUrl && (
               <div
-                className="mb-3"
+                className="position-relative overflow-hidden mb-3 "
                 style={{
-                  overflow: "hidden",
-                  position: "relative",
                   paddingBottom: "100%",
                 }}
               >
                 <img
                   src={imageUrl}
                   alt={imageUrl}
-                  className="img-fluid rounded"
+                  className="position-absolute img-fluid "
                   style={{
                     objectFit: "cover",
                     height: "100%",
                     width: "100%",
                     left: "0",
-                    position: "absolute",
                     top: "0",
                   }}
                   // sizes="614px"
@@ -79,9 +82,9 @@ const Card = ({
               </div>
             )}
           </div>
-        </Container>
-        <Container fluid className="d-flex justify-content-between gx-0">
-          <Icons />
+        </div>
+        <Container fluid className="d-flex justify-content-between pb-3">
+          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId}/>
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>

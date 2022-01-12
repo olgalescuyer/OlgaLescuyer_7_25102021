@@ -4,7 +4,8 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Icons = () => {
+const Likes = ({likes, likeId, likeUserId}) => {
+  console.log(likes);
   return (
     <div className="d-flex">
       <div className="position-relative">
@@ -15,7 +16,7 @@ const Icons = () => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>(var)</span>
+        <span>{" "+ likes}</span>
       </div>
 
       <div className="position-relative">
@@ -26,10 +27,10 @@ const Icons = () => {
           <HiOutlineThumbDown size={24} />
         </span>
 
-        <span>(var)</span>
+        <span>{" "+ likes}</span>
       </div>
     </div>
   );
 };
 
-export default Icons;
+export default Likes;

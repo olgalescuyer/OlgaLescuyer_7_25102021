@@ -30,7 +30,6 @@ const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
 };
 const updatePost = (postId, postData) => {
-
   const options = {
     method: "put",
     url: API_URL + "posts" + postId,
@@ -41,7 +40,13 @@ const updatePost = (postId, postData) => {
     data: postData,
   };
 
-  return axios(options)
-}
+  return axios(options);
+};
 
-export default { getOneUser, getAllPosts, postOnePost, deleteOnePost, updatePost };
+export default {
+  getOneUser,
+  getAllPosts,
+  postOnePost,
+  deleteOnePost,
+  updatePost,
+};

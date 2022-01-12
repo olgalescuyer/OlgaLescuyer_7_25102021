@@ -59,7 +59,7 @@ const Home = () => {
 
   // + .map for Card-->
   return (
-    <Container className="w-custom-limit-800 ">
+    <Container className="w-custom-limit-800 p-0">
       <Header userId={"userId"} toggle={handleToggle} />
       <main>
         {toggle && (
@@ -82,10 +82,11 @@ const Home = () => {
               lastName={post.u_last_name}
               avatar={"avatar"}
               createdAt={post.p_time}
-              likes={"likes"}
+              likes={post.l_choice}
+              likeId={post.l_id}
+              likeUserId={post.l_fk_user_id}
               key={index}
               onValidate={validateHandler}
-            
             />
           );
         })}
