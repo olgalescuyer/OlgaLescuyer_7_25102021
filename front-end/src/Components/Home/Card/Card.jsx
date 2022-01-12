@@ -19,6 +19,9 @@ const Card = ({
   lastName,
   createdAt,
   onValidate,
+  likes,
+  likeId,
+  likeUserId
 }) => {
   timeago.register("fr", fr);
 
@@ -81,7 +84,7 @@ const Card = ({
           </div>
         </div>
         <Container fluid className="d-flex justify-content-between pb-3">
-          <Likes />
+          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId}/>
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>
