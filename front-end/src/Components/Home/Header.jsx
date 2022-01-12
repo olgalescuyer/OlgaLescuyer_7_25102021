@@ -25,9 +25,9 @@ const Header = ({ toggle }) => {
   };
 
   return (
-    <header>
+    <header className="position-sticky top-0" style={{zIndex: "2"}}>
       <Navbar bg="light" expand="lg">
-        <Container fluid className="g-0">
+        <Container fluid className="">
           <Navbar.Brand href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>

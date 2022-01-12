@@ -59,7 +59,7 @@ const Home = () => {
 
   // + .map for Card-->
   return (
-    <Container className="w-custom-limit-800 ">
+    <Container className="w-custom-limit-800 p-0">
       <Header userId={"userId"} toggle={handleToggle} />
       <main>
         {toggle && (

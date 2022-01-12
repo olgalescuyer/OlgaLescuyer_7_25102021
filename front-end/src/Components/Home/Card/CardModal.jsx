@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { RiCloseCircleLine } from "react-icons/ri";
 
 const CardModal = ({ onClose, show }) => {
   return (
@@ -26,10 +27,7 @@ const CardModal = ({ onClose, show }) => {
             className=" position-relative text-muted fst-italic"
             controlId="text"
           >
-            <FloatingLabel
-              controlId="text"
-              label="Nouveau text (max 255)"
-            >
+            <FloatingLabel controlId="text" label="Nouveau text (max 255)">
               <Form.Control
                 as="textarea"
                 rows={3}
@@ -51,10 +49,14 @@ const CardModal = ({ onClose, show }) => {
             />
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="checkbox">
+            <Form.Check type="checkbox" label="Supprimer l'image définitivement?" />
+          </Form.Group>
+
           <Button variant="secondary" onClick={onClose}>
             Annuler
           </Button>
-          <Button variant="primary" className="ms-3"onClick={onClose}>
+          <Button variant="primary" className="ms-3" onClick={onClose}>
             Confirmer les modifications
           </Button>
         </Form>
