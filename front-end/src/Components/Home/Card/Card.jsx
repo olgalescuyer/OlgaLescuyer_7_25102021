@@ -26,7 +26,7 @@ const Card = ({
     <article>
       <Container fluid className="p-0 mb-2 color-custom-body">
         <header>
-          <Container fluid className="pt-2">
+          <Container fluid className="pt-3">
             <div className="position-relative d-flex align-items-center mb-3">
               <Link
                 to={`/profile/:id`}
@@ -80,7 +80,7 @@ const Card = ({
             )}
           </div>
         </div>
-        <Container fluid className="d-flex justify-content-between gx-0">
+        <Container fluid className="d-flex justify-content-between pb-3">
           <Likes />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
