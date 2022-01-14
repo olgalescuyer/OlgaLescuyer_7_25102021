@@ -61,15 +61,16 @@ const Home = () => {
   return (
     <Container className="w-custom-limit-800 p-0">
       <Header userId={"userId"} toggle={handleToggle} />
-      <main>
-        {toggle && (
-          <FormPost
-            onValidate={validateHandler}
-            firstName={dataUser.u_first_name}
-            lastName={dataUser.u_last_name}
-            toggle={handleToggle}
-          />
-        )}
+      {toggle && (
+        <FormPost
+          onValidate={validateHandler}
+          firstName={dataUser.u_first_name}
+          lastName={dataUser.u_last_name}
+          toggle={handleToggle}
+        />
+      )}
+
+     { !toggle && <main>
         {dataPost.map((post, index) => {
           return (
             <Card
@@ -90,7 +91,7 @@ const Home = () => {
             />
           );
         })}
-      </main>
+      </main>}
     </Container>
   );
 };

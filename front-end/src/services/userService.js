@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/";
-
 const user = localStorage.getItem("user");
 
 const getOneUser = (userId, config) => {
@@ -43,10 +42,15 @@ const updatePost = (postId, postData) => {
   return axios(options);
 };
 
+const addLikes = (postId, choice, config) => {
+  axios.post(API_URL + `posts/${postId}/like`, config);
+};
+
 export default {
   getOneUser,
   getAllPosts,
   postOnePost,
   deleteOnePost,
   updatePost,
+  addLikes,
 };

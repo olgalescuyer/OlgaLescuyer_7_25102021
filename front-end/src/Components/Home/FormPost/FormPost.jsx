@@ -86,12 +86,12 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
 
   return (
     <Form
-      className="rounded p-3 mb-2 color-custom-body"
+      className="p-2 mb-2 color-custom-body"
       onSubmit={handleSubmit}
     >
       <header>
         <Container fluid className="gx-0">
-          <div className="position-relative d-flex align-items-center mb-3">
+          <div className="position-relative d-flex align-items-center mb-2">
             <Link
               to={`/profile/:id`}
               title="cliquez pour modifier avatar"
@@ -101,7 +101,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
               <BsPersonFill size={36} />
             </Link>
 
-            <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
+            <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
@@ -110,7 +110,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
         </Container>
       </header>
 
-      <Form.Group className="mb-3 text-muted fst-italic" controlId="title">
+      <Form.Group className="mb-2 text-muted fst-italic" controlId="title">
         <FloatingLabel controlId="title" label="Titre (max 255)">
           <Form.Control
             type="text"
@@ -146,7 +146,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group controlId="imageUrl" className="mb-3">
+      <Form.Group controlId="imageUrl" className="mb-2">
         <Form.Label></Form.Label>
         <Form.Control
           type="file"
