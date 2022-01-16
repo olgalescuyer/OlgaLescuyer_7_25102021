@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { BsPersonFill } from "react-icons/bs";
 import Container from "react-bootstrap/Container";
@@ -21,16 +21,16 @@ const Card = ({
   onValidate,
   likes,
   likeId,
-  likeUserId
+  likeUserId,
 }) => {
   timeago.register("fr", fr);
-
+  // console.log(likes, likeId, likeUserId);
   return (
     <article>
       <Container fluid className="p-0 mb-2 color-custom-body">
         <header>
-          <Container fluid className="pt-3">
-            <div className="position-relative d-flex align-items-center mb-3">
+          <Container fluid className="p-2 g-0">
+            <div className="position-relative d-flex align-items-center">
               <Link
                 to={`/profile/:id`}
                 title="cliquez pour modifier avatar"
@@ -44,7 +44,7 @@ const Card = ({
                 <BsPersonFill size={36} />
               </Link>
 
-              <span className="ps-3 fw-bold">{firstName + " " + lastName}</span>
+              <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
                 publiée <TimeAgo datetime={createdAt} locale="fr" />
@@ -54,14 +54,14 @@ const Card = ({
         </header>
         <div>
           <div>
-            <Container fluid className="">
+            <Container fluid className="p-2 g-0">
               <h1 className="fs-2">{title}</h1>
               <p>{text}</p>
             </Container>
 
             {imageUrl && (
               <div
-                className="position-relative overflow-hidden mb-3 "
+                className="position-relative overflow-hidden  "
                 style={{
                   paddingBottom: "100%",
                 }}
@@ -83,8 +83,8 @@ const Card = ({
             )}
           </div>
         </div>
-        <Container fluid className="d-flex justify-content-between pb-3">
-          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId}/>
+        <Container fluid className="d-flex justify-content-between p-2 g-0">
+          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId} />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>

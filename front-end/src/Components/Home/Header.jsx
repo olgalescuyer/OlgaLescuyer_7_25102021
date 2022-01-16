@@ -26,8 +26,8 @@ const Header = ({ toggle }) => {
 
   return (
     <header className="position-sticky top-0" style={{zIndex: "2"}}>
-      <Navbar bg="light" expand="lg">
-        <Container fluid className="">
+      <Navbar bg="light" expand="lg" >
+        <Container fluid className="g-0 px-2">
           <Navbar.Brand href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>

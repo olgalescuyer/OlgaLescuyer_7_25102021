@@ -1,13 +1,16 @@
 import React from "react";
+import Container from "react-bootstrap/Container";
 import { HiThumbUp } from "react-icons/hi";
 import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
 const Likes = ({likes, likeId, likeUserId}) => {
-  console.log(likes);
+// console.log(likes, likeId, likeUserId);
+  
+ 
   return (
-    <div className="d-flex">
+    <div className="d-flex ">
       <div className="position-relative">
         <span className="position-absolute invisible">
           <HiThumbUp size={24} />
