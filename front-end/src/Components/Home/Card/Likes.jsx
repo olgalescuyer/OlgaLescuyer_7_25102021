@@ -6,7 +6,7 @@ import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
 const Likes = ({likes, likeId, likeUserId}) => {
-
+// console.log(likes, likeId, likeUserId);
   
  
   return (

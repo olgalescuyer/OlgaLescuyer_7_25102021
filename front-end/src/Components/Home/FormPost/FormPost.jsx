@@ -1,4 +1,4 @@
-import React, { useState,  useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -7,11 +7,13 @@ import { BsPersonFill } from "react-icons/bs";
 import Btns from "./FormPostBtns.jsx";
 import userService from "../../../services/userService.js";
 
-// import UserContextTest from "../../../Context/UserContextTest";
+import UserContextTest from "../../../Context/UserContextTest";
 
 const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
   const refImg = useRef();
   // console.log(refImg.current.value);
+  const userContext = useContext(UserContextTest);
+  const token = userContext.token;
 
   const [dataPost, setDataPost] = useState({
     title: "",
@@ -54,7 +56,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
       formData.append("post", message);
       formData.append("image", imagefile.files[0]);
 
-      submitToApi(formData);
+      submitToApi(formData, token);
     } else if (dataPost.title && dataPost.text) {
       const titletext = JSON.stringify({
         title: dataPost.title,
@@ -63,7 +65,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
       const mformData = new FormData();
       mformData.append("post", titletext);
 
-      submitToApi(mformData);
+      submitToApi(mformData, token);
     } else {
       setMessageValidation(
         "Votre publication doit contenir un titre et soit le text descriptif soit une image"
@@ -71,9 +73,9 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
     }
   };
 
-  const submitToApi = (data) => {
+  const submitToApi = (data, auth) => {
     userService
-      .postOnePost(data)
+      .postOnePost(data, auth)
       .then((response) => {
         onValidate();
         cancelCourse();
@@ -85,10 +87,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
   };
 
   return (
-    <Form
-      className="p-2 mb-2 color-custom-body"
-      onSubmit={handleSubmit}
-    >
+    <Form className="p-2 mb-2 color-custom-body" onSubmit={handleSubmit}>
       <header>
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-2">
@@ -158,7 +157,7 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} toggle={toggle}/>
+        <Btns onCancel={cancelCourse} toggle={toggle} />
       </Container>
     </Form>
   );

@@ -11,8 +11,6 @@ import FormProfile from "../Components/Profile/FormProfile/FormProfile";
 import Avatars from "../Components/Profile/Avatars";
 
 const Profile = () => {
-  // const { authHeader } = useContext(UserContext);
-  // const config = { headers: authHeader() };
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
