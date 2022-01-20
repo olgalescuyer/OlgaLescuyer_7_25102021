@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import userService from "../../../services/userService";
+import UserContextTest from "../../../Context/UserContextTest";
 
 import { HiThumbUp } from "react-icons/hi";
 import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ likes, likeId, likeUserId }) => {
-  // console.log(likes, likeId, likeUserId);
+const Likes = ({ postId, likes, likeId, likeUserId }) => {
+  const userContext = useContext(UserContextTest);
+  const token = userContext.token;
+  // console.log(token);
 
   const [like, setLike] = useState(0);
+  // console.log(like);
   const handleLike = () => {
     if (like === 0 && dislike === 0) {
       setLike(1);
+      submitToApi(postId, { like: like }, token);
     } else if (like === 1) {
       setLike(0);
+    } else if (like === 0 && dislike === -1) {
+      setLike(1);
+      setDislike(0);
     }
   };
 
@@ -23,7 +32,22 @@ const Likes = ({ likes, likeId, likeUserId }) => {
       setDislike(-1);
     } else if (dislike === -1) {
       setDislike(0);
+    } else if (dislike === 0 && like === 1) {
+      setLike(0);
+      setDislike(-1);
     }
+  };
+
+  const submitToApi = (postId, like, token) => {
+    console.log(likes);
+    userService
+      .addLikes(postId, like, token)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

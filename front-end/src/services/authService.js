@@ -7,6 +7,7 @@ const signup = (data) => {
 };
 
 const login = (data) => {
+  console.log(data);
   return axios.post(API_URL + "login", data);
 };
 

@@ -21,7 +21,7 @@ const postOnePost = (postData, token) => {
     },
     data: postData,
   };
-  // console.log(options);
+  console.log("post : ", options);
   return axios(options);
 };
 
@@ -43,8 +43,17 @@ const updatePost = (postId, postData, token) => {
   return axios(options);
 };
 
-const addLikes = (postId, choice, config) => {
-  axios.post(API_URL + `posts/${postId}/like`, config);
+const addLikes = (postId, data, token) => {
+  const options = {
+    method: "post",
+    url: API_URL + `posts/${postId}/like`,
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    data,
+  };
+
+  return axios(options);
 };
 
 export default {

@@ -84,7 +84,7 @@ const Card = ({
           </div>
         </div>
         <Container fluid className="d-flex justify-content-between p-2 g-0">
-          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId} />
+          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId}postId={postId}/>
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>
