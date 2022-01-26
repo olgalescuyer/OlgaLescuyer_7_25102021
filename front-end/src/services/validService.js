@@ -2,7 +2,7 @@ const regex = () => {
   return {
     firstName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
     lastName: /^[a-zA-Z\u0080-\u024F\s-]{2,25}$/i,
-    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania.fr$/,
+    email: /^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+groupomania\.fr$/,
     password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     controlPassword:
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
