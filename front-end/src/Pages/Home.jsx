@@ -40,7 +40,7 @@ const Home = () => {
       userService
         .getAllPosts(config)
         .then((response) => {
-          // console.log(response);
+          console.log(response);
 
           setDataPost(response.data);
           setAddDataPost(false);

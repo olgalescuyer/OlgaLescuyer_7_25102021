@@ -7,7 +7,7 @@ const { validationResult } = require("express-validator");
 
 exports.createPost = (req, res, next) => {
   const postData = JSON.parse(req.body.post);
-  // console.log("req body :", req.body);
+  console.log("req body :", req.body.post);
   console.log("req file :", req.file);
 
   let imageUrl = req.file;
@@ -151,12 +151,11 @@ exports.getOnePost = (req, res, next) => {
 
 exports.manageLike = (req, res, next) => {
   const sqlInserts = [req.bearerToken.userId, req.params.id, req.body.like];
-  // console.log(sqlInserts);
 
   likeModel
     .insertIntoLike(sqlInserts)
     .then((response) => {
-      res.status(201).json({ message: "Like/dislike inregistré !" });
+      res.status(201).json({ response });
       // console.log(response);
     })
     .catch((error) => res.status(500).json({ error }));
