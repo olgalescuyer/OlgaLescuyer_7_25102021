@@ -7,7 +7,7 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ postId, likes, likeId, likeUserId }) => {
+const Likes = ({ postId, likes }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
   // console.log(token);
@@ -39,11 +39,10 @@ const Likes = ({ postId, likes, likeId, likeUserId }) => {
   };
 
   const submitToApi = (postId, like, token) => {
-    console.log(likes);
     userService
       .addLikes(postId, like, token)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +64,7 @@ const Likes = ({ postId, likes, likeId, likeUserId }) => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>{like + likes}</span>
+        <span>{like}</span>
       </div>
 
       <div className="position-relative" onClick={handleDislike}>
@@ -80,7 +79,7 @@ const Likes = ({ postId, likes, likeId, likeUserId }) => {
           <HiOutlineThumbDown size={24} />
         </span>
 
-        <span>{dislike + likes}</span>
+        <span>{dislike}</span>
       </div>
     </div>
   );

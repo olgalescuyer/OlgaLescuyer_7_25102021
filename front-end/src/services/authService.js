@@ -7,9 +7,7 @@ const signup = (data) => {
 };
 
 const login = (data) => {
-  console.log(data);
   return axios.post(API_URL + "login", data);
 };
 
-
-export default  { signup, login};
+export default { signup, login };

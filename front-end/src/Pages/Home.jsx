@@ -19,7 +19,7 @@ const Home = () => {
     userService
       .getOneUser(id, config)
       .then((response) => {
-        // console.log(response);
+        // console.log("response : ",response);
         setDataUser(response.data);
       })
 
@@ -40,7 +40,7 @@ const Home = () => {
       userService
         .getAllPosts(config)
         .then((response) => {
-          console.log(response);
+        //  console.log("response : ",response);
 
           setDataPost(response.data);
           setAddDataPost(false);
@@ -70,28 +70,30 @@ const Home = () => {
         />
       )}
 
-     { !toggle && <main>
-        {dataPost.map((post, index) => {
-          return (
-            <Card
-              postId={post.p_id}
-              title={post.p_title}
-              text={post.p_text}
-              imageUrl={post.p_image}
-              userId={post.p_fk_user_id}
-              firstName={post.u_first_name}
-              lastName={post.u_last_name}
-              avatar={"avatar"}
-              createdAt={post.p_time}
-              likes={post.l_choice}
-              likeId={post.l_id}
-              likeUserId={post.l_fk_user_id}
-              key={index}
-              onValidate={validateHandler}
-            />
-          );
-        })}
-      </main>}
+      {!toggle && (
+        <main>
+          {dataPost.map((post, index) => {
+            return (
+              <Card
+                postId={post.p_id}
+                title={post.p_title}
+                text={post.p_text}
+                imageUrl={post.p_image}
+                userId={post.p_fk_user_id}
+                firstName={post.u_first_name}
+                lastName={post.u_last_name}
+                avatar={"avatar"}
+                createdAt={post.p_time}
+                likes={post.l_choice}
+                likeId={post.l_id}
+                likeUserId={post.l_fk_user_id}
+                key={index}
+                onValidate={validateHandler}
+              />
+            );
+          })}
+        </main>
+      )}
     </Container>
   );
 };

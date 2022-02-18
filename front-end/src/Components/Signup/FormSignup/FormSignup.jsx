@@ -120,8 +120,7 @@ const FormSignup = () => {
           response.data.userId,
           response.data.role
         );
-        // localStorage.setItem("user", JSON.stringify(response.data.token));
-        // localStorage.setItem("userId", JSON.stringify(response.data.userId));
+      
 
         navigate("/", { replace: true });
       })

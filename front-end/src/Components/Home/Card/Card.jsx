@@ -77,7 +77,7 @@ const Card = ({
                     left: "0",
                     top: "0",
                   }}
-                  // sizes="614px"
+                 
                 />
               </div>
             )}
