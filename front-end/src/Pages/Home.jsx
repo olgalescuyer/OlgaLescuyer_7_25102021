@@ -56,7 +56,7 @@ const Home = () => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
-
+console.log(dataPost);
   // + .map for Card-->
   return (
     <Container className="w-custom-limit-800 p-0">

@@ -17,7 +17,8 @@ const Likes = ({ postId, likes }) => {
   const handleLike = () => {
     if (like === 0 && dislike === 0) {
       setLike(1);
-      submitToApi(postId, { like: like }, token);
+      // console.log(like);
+      // submitToApi(postId, { like: like }, token);
     } else if (like === 1) {
       setLike(0);
     } else if (like === 0 && dislike === -1) {

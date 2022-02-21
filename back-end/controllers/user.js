@@ -95,10 +95,10 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyOneUser = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({ errors: errors.array() });
+  // }
 
   // for returne a number from params :
   const userIdFromParams = parseInt(req.params.id, 10);
@@ -106,30 +106,34 @@ exports.modifyOneUser = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
   // console.log(userIdFromToken);
 
-  if (userIdFromParams === userIdFromToken) {
-    bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => {
-        const sqlInserts = [
-          req.body.firstName,
-          req.body.lastName,
-          req.body.email,
-          hash,
-          userIdFromToken,
-        ];
-        // console.log(sqlInserts);
+  // const userData = JSON.parse(req.body.user);
+  console.log("req body :", req.body.user);
+  console.log("req file :", req.file);
 
-        userModel
-          .updateOneUser(sqlInserts)
-          .then((response) =>
-            res.status(200).json({ message: "User modifié !" })
-          )
-          .catch((error) => res.status(400).json({ error: "👎  !" }));
-      })
-      .catch((error) => res.status(500).json({ error }));
-  } else {
-    res.status(400).json({ message: "user Id from params not valid !" });
-  }
+  // if (userIdFromParams === userIdFromToken) {
+  //   bcrypt
+  //     .hash(req.body.password, 10)
+  //     .then((hash) => {
+  //       const sqlInserts = [
+  //         req.body.firstName,
+  //         req.body.lastName,
+  //         req.body.email,
+  //         hash,
+  //         userIdFromToken,
+  //       ];
+  //       // console.log(sqlInserts);
+
+  //       userModel
+  //         .updateOneUser(sqlInserts)
+  //         .then((response) =>
+  //           res.status(200).json({ message: "User modifié !" })
+  //         )
+  //         .catch((error) => res.status(400).json({ error: "👎  !" }));
+  //     })
+  //     .catch((error) => res.status(500).json({ error }));
+  // } else {
+  //   res.status(400).json({ message: "user Id from params not valid !" });
+  // }
 };
 
 exports.deleteOneUser = (req, res, next) => {
