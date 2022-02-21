@@ -7,8 +7,9 @@ const { validationResult } = require("express-validator");
 
 exports.createPost = (req, res, next) => {
   const postData = JSON.parse(req.body.post);
-  console.log("req body :", req.body.post);
+  console.log("post data :", postData);
   console.log("req file :", req.file);
+  console.log("req body :", req.body.post);
 
   let imageUrl = req.file;
   imageUrl === undefined
@@ -76,7 +77,7 @@ exports.modifyOnePost = (req, res, next) => {
         });
       } else {
         res
-          .status(400)
+          .status(401)
           .json({ message: "Id from token is not a valid for this operation" });
       }
     })
