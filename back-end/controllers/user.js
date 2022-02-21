@@ -106,9 +106,19 @@ exports.modifyOneUser = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
   // console.log(userIdFromToken);
 
-  // const userData = JSON.parse(req.body.user);
-  console.log("req body :", req.body.user);
-  console.log("req file :", req.file);
+  const userData = JSON.parse(req.body.user);
+  console.log("user data :", userData);
+  // console.log("req file :", req.file);
+  //  console.log("user data:", userData);
+
+  userIdFromParams === userIdFromToken
+    ? userModel
+        .findUserById(userIdFromToken)
+        .then(user => console.log("ok"))
+        .catch((error) => res.status(500).json({ error }))
+    : res
+        .status(401)
+        .json({ message: "Id from token is not a valid for this operation" });
 
   // if (userIdFromParams === userIdFromToken) {
   //   bcrypt
