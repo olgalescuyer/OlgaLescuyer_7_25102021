@@ -97,7 +97,7 @@ exports.deleteOnePost = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   };
 
-  const deleteImg = (img) => {
+  const deletePostWithImg = (img) => {
     const filename = img.split("/images/")[1];
     // console.log(filename);
 
@@ -118,7 +118,7 @@ exports.deleteOnePost = (req, res, next) => {
         post[0].p_fk_user_id === req.bearerToken.userId ||
         req.bearerToken.userId === 127
       ) {
-        post[0].p_image ? deleteImg(post[0].p_image) : deletePost(postId);
+        post[0].p_image ? deletePostWithImg(post[0].p_image) : deletePost(postId);
       } else {
         res.status(400).json({ message: "Id from token is not a valid" });
       }

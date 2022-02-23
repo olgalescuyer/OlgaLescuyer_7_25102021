@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+const fs = require("fs");
 
 const { validationResult } = require("express-validator");
 
@@ -95,55 +96,92 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyOneUser = (req, res, next) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(400).json({ errors: errors.array() });
-  // }
+  // - compare id token & id params for api security ;
+  // -- find the user - query db ;
 
-  // for returne a number from params :
+  // -- check if new obj has a new image file ;
+  // ---- delete old image file by fs.unlink ;
+
+  // -- check if new obj has a new password ;
+  // --- add bcrypt for new password ;
+
+  // -- make a new object for the db ;
+  // --- update the user - query db ;
+
+  // validator :
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // for return a number from params :
   const userIdFromParams = parseInt(req.params.id, 10);
-  // console.log('userIdFromParams :', userIdFromParams);
   const userIdFromToken = req.bearerToken.userId;
-  // console.log(userIdFromToken);
 
-  const userData = JSON.parse(req.body.user);
-  console.log("user data :", userData);
-  // console.log("req file :", req.file);
-  //  console.log("user data:", userData);
+  const userObject = req.file
+    ? {
+        ...JSON.parse(req.body.user),
+        image: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : {
+        ...JSON.parse(req.body.user),
+        image: null,
+      };
 
-  userIdFromParams === userIdFromToken
-    ? userModel
+  const isAuthorized = (tokenId, paramsId) =>
+    tokenId === paramsId ? true : false;
+
+  const deleteImg = (img) => {
+    const filename = img.split("/images/")[1];
+
+    fs.unlink(`images/${filename}`, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`\nDeleted file: ${filename}`);
+      }
+    });
+  };
+
+  const updateUser = (sqlInserts) => {
+    userModel
+      .updateOneUser(sqlInserts)
+      .then((response) => {
+        res.status(200).json({ message: "User modifié !!" });
+      })
+      .catch((error) => res.status(500).json({ error }));
+  };
+
+  !isAuthorized(userIdFromToken, userIdFromParams)
+    ? res.status(401).json({ message: "Unathorized" })
+    : userModel
         .findUserById(userIdFromToken)
-        .then(user => console.log("ok"))
-        .catch((error) => res.status(500).json({ error }))
-    : res
-        .status(401)
-        .json({ message: "Id from token is not a valid for this operation" });
+        .then((user) => {
+          // console.log(user);
 
-  // if (userIdFromParams === userIdFromToken) {
-  //   bcrypt
-  //     .hash(req.body.password, 10)
-  //     .then((hash) => {
-  //       const sqlInserts = [
-  //         req.body.firstName,
-  //         req.body.lastName,
-  //         req.body.email,
-  //         hash,
-  //         userIdFromToken,
-  //       ];
-  //       // console.log(sqlInserts);
+          bcrypt
+            .hash(userObject.password, 10)
+            .then((hash) => {
+              sqlInserts = [
+                userIdFromToken,
+                userObject.firstName,
+                userObject.lastName,
+                userObject.email,
+                hash,
+                userObject.image,
+              ];
+              // console.log(sqlInserts);
+              updateUser(sqlInserts);
+            })
+            .catch((error) => res.status(500).json({ error }));
 
-  //       userModel
-  //         .updateOneUser(sqlInserts)
-  //         .then((response) =>
-  //           res.status(200).json({ message: "User modifié !" })
-  //         )
-  //         .catch((error) => res.status(400).json({ error: "👎  !" }));
-  //     })
-  //     .catch((error) => res.status(500).json({ error }));
-  // } else {
-  //   res.status(400).json({ message: "user Id from params not valid !" });
-  // }
+          user[0].u_avatar !== null
+            ? deleteImg(user[0].u_avatar)
+            : console.log("from db img", user[0].u_avatar);
+        })
+        .catch((error) => res.status(500).json({ error }));
 };
 
 exports.deleteOneUser = (req, res, next) => {
