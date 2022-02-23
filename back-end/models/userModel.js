@@ -1,113 +1,91 @@
-const db = require('../db/db-connect');
-const mysql = require('mysql');
+const db = require("../db/db-connect");
+const mysql = require("mysql");
 
 exports.insertIntoUser = (sqlInserts) => {
+  let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password, u_admin) VALUES ( ?, ?, ?, ?, ? )`;
 
-    let sql = `INSERT INTO user ( u_first_name, u_last_name, u_email, u_password, u_admin) VALUES ( ?, ?, ?, ?, ? )`;
+  //From doc : Preparing Queries. You can use mysql.format to prepare a query
+  // with multiple insertion points, utilizing the proper escaping
+  // for ids and values.
+  sql = mysql.format(sql, sqlInserts);
 
-    //From doc : Preparing Queries. You can use mysql.format to prepare a query 
-    // with multiple insertion points, utilizing the proper escaping 
-    // for ids and values. 
-    sql = mysql.format(sql, sqlInserts);
-
-    return new Promise((resolve, reject) => {
-
-        db.query(sql, (err, result) => {
-
-            if (err) reject(err);
-            resolve(result);
-
-
-        })
-    })
-}
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, result) => {
+      if (err) reject(err);
+      resolve(result);
+    });
+  });
+};
 
 exports.findByEmail = (email) => {
-    // console.log(email);
-    const sql = `SELECT * FROM user WHERE u_email = ?`;
+  // console.log(email);
+  const sql = `SELECT * FROM user WHERE u_email = ?`;
 
-    return new Promise((resolve, reject) => {
-
-        db.query(sql, [email], (err, result) => {
-
-            if (result === undefined || result.length === 0) {
-                // console.log(result, sql);
-                reject({ error: '👎 Utilisateur non trouvé !' })
-            } else {
-
-                // console.log('result from db : ', result);
-                resolve(result);
-            }
-
-        })
-    })
-
-}
+  return new Promise((resolve, reject) => {
+    db.query(sql, [email], (err, result) => {
+      if (result === undefined || result.length === 0) {
+        // console.log(result, sql);
+        reject({ error: "👎 Utilisateur non trouvé !" });
+      } else {
+        // console.log('result from db : ', result);
+        resolve(result);
+      }
+    });
+  });
+};
 
 exports.findUserById = (id) => {
+  const sql = `SELECT * FROM user WHERE u_id = ?`;
 
-    const sql = `SELECT * FROM user WHERE u_id = ?`;
+  return new Promise((resolve, reject) => {
+    db.query(sql, [id], (err, result) => {
+      if (result === undefined || result.length === 0) {
+        // console.log(result);
 
-    return new Promise((resolve, reject) => {
-
-        db.query(sql, [id], (err, result) => {
-            if (result === undefined || result.length === 0) {
-                // console.log(result);
-
-                reject({ error: '👎 Utilisateur non trouvé !' })
-            } else {
-
-                // console.log('result from db : ', result);
-                resolve(result);
-            }
-        })
-    })
-}
+        reject({ error: "👎 Utilisateur non trouvé !" });
+      } else {
+        // console.log('result from db : ', result);
+        resolve(result);
+      }
+    });
+  });
+};
 
 exports.updateOneUser = (sqlInserts) => {
+  let sql =
+    `REPLACE INTO user ( u_id, u_first_name, u_last_name, u_email, u_password, u_avatar ) VALUES (?, ?, ?, ?, ?, ?) `;
 
-    let sql = `REPLACE INTO user ( u_first_name, u_last_name, u_email, u_password, u_id ) VALUES (?, ?, ?, ?, ?)`;
+  sql = mysql.format(sql, sqlInserts);
+  // console.log(sql);
 
-    sql = mysql.format(sql, sqlInserts);
-    // console.log(sql);
-
-    return new Promise((resolve, reject) => {
-
-        db.query(sql, (err, result) => {
-
-            if (result === undefined || result.affectedRows === 0) {
-                // console.log('result from db : ', result);
-                reject(err)
-            } else {
-
-                // console.log('result from db : ', result);
-                resolve(result);
-            }
-
-        })
-    })
-
-}
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, result) => {
+      if (result === undefined || result.affectedRows === 0) {
+        // console.log('result from db : ', result);
+        reject(err);
+      } else {
+        // console.log('result from db : ', result);
+        resolve(result);
+      }
+    });
+  });
+};
 
 exports.deleteOneUserByUser = (userId) => {
+  const sql = `DELETE FROM user WHERE u_id = ` + db.escape(userId);
 
-    const sql = `DELETE FROM user WHERE u_id = ` + db.escape(userId);
-
-    return new Promise((resolve, reject) => {
-
-        db.query(sql, (err, result) => {
-
-            if (result === undefined || result.affectedRows === 0) {
-                // console.log('result from db reject : ', result);
-                reject({ err })
-            } else {
-                // console.log('result from db resolve : ', result);
-                resolve(result);
-            }
-
-        })
-    })
-}
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, result) => {
+      if (result === undefined || result.affectedRows === 0) {
+        // console.log('result from db reject : ', result);
+        reject({ err });
+      } else {
+        // console.log('result from db resolve : ', result);
+        resolve(result);
+      }
+    });
+  });
+};
 
 // encapsulation :
 // fetch a déjà une promesse dedans .then
