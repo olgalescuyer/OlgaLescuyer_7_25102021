@@ -114,7 +114,7 @@ exports.modifyOneUser = (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  // for return a number from params :
+  // for return a num from params :
   const userIdFromParams = parseInt(req.params.id, 10);
   const userIdFromToken = req.bearerToken.userId;
 
@@ -145,11 +145,29 @@ exports.modifyOneUser = (req, res, next) => {
     });
   };
 
-  const updateUser = (sqlInserts) => {
+  const updateUser = (inserts) => {
     userModel
-      .updateOneUser(sqlInserts)
+      .updateOneUser(inserts)
       .then((response) => {
         res.status(200).json({ message: "User modifié !!" });
+      })
+      .catch((error) => res.status(500).json({ error }));
+  };
+
+  const doSqlInserts = (id, obj) => {
+    bcrypt
+      .hash(obj.password, 10)
+      .then((hash) => {
+        const sqlInserts = [
+          id,
+          obj.firstName,
+          obj.lastName,
+          obj.email,
+          hash,
+          obj.image,
+        ];
+        // console.log(sqlInserts);
+        updateUser(sqlInserts);
       })
       .catch((error) => res.status(500).json({ error }));
   };
@@ -161,25 +179,11 @@ exports.modifyOneUser = (req, res, next) => {
         .then((user) => {
           // console.log(user);
 
-          bcrypt
-            .hash(userObject.password, 10)
-            .then((hash) => {
-              sqlInserts = [
-                userIdFromToken,
-                userObject.firstName,
-                userObject.lastName,
-                userObject.email,
-                hash,
-                userObject.image,
-              ];
-              // console.log(sqlInserts);
-              updateUser(sqlInserts);
-            })
-            .catch((error) => res.status(500).json({ error }));
-
           user[0].u_avatar !== null
             ? deleteImg(user[0].u_avatar)
             : console.log("from db img", user[0].u_avatar);
+
+          doSqlInserts(userIdFromToken, userObject);
         })
         .catch((error) => res.status(500).json({ error }));
 };
