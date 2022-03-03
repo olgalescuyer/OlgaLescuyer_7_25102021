@@ -1,11 +1,8 @@
 const userModel = require("../models/userModel");
-const fs = require("fs");
-
 const { validationResult } = require("express-validator");
-
 require("dotenv").config();
 // masque
-
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -181,7 +178,7 @@ exports.modifyOneUser = (req, res, next) => {
 
           user[0].u_avatar !== null
             ? deleteImg(user[0].u_avatar)
-            : console.log("from db img", user[0].u_avatar);
+            : false;
 
           doSqlInserts(userIdFromToken, userObject);
         })
