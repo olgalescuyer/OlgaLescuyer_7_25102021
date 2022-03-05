@@ -12,10 +12,12 @@ import NotFound from "./Pages/NotFound";
 import { UserProvider } from "./Context/UserContextTest";
 import UserContextTest from "./Context/UserContextTest";
 
+// for protectection roots '/home' & '/profile' I need to check the localStorage by userContext & to create a function 'RequireAuth'
+// + Redirect them to the /login page, but save the current location they were trying to go to when they were redirected :
 const RequireAuth = ({ children }) => {
   const userContext = useContext(UserContextTest);
   const location = useLocation();
-  // console.log(userContext.isLoggedIn);
+  console.log("isLoggedin", userContext.isLoggedIn);
   return userContext.isLoggedIn ? (
     children
   ) : (

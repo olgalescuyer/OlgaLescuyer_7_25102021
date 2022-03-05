@@ -9,7 +9,7 @@ import userService from "../../../services/userService.js";
 
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
+const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
   const refImg = useRef();
   // console.log(refImg.current.value);
   const userContext = useContext(UserContextTest);
@@ -97,7 +97,21 @@ const FormPost = ({ onValidate, firstName, lastName, toggle }) => {
               className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
               style={{ background: "white", width: "60px", height: "60px" }}
             >
-              <BsPersonFill size={36} />
+              {!avatar && <BsPersonFill size={36} />}
+              {avatar && (
+                <img
+                  src={avatar}
+                  alt="avatar"
+                  className="img-fluid rounded-circle"
+                  style={{
+                    objectFit: "cover",
+                    height: "100%",
+                    width: "100%",
+                    left: "0",
+                    top: "0",
+                  }}
+                />
+              )}
             </Link>
 
             <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>

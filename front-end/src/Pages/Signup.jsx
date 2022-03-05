@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 
 import Logo from "../Components/Logo.jsx";
 import FormSignup from "../Components/Signup/FormSignup/FormSignup";
 
-const Signup = () => {
-  return (
-    <Container className="w-custom-limit-400">
-      <header>
-        <Logo />
-      </header>
+import UserContextTest from "../Context/UserContextTest";
 
-      <main>
-        <FormSignup />
-      </main>
-    </Container>
+const Signup = () => {
+  const userContext = useContext(UserContextTest);
+  return (
+    <>
+      {userContext.isLoggedIn && <Navigate to="/" replace={true}></Navigate>}
+      <Container className="w-custom-limit-400">
+        <header>
+          <Logo />
+        </header>
+
+        <main>
+          <FormSignup />
+        </main>
+      </Container>
+    </>
   );
 };
 
