@@ -17,11 +17,11 @@ const Card = ({
   userId,
   firstName,
   lastName,
+  avatar,
   createdAt,
   onValidate,
-  likes,
-  likeId,
-  likeUserId,
+  liked,
+  disliked,
 }) => {
   timeago.register("fr", fr);
   // console.log(likes, likeId, likeUserId);
@@ -41,7 +41,21 @@ const Card = ({
                   height: "60px",
                 }}
               >
-                <BsPersonFill size={36} />
+                {!avatar && <BsPersonFill size={36} />}
+                {avatar && (
+                  <img
+                    src={avatar}
+                    alt="avatar"
+                    className="img-fluid rounded-circle"
+                    style={{
+                      objectFit: "cover",
+                      height: "100%",
+                      width: "100%",
+                      left: "0",
+                      top: "0",
+                    }}
+                  />
+                )}
               </Link>
 
               <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
@@ -77,14 +91,13 @@ const Card = ({
                     left: "0",
                     top: "0",
                   }}
-                 
                 />
               </div>
             )}
           </div>
         </div>
         <Container fluid className="d-flex justify-content-between p-2 g-0">
-          <Likes likes={likes} likeId={likeId} likeUserId={likeUserId}postId={postId}/>
+          <Likes liked={liked} disliked={disliked} postId={postId} />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>

@@ -40,7 +40,7 @@ const Home = () => {
       userService
         .getAllPosts(config)
         .then((response) => {
-        //  console.log("response : ",response);
+          // console.log("response : ", response);
 
           setDataPost(response.data);
           setAddDataPost(false);
@@ -56,7 +56,7 @@ const Home = () => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
-console.log(dataPost);
+  // console.log(dataPost);
   // + .map for Card-->
   return (
     <Container className="w-custom-limit-800 p-0">
@@ -66,6 +66,7 @@ console.log(dataPost);
           onValidate={validateHandler}
           firstName={dataUser.u_first_name}
           lastName={dataUser.u_last_name}
+          avatar={dataUser.u_avatar}
           toggle={handleToggle}
         />
       )}
@@ -82,9 +83,10 @@ console.log(dataPost);
                 userId={post.p_fk_user_id}
                 firstName={post.u_first_name}
                 lastName={post.u_last_name}
-                avatar={"avatar"}
+                avatar={post.u_avatar}
                 createdAt={post.p_time}
-                likes={post.l_choice}
+                disliked={post.disliked}
+                liked={post.liked}
                 likeId={post.l_id}
                 likeUserId={post.l_fk_user_id}
                 key={index}
