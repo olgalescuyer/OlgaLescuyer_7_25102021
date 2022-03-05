@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -14,7 +14,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { RiAddBoxFill } from "react-icons/ri";
 import { RiAddBoxLine } from "react-icons/ri";
 
-const Header = ({ toggle }) => {
+const Header = ({ handle }) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
@@ -24,9 +24,14 @@ const Header = ({ toggle }) => {
     navigate("/login", { replace: true });
   };
 
+  const [toggle, setToggle] = useState(false);
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
+
   return (
-    <header className="position-sticky top-0" style={{zIndex: "2"}}>
-      <Navbar bg="light" expand="lg" >
+    <header className="position-sticky top-0" style={{ zIndex: "2" }}>
+      <Navbar bg="light" expand="lg">
         <Container fluid className="g-0 px-2">
           <Navbar.Brand href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
@@ -37,12 +42,16 @@ const Header = ({ toggle }) => {
               title="Créer une publication"
               className="position-relative"
               style={{ cursor: "pointer" }}
-              onClick={() => toggle()}
+              onClick={() => {
+                handle();
+                handleToggle();
+              }}
             >
-              <span className="position-absolute invisible">
+              <span className={!toggle ? "position-absolute " : "position-absolute invisible" }>
                 <RiAddBoxFill size={26}></RiAddBoxFill>
               </span>
-              <span className="">
+
+              <span className={toggle ? "" : "invisible" }>
                 <RiAddBoxLine size={26}></RiAddBoxLine>
               </span>
             </div>

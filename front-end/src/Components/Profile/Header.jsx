@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <header>
       <Navbar bg="light" expand="lg">
-        <Container fluid className="g-0">
+        <Container fluid className="g-0 px-2">
           <Navbar.Brand  href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>

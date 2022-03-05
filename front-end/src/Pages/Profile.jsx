@@ -33,7 +33,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <Container className="w-custom-limit-800">
+    <Container className="w-custom-limit-800 p-0">
       <Header />
       <main>
         <Container className="mt-4">
