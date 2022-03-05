@@ -60,7 +60,7 @@ const Home = () => {
   // + .map for Card-->
   return (
     <Container className="w-custom-limit-800 p-0">
-      <Header userId={"userId"} toggle={handleToggle} />
+      <Header userId={"userId"} handle={handleToggle} />
       {toggle && (
         <FormPost
           onValidate={validateHandler}
