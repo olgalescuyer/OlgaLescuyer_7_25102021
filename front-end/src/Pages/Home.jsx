@@ -56,18 +56,19 @@ const Home = () => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
+
   // console.log(dataPost);
   // + .map for Card-->
   return (
     <Container className="w-custom-limit-800 p-0">
-      <Header userId={"userId"} handle={handleToggle} />
+      <Header userId={"userId"} onToggle={handleToggle} toggle={toggle} />
       {toggle && (
         <FormPost
           onValidate={validateHandler}
           firstName={dataUser.u_first_name}
           lastName={dataUser.u_last_name}
           avatar={dataUser.u_avatar}
-          toggle={handleToggle}
+          onToggle={handleToggle}
         />
       )}
 

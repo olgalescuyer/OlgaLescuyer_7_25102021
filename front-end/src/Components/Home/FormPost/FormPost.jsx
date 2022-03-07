@@ -3,29 +3,26 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Button from "react-bootstrap/Button";
 import { BsPersonFill } from "react-icons/bs";
-import Btns from "./FormPostBtns.jsx";
+
 import userService from "../../../services/userService.js";
 
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
+const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   const refImg = useRef();
   // console.log(refImg.current.value);
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
 
+  // ---- grab the object :
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
     imageUrl: "",
   });
   // console.log(dataPost);
-
-  const cancelCourse = () => {
-    setDataPost({ title: "", text: "", imageUrl: "" });
-    refImg.current.value = "";
-  };
 
   const handleChange = (event) => {
     // console.log(event.target.value)
@@ -39,6 +36,15 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
     });
   };
 
+  // -------------- // 
+
+  // for 'annuler' the post :
+  const cancelCourse = () => {
+    setDataPost({ title: "", text: "", imageUrl: "" });
+    refImg.current.value = "";
+  };
+
+  // for warning messages :
   const [messageValidation, setMessageValidation] = useState("");
 
   const handleSubmit = (e) => {
@@ -73,17 +79,23 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
     }
   };
 
+  // func to call the api :
   const submitToApi = (data, auth) => {
     userService
       .postOnePost(data, auth)
       .then((response) => {
         onValidate();
         cancelCourse();
-        toggle();
+        onToggle();
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleClick = () => {
+    cancelCourse();
+    onToggle();
   };
 
   return (
@@ -171,7 +183,16 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
         />
       </Form.Group>
       <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} toggle={toggle} />
+        <Button variant="primary" type="submit">
+          Publier
+        </Button>
+        <Button
+          variant="outline-secondary"
+          className="ms-3"
+          onClick={() => handleClick()}
+        >
+          Annuler
+        </Button>
       </Container>
     </Form>
   );
