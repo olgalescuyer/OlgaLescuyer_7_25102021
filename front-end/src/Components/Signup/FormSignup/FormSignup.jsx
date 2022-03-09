@@ -16,6 +16,7 @@ const FormSignup = () => {
   const customMessage = validService.messages();
   const userContext = useContext(UserContextTest);
 
+  // create an object for grabing the data :
   const [dataUser, setDataUser] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +26,7 @@ const FormSignup = () => {
     admin: 0,
   });
 
+  // - for warning messages :
   const [message, setMessage] = useState({
     firstName: "",
     lastName: "",

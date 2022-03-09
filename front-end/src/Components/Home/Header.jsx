@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
+import Badge from "react-bootstrap/Badge";
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 import UserContextTest from "../../Context/UserContextTest";
 
@@ -14,7 +15,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { RiAddBoxFill } from "react-icons/ri";
 import { RiAddBoxLine } from "react-icons/ri";
 
-const Header = ({ handle }) => {
+const Header = ({ onToggle, toggle }) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
@@ -22,11 +23,6 @@ const Header = ({ handle }) => {
   const logoutHandler = () => {
     userContext.logout();
     navigate("/login", { replace: true });
-  };
-
-  const [toggle, setToggle] = useState(false);
-  const handleToggle = () => {
-    setToggle(!toggle);
   };
 
   return (
@@ -43,15 +39,18 @@ const Header = ({ handle }) => {
               className="position-relative"
               style={{ cursor: "pointer" }}
               onClick={() => {
-                handle();
-                handleToggle();
+                onToggle();
               }}
             >
-              <span className={!toggle ? "position-absolute " : "position-absolute invisible" }>
+              <span
+                className={
+                  toggle ? "position-absolute " : "position-absolute invisible"
+                }
+              >
                 <RiAddBoxFill size={26}></RiAddBoxFill>
               </span>
 
-              <span className={toggle ? "" : "invisible" }>
+              <span className={!toggle ? "" : "invisible"}>
                 <RiAddBoxLine size={26}></RiAddBoxLine>
               </span>
             </div>

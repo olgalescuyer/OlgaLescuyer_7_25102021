@@ -3,18 +3,22 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Button from "react-bootstrap/Button";
 import { BsPersonFill } from "react-icons/bs";
-import Btns from "./FormPostBtns.jsx";
+
 import userService from "../../../services/userService.js";
+import validService from "../../../services/validService";
 
 import UserContextTest from "../../../Context/UserContextTest";
 
-const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
+const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
+  const customMessage = validService.messages();
   const refImg = useRef();
   // console.log(refImg.current.value);
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
 
+  // ---- grab the object :
   const [dataPost, setDataPost] = useState({
     title: "",
     text: "",
@@ -22,14 +26,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
   });
   // console.log(dataPost);
 
-  const cancelCourse = () => {
-    setDataPost({ title: "", text: "", imageUrl: "" });
-    refImg.current.value = "";
-  };
-
   const handleChange = (event) => {
-    // console.log(event.target.value)
-    setMessageValidation("");
     setDataPost((prevDataPost) => {
       // console.log(prevDataPost);
       return {
@@ -39,7 +36,38 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
     });
   };
 
-  const [messageValidation, setMessageValidation] = useState("");
+  // -------------- //
+
+  // for warning messages :
+
+  const [message, setMessage] = useState({
+    title: "",
+    text: "",
+    imageUrl: "",
+  });
+
+  const handleMessage = (data) => {
+    return data.title.length === 0 &&
+      data.text.length === 0 &&
+      data.imageUrl.length === 0
+      ? setMessage({
+          title: customMessage.title,
+          text: customMessage.text,
+          imageUrl: customMessage.imageUrl,
+        })
+      : data.text.length === 0 && data.imageUrl.length === 0
+      ? setMessage({
+          text: customMessage.text,
+          imageUrl: customMessage.imageUrl,
+        })
+      : data.title.length === 0
+      ? setMessage({
+          title: customMessage.title,
+        })
+      : console.log("ok");
+  };
+
+  // -------------- //
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,27 +95,41 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
 
       submitToApi(mformData, token);
     } else {
-      setMessageValidation(
-        "Votre publication doit contenir un titre et soit le text descriptif soit une image"
-      );
+      // console.log(dataPost);
+      handleMessage(dataPost);
     }
   };
 
+  // func to call the api :
   const submitToApi = (data, auth) => {
     userService
       .postOnePost(data, auth)
       .then((response) => {
         onValidate();
         cancelCourse();
-        toggle();
+        onToggle();
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  // for 'annuler' the post :
+  const cancelCourse = () => {
+    setDataPost({ title: "", text: "", imageUrl: "" });
+    refImg.current.value = "";
+  };
+  const handleClick = () => {
+    cancelCourse();
+    onToggle();
+  };
+
   return (
-    <Form className="p-2 mb-2 color-custom-body" onSubmit={handleSubmit}>
+    <Form
+      className="p-2 color-custom-body"
+      style={{ height: "100vh" }}
+      onSubmit={handleSubmit}
+    >
       <header>
         <Container fluid className="gx-0">
           <div className="position-relative d-flex align-items-center mb-2">
@@ -123,7 +165,10 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
         </Container>
       </header>
 
-      <Form.Group className="mb-2 text-muted fst-italic" controlId="title">
+      <Form.Group
+        className="position-relative text-muted fst-italic"
+        controlId="title"
+      >
         <FloatingLabel controlId="title" label="Titre (max 255)">
           <Form.Control
             type="text"
@@ -134,13 +179,15 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
           />
         </FloatingLabel>
 
-        <Form.Text className="text-muted ps-2 d-none">
-          some warning...
-        </Form.Text>
+        <div className="position-relative p-4">
+          <Form.Text className="position-absolute d-block ps-2 bottom-0 end-0 fw-bold text-danger ">
+            {message.title}
+          </Form.Text>
+        </div>
       </Form.Group>
 
       <Form.Group
-        className=" position-relative text-muted fst-italic"
+        className=" position-relative text-muted fst-italic mt-1"
         controlId="text"
       >
         <FloatingLabel controlId="text" label="À quoi pensez-vous ? (max 255)">
@@ -154,12 +201,14 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
             value={dataPost.text}
           />
         </FloatingLabel>
-        <Form.Text className="d-block position-absolute ps-2 bottom-0 end-0 fw-bold text-danger ">
-          {messageValidation}
-        </Form.Text>
+        <div className="position-relative p-1">
+          <Form.Text className="position-absolute d-block ps-2 fw-bold text-danger ">
+            {message.text}
+          </Form.Text>
+        </div>
       </Form.Group>
 
-      <Form.Group controlId="imageUrl" className="mb-2">
+      <Form.Group controlId="imageUrl" className="position-relative mb-2 mt-1">
         <Form.Label></Form.Label>
         <Form.Control
           type="file"
@@ -169,9 +218,26 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, toggle }) => {
           accept="image/*"
           ref={refImg}
         />
+        <div className="position-relative">
+          <Form.Text className="position-absolute d-block ps-2  fw-bold text-danger fst-italic">
+            {message.imageUrl}
+          </Form.Text>
+        </div>
       </Form.Group>
-      <Container fluid className="d-flex position-relative g-0">
-        <Btns onCancel={cancelCourse} toggle={toggle} />
+      <Container
+        fluid
+        className="d-flex justify-content-end position-relative g-0 mt-4 "
+      >
+        <Button variant="primary" type="submit">
+          Publier
+        </Button>
+        <Button
+          variant="outline-secondary"
+          className="ms-3"
+          onClick={() => handleClick()}
+        >
+          Annuler
+        </Button>
       </Container>
     </Form>
   );
