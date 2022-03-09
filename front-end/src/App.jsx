@@ -17,7 +17,7 @@ import UserContextTest from "./Context/UserContextTest";
 const RequireAuth = ({ children }) => {
   const userContext = useContext(UserContextTest);
   const location = useLocation();
-  console.log("isLoggedin", userContext.isLoggedIn);
+  // console.log("isLoggedin", userContext.isLoggedIn);
   return userContext.isLoggedIn ? (
     children
   ) : (

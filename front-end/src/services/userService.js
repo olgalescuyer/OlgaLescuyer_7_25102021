@@ -21,7 +21,7 @@ const postOnePost = (postData, token) => {
     },
     data: postData,
   };
-  console.log("post : ", options);
+  // console.log("post : ", options);
   return axios(options);
 };
 

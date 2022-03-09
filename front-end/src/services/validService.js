@@ -19,6 +19,9 @@ const messages = () => {
       "Le mot de passe doit contenir au moins 8 Caractères et  1 minuscule, 1 majuscule, 1 chiffre, 1 symbole.",
     controlPassword:
       "Le mot de passe doit contenir au moins 8 Caractères et  1 minuscule, 1 majuscule, 1 chiffre, 1 symbole.",
+      title: "Veuillez remplir ce champ et l'un des optionnels ci en bas",
+      text: "optionnel",
+      imageUrl: "optionnel",
   };
 };
 
