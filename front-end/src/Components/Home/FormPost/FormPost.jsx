@@ -47,14 +47,24 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   });
 
   const handleMessage = (data) => {
-    console.log(data.title.length);
-    data.title.length === 0
+    return data.title.length === 0 &&
+      data.text.length === 0 &&
+      data.imageUrl.length === 0
       ? setMessage({
           title: customMessage.title,
           text: customMessage.text,
           imageUrl: customMessage.imageUrl,
         })
-      : setMessage("");
+      : data.text.length === 0 && data.imageUrl.length === 0
+      ? setMessage({
+          text: customMessage.text,
+          imageUrl: customMessage.imageUrl,
+        })
+      : data.title.length === 0
+      ? setMessage({
+          title: customMessage.title,
+        })
+      : console.log("ok");
   };
 
   // -------------- //
@@ -156,7 +166,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       </header>
 
       <Form.Group
-        className="position-relativetext-muted fst-italic"
+        className="position-relative text-muted fst-italic"
         controlId="title"
       >
         <FloatingLabel controlId="title" label="Titre (max 255)">
@@ -216,7 +226,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       </Form.Group>
       <Container
         fluid
-        className="d-flex justify-content-end position-relative g-0 "
+        className="d-flex justify-content-end position-relative g-0 mt-4 "
       >
         <Button variant="primary" type="submit">
           Publier
