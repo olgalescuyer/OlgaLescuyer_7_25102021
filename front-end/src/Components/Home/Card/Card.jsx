@@ -58,7 +58,7 @@ const Card = ({
                 )}
               </Link>
 
-              <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
+              <span className="ms-2 fw-bold">{firstName + " " + lastName}</span>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
                 publiée <TimeAgo datetime={createdAt} locale="fr" />

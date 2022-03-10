@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
-import Image from "react-bootstrap/Image";
 
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 import UserContextTest from "../../Context/UserContextTest";
@@ -38,10 +37,10 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
           </Navbar.Brand>
 
           <div className="d-flex">
-            <div
+            <Button
+              variant="light"
               title="Créer une publication"
-              className="position-relative"
-              style={{ cursor: "pointer" }}
+              className="position-relative p-0 ms-2"
               onClick={() => {
                 onToggle();
               }}
@@ -57,19 +56,16 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
               <span className={!toggle ? "" : "invisible"}>
                 <RiAddBoxLine size={26}></RiAddBoxLine>
               </span>
-            </div>
+            </Button>
 
-            <div
-              className="position-relative ps-2"
-              style={{ cursor: "pointer" }}
-            >
+            <Button variant="light" className="position-relative p-0 ms-2">
               <span className="position-absolute">
-                <RiHome2Fill size={24}></RiHome2Fill>
+                <RiHome2Fill size={25}></RiHome2Fill>
               </span>
               <span className="invisible">
-                <RiHome2Line size={24}></RiHome2Line>
+                <RiHome2Line size={25}></RiHome2Line>
               </span>
-            </div>
+            </Button>
 
             <OverlayTrigger
               placement="bottom"
@@ -83,11 +79,11 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
                 <Button
                   variant="light"
                   {...triggerHandler}
-                  className="d-inline-flex align-items-center p-0"
+                  className="d-inline-flex align-items-center p-0 ms-2"
                 >
                   <div
                     data-title="Aller à la page de profile"
-                    className="position-relative ps-2"
+                    className="position-relative"
                     style={{ cursor: "pointer" }}
                     onClick={() => navigate("/profile/:id")}
                     ref={ref}
@@ -103,10 +99,10 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
               )}
             </OverlayTrigger>
 
-            <div
+            <Button
+              variant="light"
               title="Se déconnecter"
-              className="position-relaive ps-2"
-              style={{ cursor: "pointer" }}
+              className="position-relaive p-0 ms-2"
               onClick={logoutHandler}
             >
               <span className="position-absolute invisible">
@@ -115,7 +111,7 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
               <span>
                 <RiLogoutBoxRLine size={24}></RiLogoutBoxRLine>
               </span>
-            </div>
+            </Button>
           </div>
         </Container>
       </Navbar>

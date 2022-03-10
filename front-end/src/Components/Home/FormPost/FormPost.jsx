@@ -156,7 +156,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
               )}
             </Link>
 
-            <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
+            <span className="ms-2 fw-bold">{firstName + " " + lastName}</span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
