@@ -7,7 +7,7 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ postId, likes }) => {
+const Likes = ({ liked, disliked }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
   // console.log(token);
@@ -65,7 +65,7 @@ const Likes = ({ postId, likes }) => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>{like}</span>
+        <span>{liked}</span>
       </div>
 
       <div className="position-relative" onClick={handleDislike}>
@@ -80,7 +80,7 @@ const Likes = ({ postId, likes }) => {
           <HiOutlineThumbDown size={24} />
         </span>
 
-        <span>{dislike}</span>
+        <span>{disliked}</span>
       </div>
     </div>
   );
