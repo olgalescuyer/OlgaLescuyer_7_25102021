@@ -180,7 +180,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         </FloatingLabel>
 
         <div className="position-relative p-4">
-          <Form.Text className="position-absolute d-block ps-2 bottom-0 end-0 fw-bold text-danger ">
+          <Form.Text className="position-absolute start-0 top-0 d-block ps-2 fw-bold text-danger ">
             {message.title}
           </Form.Text>
         </div>
