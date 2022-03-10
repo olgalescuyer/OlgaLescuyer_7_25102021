@@ -64,7 +64,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       ? setMessage({
           title: customMessage.title,
         })
-      : console.log("ok");
+      : console.log("error");
   };
 
   // -------------- //
@@ -156,7 +156,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
               )}
             </Link>
 
-            <span className="ps-2 fw-bold">{firstName + " " + lastName}</span>
+            <span className="ms-2 fw-bold">{firstName + " " + lastName}</span>
 
             <span className="position-absolute top-0 end-0 text-muted fst-italic">
               Créer une publication
@@ -180,7 +180,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         </FloatingLabel>
 
         <div className="position-relative p-4">
-          <Form.Text className="position-absolute d-block ps-2 bottom-0 end-0 fw-bold text-danger ">
+          <Form.Text className="position-absolute start-0 top-0 d-block ps-2 fw-bold text-danger ">
             {message.title}
           </Form.Text>
         </div>
