@@ -64,7 +64,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       ? setMessage({
           title: customMessage.title,
         })
-      : console.log("ok");
+      : console.log("error");
   };
 
   // -------------- //

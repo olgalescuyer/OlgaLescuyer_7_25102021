@@ -61,7 +61,13 @@ const Home = () => {
   // + .map for Card-->
   return (
     <Container className="w-custom-limit-800 p-0">
-      <Header userId={"userId"} onToggle={handleToggle} toggle={toggle} />
+      <Header
+        userId={"userId"}
+        onToggle={handleToggle}
+        toggle={toggle}
+        firstName={dataUser.u_first_name}
+        lastName={dataUser.u_last_name}
+      />
       <main>
         {toggle && (
           <FormPost

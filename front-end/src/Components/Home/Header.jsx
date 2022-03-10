@@ -2,7 +2,11 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import Badge from "react-bootstrap/Badge";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Button from "react-bootstrap/Button";
+import Tooltip from "react-bootstrap/Tooltip";
+import Image from "react-bootstrap/Image";
+
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 import UserContextTest from "../../Context/UserContextTest";
 
@@ -15,7 +19,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { RiAddBoxFill } from "react-icons/ri";
 import { RiAddBoxLine } from "react-icons/ri";
 
-const Header = ({ onToggle, toggle }) => {
+const Header = ({ onToggle, toggle, firstName, lastName }) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   // console.log(userContext.logout);
@@ -66,19 +70,39 @@ const Header = ({ onToggle, toggle }) => {
                 <RiHome2Line size={24}></RiHome2Line>
               </span>
             </div>
-            <div
-              title="Aller à la page de profile"
-              className="position-relative ps-2"
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate("/profile/:id")}
+
+            <OverlayTrigger
+              placement="bottom"
+              overlay={
+                <Tooltip id="button-tooltip-2">
+                  {firstName} {lastName}
+                </Tooltip>
+              }
             >
-              <span className="position-absolute invisible">
-                <RiUserSettingsFill size={24}></RiUserSettingsFill>
-              </span>
-              <span className="">
-                <RiUserSettingsLine size={24}></RiUserSettingsLine>
-              </span>
-            </div>
+              {({ ref, ...triggerHandler }) => (
+                <Button
+                  variant="light"
+                  {...triggerHandler}
+                  className="d-inline-flex align-items-center p-0"
+                >
+                  <div
+                    data-title="Aller à la page de profile"
+                    className="position-relative ps-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate("/profile/:id")}
+                    ref={ref}
+                  >
+                    <span className="position-absolute invisible">
+                      <RiUserSettingsFill size={24}></RiUserSettingsFill>
+                    </span>
+                    <span className="">
+                      <RiUserSettingsLine size={24}></RiUserSettingsLine>
+                    </span>
+                  </div>
+                </Button>
+              )}
+            </OverlayTrigger>
+
             <div
               title="Se déconnecter"
               className="position-relaive ps-2"
