@@ -142,12 +142,16 @@ exports.getOnePost = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
   // console.log(userIdFromToken);
 
-  const sqlInserts = [postIdFromParams, userIdFromToken];
+  const sqlInserts = [postIdFromParams];
   // console.log(sqlInserts);
 
   postModel
     .findOnePostByIds(sqlInserts)
-    .then((post) => res.status(200).json(post[0]))
+    .then((post) => {
+      userIdFromToken === post[0].p_fk_user_id
+        ? res.status(200).json(post[0])
+        : res.status(401).json({ error });
+    })
     .catch((error) => res.status(404).json({ error }));
 };
 

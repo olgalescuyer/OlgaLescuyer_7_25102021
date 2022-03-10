@@ -25,6 +25,10 @@ const postOnePost = (postData, token) => {
   return axios(options);
 };
 
+const getOnePost = (postId, config) => {
+  return axios.get(API_URL + "posts/" + postId, config);
+};
+
 const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
 };
@@ -58,6 +62,7 @@ const addLikes = (postId, data, token) => {
 
 export default {
   getOneUser,
+  getOnePost,
   getAllPosts,
   postOnePost,
   deleteOnePost,
