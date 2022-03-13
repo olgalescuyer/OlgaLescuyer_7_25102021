@@ -40,7 +40,7 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
             <Button
               variant="light"
               title="Créer une publication"
-              className="position-relative p-0 ms-2"
+              className="position-relative p-0"
               onClick={() => {
                 onToggle();
               }}

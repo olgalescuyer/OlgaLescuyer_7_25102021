@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Card/Card.jsx";
 import Header from "../Components/Home/Header.jsx";
@@ -60,52 +61,54 @@ const Home = () => {
   // console.log(dataPost);
   // + .map for Card-->
   return (
-    <Container className="w-custom-limit-800 p-0">
-      <Header
-        userId={"userId"}
-        onToggle={handleToggle}
-        toggle={toggle}
-        firstName={dataUser.u_first_name}
-        lastName={dataUser.u_last_name}
-      />
-      <main>
-        {toggle && (
-          <FormPost
-            onValidate={validateHandler}
-            firstName={dataUser.u_first_name}
-            lastName={dataUser.u_last_name}
-            avatar={dataUser.u_avatar}
-            onToggle={handleToggle}
-          />
-        )}
+    <>
+      <Container className="w-custom-limit-800 p-0">
+        <Header
+          userId={"userId"}
+          onToggle={handleToggle}
+          toggle={toggle}
+          firstName={dataUser.u_first_name}
+          lastName={dataUser.u_last_name}
+        />
+        <main>
+          {toggle && (
+            <FormPost
+              onValidate={validateHandler}
+              firstName={dataUser.u_first_name}
+              lastName={dataUser.u_last_name}
+              avatar={dataUser.u_avatar}
+              onToggle={handleToggle}
+            />
+          )}
 
-        {!toggle && (
-          <>
-            {dataPost.map((post, index) => {
-              return (
-                <Card
-                  postId={post.p_id}
-                  title={post.p_title}
-                  text={post.p_text}
-                  imageUrl={post.p_image}
-                  userId={post.p_fk_user_id}
-                  firstName={post.u_first_name}
-                  lastName={post.u_last_name}
-                  avatar={post.u_avatar}
-                  createdAt={post.p_time}
-                  disliked={post.disliked}
-                  liked={post.liked}
-                  likeId={post.l_id}
-                  likeUserId={post.l_fk_user_id}
-                  key={index}
-                  onValidate={validateHandler}
-                />
-              );
-            })}
-          </>
-        )}
-      </main>
-    </Container>
+          {!toggle && (
+            <>
+              {dataPost.map((post, index) => {
+                return (
+                  <Card
+                    postId={post.p_id}
+                    title={post.p_title}
+                    text={post.p_text}
+                    imageUrl={post.p_image}
+                    userId={post.p_fk_user_id}
+                    firstName={post.u_first_name}
+                    lastName={post.u_last_name}
+                    avatar={post.u_avatar}
+                    createdAt={post.p_time}
+                    disliked={post.disliked}
+                    liked={post.liked}
+                    likeId={post.l_id}
+                    likeUserId={post.l_fk_user_id}
+                    key={index}
+                    onValidate={validateHandler}
+                  />
+                );
+              })}
+            </>
+          )}
+        </main>
+      </Container>
+    </>
   );
 };
 

@@ -36,7 +36,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     });
   };
 
-  // -------------- //
+  // -------------- 
 
   // for warning messages :
 
