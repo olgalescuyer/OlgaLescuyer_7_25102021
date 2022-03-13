@@ -29,7 +29,8 @@
 
 /*remove button highlight on click */
 .btn:focus,
-.btn-light:active:focus {
+.btn-light:active:focus,
+.btn-primary:active:focus {
   outline: none;
   box-shadow: none;
 }

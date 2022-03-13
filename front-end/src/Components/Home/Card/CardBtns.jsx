@@ -58,7 +58,7 @@ const Btns = ({ userId, postId, onValidate }) => {
               </span>
             </div>
 
-            <CardModal onClose={handleClose} show={show} postId={postId}/>
+            <CardModal onClose={handleClose} show={show} postId={postId} />
           </>
         )}
 
