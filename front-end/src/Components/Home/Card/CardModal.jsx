@@ -40,11 +40,12 @@ const CardModal = ({ onClose, show, postId }) => {
     text: "",
     imageUrl: "",
   });
-  // console.log(dataNewPost);
+  // console.log(dataNewPost.imageUrl);
 
   const handleChange = (event) => {
     setDataNewPost((prevDataNewPost) => {
       // console.log(prevDataNewPost);
+
       return {
         ...prevDataNewPost,
         [event.target.name]: event.target.value,
@@ -52,27 +53,52 @@ const CardModal = ({ onClose, show, postId }) => {
     });
   };
 
+  // console.log(dataNewPost.title.length);
+
   // --------------------------
 
-  const handleSubmit =(e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-
-    console.log("submit");
-  }
-
-    // func to call the api :
-    const submitToApi = (postId, postData, token) => {
-      userService
-        .updatePost(postId, postData, token)
-        .then((response) => {
-        console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    let obj = {
+      title: "",
+      text: "",
+      imageUrl: "",
     };
 
+    const imagefile = document.querySelector("#imageUrl");
+    console.log("imagefile", imagefile);
+    // console.log("imagefile", imagefile.files[0]);
+    // console.log("dataNewPost", dataNewPost.title, dataNewPost.text);
+    // console.log("dataNewPost imageUrl", dataNewPost.imageUrl);
+
+    // console.log("dataPost", dataPost.p_title, dataPost.p_text);
+    // console.log(dataPost.p_image);
+
+    dataNewPost.title
+      ? (obj.title = dataNewPost.title)
+      : (obj.title = dataPost.p_title);
+    dataNewPost.text
+      ? (obj.text = dataNewPost.text)
+      : (obj.text = dataPost.p_text);
+    imagefile === null ? (obj.imageUrl = dataPost.p_image) : console.log("not");
+
+    console.log("obj", obj);
+  };
+
+  // func to call the api :
+  const submitToApi = (postId, postData, token) => {
+    userService
+      .updatePost(postId, postData, token)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // toggles :
   const [showTitle, setShowTitle] = useState(false);
 
   const handleShowTitle = (bool) => {
@@ -292,7 +318,11 @@ const CardModal = ({ onClose, show, postId }) => {
             )}
 
             {showImg && (
-              <Form.Group controlId="imageUrl" className="mb-3" onChange={handleChange}>
+              <Form.Group
+                controlId="imageUrl"
+                className="mb-3"
+                onChange={handleChange}
+              >
                 <Form.Label></Form.Label>
                 <Form.Control
                   type="file"
@@ -311,11 +341,23 @@ const CardModal = ({ onClose, show, postId }) => {
                   handleShowTitle(false);
                   handleShowText(false);
                   handleShowImg(false);
+                  setDataNewPost("");
                 }}
               >
                 Annuler
               </Button>
-              <Button  type="submit" variant="primary" className="ms-3" onClick={onClose}>
+              <Button
+                type="submit"
+                variant="primary"
+                className="ms-3"
+                // onClick={() => {
+                //   onClose();
+                //   handleShowTitle(false);
+                //   handleShowText(false);
+                //   handleShowImg(false);
+
+                // }}
+              >
                 Confirmer les modifications
               </Button>
             </div>
