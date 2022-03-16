@@ -81,7 +81,9 @@ const CardModal = ({ onClose, show, postId }) => {
     dataNewPost.text
       ? (obj.text = dataNewPost.text)
       : (obj.text = dataPost.p_text);
-    imagefile === null ? (obj.imageUrl = dataPost.p_image) : console.log("not");
+    imagefile !== null || dataPost.p_image === null
+      ? console.log("not")
+      : (obj.imageUrl = dataPost.p_image);
 
     console.log("obj", obj);
   };
