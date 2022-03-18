@@ -7,7 +7,7 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ liked, disliked }) => {
+const Likes = ({ liked, disliked, postId }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
   // console.log(token);
@@ -26,14 +26,11 @@ const Likes = ({ liked, disliked }) => {
     setCountDislike(disliked);
   }, []);
 
-
   const handleLike = () => {
-   
     if (addLike === 0 && addDislike === 0) {
       setAddLike(1);
       setCountLike(countLike + 1);
 
-      // console.log(like);
       // submitToApi(postId, { like: like }, token);
     } else if (addLike === 1 && addDislike === 0) {
       setAddLike(0);
@@ -45,8 +42,6 @@ const Likes = ({ liked, disliked }) => {
       setCountDislike(countDislike - 1);
       setCountLike(countLike + 1);
     }
-    console.log(countLike);
-    console.log(addLike);
   };
 
   const handleDislike = () => {
@@ -65,30 +60,31 @@ const Likes = ({ liked, disliked }) => {
     }
   };
 
-  // countLike > 0 ? console.log("countLike", countLike) : console.log("");
-  // countDislike > 0
-  //   ? console.log("countDislike", countDislike)
-  //   : console.log("");
 
-  const submitToApi = (postId, like, token) => {
+
+  const submitToApi = (token,postId, like ) => {
     userService
-      .addLikes(postId, like, token)
+      .addLikes(token,postId, like)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  countLike > 0
+  ? submitToApi(token, postId, addLike)
+  : countDislike > 0
+  ? console.log("countDislike", countDislike)
+  : console.log("");
+
   return (
     <div className="d-flex ">
       <div className="position-relative" onClick={handleLike}>
         <span
           className={
-            addLike === 1
-              ? "position-absolute"
-              : "position-absolute invisible"
+            addLike === 1 ? "position-absolute" : "position-absolute invisible"
           }
         >
           <HiThumbUp size={24} />

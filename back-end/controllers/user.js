@@ -176,9 +176,7 @@ exports.modifyOneUser = (req, res, next) => {
         .then((user) => {
           // console.log(user);
 
-          user[0].u_avatar !== null
-            ? deleteImg(user[0].u_avatar)
-            : false;
+          user[0].u_avatar !== null ? deleteImg(user[0].u_avatar) : false;
 
           doSqlInserts(userIdFromToken, userObject);
         })
