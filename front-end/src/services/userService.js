@@ -47,16 +47,16 @@ const updatePost = (postId, postData, token) => {
   return axios(options);
 };
 
-const addLikes = (postId, data, token) => {
+const addLikes = (token, postId, like) => {
   const options = {
     method: "post",
     url: API_URL + `posts/${postId}/like`,
     headers: {
       Authorization: "Bearer " + token,
     },
-    data,
+    data: { like: like },
   };
-
+  // console.log(options);
   return axios(options);
 };
 
