@@ -12,55 +12,63 @@ const Likes = ({ liked, disliked }) => {
   const token = userContext.token;
   // console.log(token);
 
-  // counter :
+  // add one like/dislike on click :
+  const [addLike, setAddLike] = useState(0);
+  const [addDislike, setAddDislike] = useState(0);
+
+  // add a like/dislike + from db = COUNTER :
   const [countLike, setCountLike] = useState(0);
   const [countDislike, setCountDislike] = useState(0);
 
-  // add a like/dislike from db :
-  const [like, setLike] = useState(0);
-  const [dislike, setDislike] = useState(0);
-
   // like/dislike from db :
   useEffect(() => {
-    setLike(0);
-    setDislike(0);
+    setCountLike(liked);
+    setCountDislike(disliked);
   }, []);
 
-  // console.log(like);
+
   const handleLike = () => {
-    if (countLike === 0 && countDislike === 0) {
-      setCountLike(1);
-      setLike(like + 1);
+   
+    if (addLike === 0 && addDislike === 0) {
+      setAddLike(1);
+      setCountLike(countLike + 1);
 
       // console.log(like);
       // submitToApi(postId, { like: like }, token);
-    } else if (countLike === 1 && countDislike === 0) {
-      setCountLike(0);
-      setLike(like - 1);
-    } else if (countLike === 0 && countDislike === 1) {
-      setCountDislike(0);
-      setCountLike(1);
+    } else if (addLike === 1 && addDislike === 0) {
+      setAddLike(0);
+      setCountLike(countLike - 1);
+    } else if (addLike === 0 && addDislike === 1) {
+      setAddDislike(0);
+      setAddLike(1);
 
-      setDislike(dislike - 1);
-      setLike(like + 1);
+      setCountDislike(countDislike - 1);
+      setCountLike(countLike + 1);
     }
+    console.log(countLike);
+    console.log(addLike);
   };
 
   const handleDislike = () => {
-    if (countDislike === 0 && countLike === 0) {
-      setCountDislike(1);
-      setDislike(dislike + 1);
-    } else if (countDislike === 1 && countLike === 0) {
-      setCountDislike(0);
-      setDislike(dislike - 1);
-    } else if (countDislike === 0 && countLike === 1) {
-      setCountLike(0);
-      setCountDislike(1);
+    if (addDislike === 0 && addLike === 0) {
+      setAddDislike(1);
+      setCountDislike(countDislike + 1);
+    } else if (addDislike === 1 && addLike === 0) {
+      setAddDislike(0);
+      setCountDislike(countDislike - 1);
+    } else if (addDislike === 0 && addLike === 1) {
+      setAddLike(0);
+      setAddDislike(1);
 
-      setLike(like - 1);
-      setDislike(dislike + 1);
+      setCountLike(countLike - 1);
+      setCountDislike(countDislike + 1);
     }
   };
+
+  // countLike > 0 ? console.log("countLike", countLike) : console.log("");
+  // countDislike > 0
+  //   ? console.log("countDislike", countDislike)
+  //   : console.log("");
 
   const submitToApi = (postId, like, token) => {
     userService
@@ -78,7 +86,7 @@ const Likes = ({ liked, disliked }) => {
       <div className="position-relative" onClick={handleLike}>
         <span
           className={
-            countLike === 1
+            addLike === 1
               ? "position-absolute"
               : "position-absolute invisible"
           }
@@ -90,13 +98,13 @@ const Likes = ({ liked, disliked }) => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>{like}</span>
+        <span>{countLike}</span>
       </div>
 
       <div className="position-relative" onClick={handleDislike}>
         <span
           className={
-            countDislike === 1
+            addDislike === 1
               ? "position-absolute"
               : "position-absolute invisible"
           }
@@ -107,7 +115,7 @@ const Likes = ({ liked, disliked }) => {
           <HiOutlineThumbDown size={24} />
         </span>
 
-        <span>{dislike}</span>
+        <span>{countDislike}</span>
       </div>
     </div>
   );
