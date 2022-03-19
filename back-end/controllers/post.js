@@ -100,14 +100,16 @@ exports.deleteOnePost = (req, res, next) => {
     const filename = img.split("/images/")[1];
     // console.log(filename);
 
-    fs.unlink(`images/${filename}`, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        // console.log(`\nDeleted file: ${filename}`);
-        deletePost(postId);
-      }
-    });
+    filename
+      ? fs.unlink(`images/${filename}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log(`\nDeleted file: ${filename}`);
+            deletePost(postId);
+          }
+        })
+      : deletePost(postId);
   };
 
   postModel
