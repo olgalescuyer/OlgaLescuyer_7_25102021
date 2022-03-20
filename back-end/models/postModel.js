@@ -73,7 +73,7 @@ exports.updateOnePost = (sqlInserts) => {
 
 exports.findAllPosts = () => {
 
-    const sql = 'SELECT *, (SELECT COUNT(*) FROM `like_or_not` WHERE like_or_not.l_fk_post_id=post.p_id AND like_or_not.l_choice >0) as liked, (SELECT COUNT(*) FROM `like_or_not` WHERE like_or_not.l_fk_post_id=post.p_id AND like_or_not.l_choice < 0) as disliked FROM post INNER JOIN user ON post.p_fk_user_id = user.u_id ORDER BY p_time DESC';
+    const sql = 'SELECT *, (SELECT COUNT(*) FROM `like_or_not` WHERE like_or_not.l_fk_post_id=post.p_id AND like_or_not.l_choice >0) as liked, (SELECT COUNT(*) FROM `like_or_not` WHERE like_or_not.l_fk_post_id=post.p_id AND like_or_not.l_choice < 0) as disliked, (SELECT l_choice FROM `like_or_not` WHERE l_fk_user_id = p_fk_user_id AND l_fk_post_id = p_id) as post_user_choice  FROM post INNER JOIN user ON post.p_fk_user_id = user.u_id ORDER BY p_time DESC';
 
     return new Promise((resolve, reject) => {
 
