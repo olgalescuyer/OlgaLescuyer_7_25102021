@@ -131,8 +131,12 @@ exports.deleteOnePost = (req, res, next) => {
 };
 
 exports.getAllPosts = (req, res, next) => {
+  const userIdFromToken = req.bearerToken.userId;
+  // console.log(userIdFromToken);
+
+  const sqlInserts = [userIdFromToken];
   postModel
-    .findAllPosts()
+    .findAllPosts(sqlInserts)
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
