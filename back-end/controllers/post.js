@@ -100,14 +100,16 @@ exports.deleteOnePost = (req, res, next) => {
     const filename = img.split("/images/")[1];
     // console.log(filename);
 
-    fs.unlink(`images/${filename}`, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        // console.log(`\nDeleted file: ${filename}`);
-        deletePost(postId);
-      }
-    });
+    filename
+      ? fs.unlink(`images/${filename}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log(`\nDeleted file: ${filename}`);
+            deletePost(postId);
+          }
+        })
+      : deletePost(postId);
   };
 
   postModel
@@ -129,8 +131,12 @@ exports.deleteOnePost = (req, res, next) => {
 };
 
 exports.getAllPosts = (req, res, next) => {
+  const userIdFromToken = req.bearerToken.userId;
+  // console.log(userIdFromToken);
+
+  const sqlInserts = [userIdFromToken];
   postModel
-    .findAllPosts()
+    .findAllPosts(sqlInserts)
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
