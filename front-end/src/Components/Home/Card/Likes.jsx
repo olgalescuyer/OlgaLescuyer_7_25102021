@@ -7,14 +7,20 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ liked, disliked, postId }) => {
+const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
-  // console.log(token);
+  const userIdFromToken = parseInt(userContext.userId(), 10);
+
+  const [validLike, setValidLike] = useState(false);
+  const validateHandler = () => {
+    setValidLike(true);
+  };
 
   // add one like/dislike on click :
   const [addLike, setAddLike] = useState(0);
   const [addDislike, setAddDislike] = useState(0);
+  // console.log(addDislike);
 
   // add a like/dislike + from db = COUNTER :
   const [countLike, setCountLike] = useState(0);
@@ -24,30 +30,55 @@ const Likes = ({ liked, disliked, postId }) => {
   useEffect(() => {
     setCountLike(liked);
     setCountDislike(disliked);
-  }, []);
+  }, [validLike]);
 
   const handleLike = () => {
-    if (addLike === 0 && addDislike === 0) {
+    // likeId === null && userChoice === null
+    //   ? console.log("null")
+    //   : likeId !== null && userChoice === 0
+    //   ? console.log("0")
+    //   : likeId !== null && userChoice === 1
+    //   ? console.log("1")
+    //   : likeId !== null && userChoice === -1
+    //   ? console.log("-1")
+    //   : console.log("error");
+
+    if (likeId === null && userChoice === null) {
+      submitToApi(token, postId, 1);
+      validateHandler();
+    } else if (likeId !== null && userChoice === 0) {
       setAddLike(1);
       setCountLike(countLike + 1);
-
-      // submitToApi(postId, { like: like }, token);
-    } else if (addLike === 1 && addDislike === 0) {
+    } else if (likeId !== null && userChoice === 1) {
       setAddLike(0);
       setCountLike(countLike - 1);
-    } else if (addLike === 0 && addDislike === 1) {
-      setAddDislike(0);
-      setAddLike(1);
-
-      setCountDislike(countDislike - 1);
-      setCountLike(countLike + 1);
+    } else if (likeId !== null && userChoice === -1) {
+    } else {
+      console.log("error");
     }
+
+    // if (addLike === 0 && addDislike === 0) {
+    //   setAddLike(1);
+    //   setCountLike(countLike + 1);
+
+    // } else if (addLike === 1 && addDislike === 0 ) {
+    //   setAddLike(0);
+    //   setCountLike(countLike - 1);
+    // } else if (addLike === 0 && addDislike === 1) {
+    //   setAddDislike(0);
+    //   setAddLike(1);
+
+    //   setCountDislike(countDislike - 1);
+    //   setCountLike(countLike + 1);
+    // }
   };
 
   const handleDislike = () => {
     if (addDislike === 0 && addLike === 0) {
       setAddDislike(1);
       setCountDislike(countDislike + 1);
+
+      // submitToApi(token, postId, -1);
     } else if (addDislike === 1 && addLike === 0) {
       setAddDislike(0);
       setCountDislike(countDislike - 1);
@@ -60,31 +91,42 @@ const Likes = ({ liked, disliked, postId }) => {
     }
   };
 
-
-
-  const submitToApi = (token,postId, like ) => {
-    userService
-      .addLikes(token,postId, like)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const submitToApi = (token, postId, like, likeId, userId) => {
+    likeId === null
+      ? userService
+          .addLikes(token, postId, like)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : userService
+          .updateLike(token, likeId, userId, postId, like)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
   };
 
-  countLike > 0
-  ? submitToApi(token, postId, addLike)
-  : countDislike > 0
-  ? console.log("countDislike", countDislike)
-  : console.log("");
+  // countLike > 0
+  //   ? submitToApi(token, postId, 1)
+  //   : countDislike > 0
+  //   ? submitToApi(token, postId, -1)
+  //   : console.log("");
+
+  // countDislike > 0 ? submitToApi(token, postId, -1) : console.log("");
 
   return (
     <div className="d-flex ">
       <div className="position-relative" onClick={handleLike}>
         <span
           className={
-            addLike === 1 ? "position-absolute" : "position-absolute invisible"
+            userChoice === 1 || addLike === 1
+              ? "position-absolute"
+              : "position-absolute invisible"
           }
         >
           <HiThumbUp size={24} />
@@ -94,13 +136,13 @@ const Likes = ({ liked, disliked, postId }) => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>{countLike}</span>
+        <span>{liked}</span>
       </div>
 
       <div className="position-relative" onClick={handleDislike}>
         <span
           className={
-            addDislike === 1
+            userChoice === -1 || addDislike === 1
               ? "position-absolute"
               : "position-absolute invisible"
           }

@@ -19,7 +19,7 @@ exports.insertIntoLike = (sqlInserts) => {
 };
 
 exports.updateLikeOfUser = (sqlInserts) => {
-  let sql = `REPLACE INTO like_or_not ( l_choice ) VALUES ( ? )`;
+  let sql = `REPLACE INTO like_or_not VALUES ( ?, ?, ?, ? )`;
   sql = mysql.format(sql, sqlInserts);
 
   return new Promise((resolve, reject) => {
