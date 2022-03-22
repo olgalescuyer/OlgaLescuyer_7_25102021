@@ -56,7 +56,20 @@ const addLikes = (token, postId, like) => {
     },
     data: { like: like },
   };
-  // console.log(options);
+  console.log(options);
+  return axios(options);
+};
+
+const updateLike = (token, likeId, userId, postId, like) => {
+  const options = {
+    method: "post",
+    url: API_URL + `posts/${postId}/like`,
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    data: { likeId: likeId, userId: userId, like: like },
+  };
+  console.log(options);
   return axios(options);
 };
 
@@ -68,4 +81,5 @@ export default {
   deleteOnePost,
   updatePost,
   addLikes,
+  updateLike
 };

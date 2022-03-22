@@ -22,9 +22,12 @@ const Card = ({
   onValidate,
   liked,
   disliked,
+  userChoice,
+  likeId,
 }) => {
   timeago.register("fr", fr);
   // console.log(likes, likeId, likeUserId);
+
   return (
     <article>
       <Container fluid className="p-0 mb-2 color-custom-body">
@@ -97,7 +100,14 @@ const Card = ({
           </div>
         </div>
         <Container fluid className="d-flex justify-content-between p-2 g-0">
-          <Likes liked={liked} disliked={disliked} postId={postId} />
+          <Likes
+            liked={liked}
+            disliked={disliked}
+            postId={postId}
+            userChoice={userChoice}
+            userId={userId}
+            likeId={likeId}
+          />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
       </Container>

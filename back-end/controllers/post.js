@@ -75,11 +75,13 @@ exports.modifyOnePost = (req, res, next) => {
   postModel
     .findOnePostByIds(req.params.id)
     .then((post) => {
-      !post[0].p_fk_user_id === req.bearerToken.userId
-        ? res.status(401).json({
-            message: "Id from token is not a valid for this operation",
-          })
-        : updatePost(sqlInserts);
+      if (post[0].p_fk_user_id === req.bearerToken.userId) {
+        post[0].p_image
+          ? deleteImg(post[0].p_image)
+          : updatePost(req.bearerToken.userId);
+      } else {
+        res.status(400).json({ message: "Id from token is not a valid" });
+      }
     })
     .catch((error) => res.status(400).json({ error }));
 };
@@ -134,7 +136,7 @@ exports.getAllPosts = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
   // console.log(userIdFromToken);
 
-  const sqlInserts = [userIdFromToken];
+  const sqlInserts = [userIdFromToken,userIdFromToken ];
   postModel
     .findAllPosts(sqlInserts)
     .then((posts) => res.status(200).json(posts))
@@ -161,11 +163,28 @@ exports.getOnePost = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 
-exports.manageLike = (req, res, next) => {
+exports.createLike = (req, res, next) => {
   const sqlInserts = [req.bearerToken.userId, req.params.id, req.body.like];
 
   likeModel
     .insertIntoLike(sqlInserts)
+    .then((response) => {
+      res.status(201).json({ response });
+      // console.log(response);
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+
+exports.updateLike = (req, res, next) => {
+  const sqlInserts = [
+    req.body.likeId,
+    req.body.userId,
+    req.params.id,
+    req.body.like,
+  ];
+
+  likeModel
+    .updateLikeOfUser(sqlInserts)
     .then((response) => {
       res.status(201).json({ response });
       // console.log(response);

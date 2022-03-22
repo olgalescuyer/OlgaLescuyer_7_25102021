@@ -30,8 +30,9 @@ const Home = () => {
   }, []);
 
   const [dataPost, setDataPost] = useState([]);
-  const [addDataPost, setAddDataPost] = useState(true);
+  // console.log(dataPost);
 
+  const [addDataPost, setAddDataPost] = useState(true);
   const validateHandler = () => {
     setAddDataPost(true);
   };
@@ -97,8 +98,9 @@ const Home = () => {
                     createdAt={post.p_time}
                     disliked={post.disliked}
                     liked={post.liked}
-                    likeId={post.l_id}
+                    likeId={post.like_id}
                     likeUserId={post.l_fk_user_id}
+                    userChoice={post.post_user_choice}
                     key={index}
                     onValidate={validateHandler}
                   />
