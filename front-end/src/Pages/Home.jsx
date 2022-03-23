@@ -30,7 +30,7 @@ const Home = () => {
   }, []);
 
   const [dataPost, setDataPost] = useState([]);
-  // console.log(dataPost);
+  console.log(dataPost);
 
   const [addDataPost, setAddDataPost] = useState(true);
   const validateHandler = () => {
