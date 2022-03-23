@@ -7,15 +7,17 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
+const Likes = ({ liked, disliked, postId, userChoice, likeId, onValidate }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
   const userIdFromToken = parseInt(userContext.userId(), 10);
 
-  const [validLike, setValidLike] = useState(false);
-  const validateHandler = () => {
-    setValidLike(true);
+  // solution for null statement of data :
+  const [value, setValue] = useState(null);
+  const handleValue = (bool) => {
+    setValue(bool);
   };
+  // console.log(value);
 
   // add one like/dislike on click :
   const [addLike, setAddLike] = useState(0);
@@ -26,54 +28,36 @@ const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
   const [countLike, setCountLike] = useState(0);
   const [countDislike, setCountDislike] = useState(0);
 
+  // object for id's :
+  const dataId = {
+    likeId: likeId === null ? value : likeId,
+    postId: postId,
+    userId: userIdFromToken,
+  };
+
   // like/dislike from db :
   useEffect(() => {
     setCountLike(liked);
     setCountDislike(disliked);
-  }, [validLike]);
+  }, []);
 
-  const handleLike = () => {
-    // likeId === null && userChoice === null
-    //   ? console.log("null")
-    //   : likeId !== null && userChoice === 0
-    //   ? console.log("0")
-    //   : likeId !== null && userChoice === 1
-    //   ? console.log("1")
-    //   : likeId !== null && userChoice === -1
-    //   ? console.log("-1")
-    //   : console.log("error");
-
-    if (likeId === null && userChoice === null) {
-      submitToApi(token, postId, 1);
-      validateHandler();
-    } else if (likeId !== null && userChoice === 0) {
+  const doLike = () => {
+    if (addLike === 0 && addDislike === 0) {
       setAddLike(1);
       setCountLike(countLike + 1);
-    } else if (likeId !== null && userChoice === 1) {
+    } else if (addLike === 1 && addDislike === 0) {
       setAddLike(0);
       setCountLike(countLike - 1);
-    } else if (likeId !== null && userChoice === -1) {
-    } else {
-      console.log("error");
+    } else if (addLike === 0 && addDislike === 1) {
+      setAddDislike(0);
+      setAddLike(1);
+
+      setCountDislike(countDislike - 1);
+      setCountLike(countLike + 1);
     }
-
-    // if (addLike === 0 && addDislike === 0) {
-    //   setAddLike(1);
-    //   setCountLike(countLike + 1);
-
-    // } else if (addLike === 1 && addDislike === 0 ) {
-    //   setAddLike(0);
-    //   setCountLike(countLike - 1);
-    // } else if (addLike === 0 && addDislike === 1) {
-    //   setAddDislike(0);
-    //   setAddLike(1);
-
-    //   setCountDislike(countDislike - 1);
-    //   setCountLike(countLike + 1);
-    // }
   };
 
-  const handleDislike = () => {
+  const doDislike = () => {
     if (addDislike === 0 && addLike === 0) {
       setAddDislike(1);
       setCountDislike(countDislike + 1);
@@ -91,18 +75,56 @@ const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
     }
   };
 
-  const submitToApi = (token, postId, like, likeId, userId) => {
-    likeId === null
+  const handleLike = () => {
+    if (userChoice === null || userChoice === 0) {
+      submitToApi(token, dataId, 1);
+
+      doLike();
+    } else if (userChoice === 1) {
+      doLike();
+
+      submitToApi(token, dataId, 0);
+    } else if (userChoice === -1) {
+      submitToApi(token, dataId, 0);
+
+      doLike();
+    } else {
+      console.log("error");
+    }
+  };
+
+  const handleDislike = () => {
+    if (userChoice === null || userChoice === 0) {
+      submitToApi(token, dataId, -1);
+
+      doDislike();
+    } else if (userChoice === -1) {
+      doDislike();
+
+      submitToApi(token, dataId, 0);
+    } else if (userChoice === 1) {
+      submitToApi(token, dataId, -1);
+      doDislike();
+    } else {
+      console.log("error");
+    }
+  };
+
+  const submitToApi = (token, data, like) => {
+    data.likeId === null && value === null
       ? userService
-          .addLikes(token, postId, like)
+          .addLikes(token, data, like)
           .then((response) => {
-            console.log(response);
+            // console.log(response);
+            // console.log(response.data.response.insertId);
+            // here I grab the value of like id from db & pass to object :
+            handleValue(response.data.response.insertId);
           })
           .catch((err) => {
             console.log(err);
           })
       : userService
-          .updateLike(token, likeId, userId, postId, like)
+          .updateLike(token, data, like)
           .then((response) => {
             console.log(response);
           })
@@ -110,14 +132,6 @@ const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
             console.log(err);
           });
   };
-
-  // countLike > 0
-  //   ? submitToApi(token, postId, 1)
-  //   : countDislike > 0
-  //   ? submitToApi(token, postId, -1)
-  //   : console.log("");
-
-  // countDislike > 0 ? submitToApi(token, postId, -1) : console.log("");
 
   return (
     <div className="d-flex ">
@@ -136,7 +150,7 @@ const Likes = ({ liked, disliked, postId, userChoice, userId, likeId }) => {
           <HiOutlineThumbUp size={24} />
         </span>
 
-        <span>{liked}</span>
+        <span>{countLike}</span>
       </div>
 
       <div className="position-relative" onClick={handleDislike}>

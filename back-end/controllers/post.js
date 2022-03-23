@@ -183,6 +183,8 @@ exports.updateLike = (req, res, next) => {
     req.body.like,
   ];
 
+  console.log(sqlInserts);
+
   likeModel
     .updateLikeOfUser(sqlInserts)
     .then((response) => {

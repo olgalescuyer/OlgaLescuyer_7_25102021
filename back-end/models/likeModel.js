@@ -5,6 +5,7 @@ exports.insertIntoLike = (sqlInserts) => {
   let sql =
     "INSERT INTO like_or_not ( l_fk_user_id, l_fk_post_id, l_choice ) VALUES ( ?, ?, ?)";
   sql = mysql.format(sql, sqlInserts);
+  console.log(sql);
 
   return new Promise((resolve, reject) => {
     db.query(sql, (error, result) => {
@@ -21,6 +22,7 @@ exports.insertIntoLike = (sqlInserts) => {
 exports.updateLikeOfUser = (sqlInserts) => {
   let sql = `REPLACE INTO like_or_not VALUES ( ?, ?, ?, ? )`;
   sql = mysql.format(sql, sqlInserts);
+  console.log(sql);
 
   return new Promise((resolve, reject) => {
     db.query(sql, (err, result) => {
@@ -36,7 +38,7 @@ exports.updateLikeOfUser = (sqlInserts) => {
 };
 
 exports.findLike = (sqlInserts) => {
-  let sql = `SELECT * FROM like_or_not WHERE l_fk_post_id =  AND l_fk_user_id = ?`;
+  let sql = `SELECT * FROM like_or_not WHERE l_fk_post_id = ? AND l_fk_user_id = ?`;
   sql = mysql.format(sql, sqlInserts);
 
   db.query(sql, (err, result) => {

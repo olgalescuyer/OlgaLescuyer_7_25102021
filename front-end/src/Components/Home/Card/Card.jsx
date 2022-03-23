@@ -24,6 +24,7 @@ const Card = ({
   disliked,
   userChoice,
   likeId,
+  likeUserId
 }) => {
   timeago.register("fr", fr);
   // console.log(likes, likeId, likeUserId);
@@ -107,6 +108,8 @@ const Card = ({
             userChoice={userChoice}
             userId={userId}
             likeId={likeId}
+            likeUserId={likeUserId}
+            onValidate={onValidate}
           />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>
