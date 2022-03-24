@@ -7,9 +7,9 @@ const { validationResult } = require("express-validator");
 
 exports.createPost = (req, res, next) => {
   const postData = JSON.parse(req.body.post);
-  console.log("post data :", postData);
-  console.log("req file :", req.file);
-  console.log("req body :", req.body.post);
+  // console.log("post data :", postData);
+  // console.log("req file :", req.file);
+  // console.log("req body :", req.body.post);
 
   let imageUrl = req.file;
   imageUrl === undefined
@@ -183,7 +183,7 @@ exports.updateLike = (req, res, next) => {
     req.body.like,
   ];
 
-  console.log(sqlInserts);
+  // console.log(sqlInserts);
 
   likeModel
     .updateLikeOfUser(sqlInserts)

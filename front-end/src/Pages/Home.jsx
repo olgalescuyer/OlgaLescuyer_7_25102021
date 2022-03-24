@@ -59,7 +59,6 @@ const Home = () => {
     setToggle(!toggle);
   };
 
-  // console.log(dataPost);
   // + .map for Card-->
   return (
     <>

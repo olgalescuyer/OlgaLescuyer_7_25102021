@@ -47,7 +47,7 @@ const updatePost = (postId, postData, token) => {
   return axios(options);
 };
 
-const addLikes = (token, dataId, like) => {
+const addLike = (token, dataId, like) => {
   const options = {
     method: "post",
     url: API_URL + `posts/${dataId.postId}/like`,
@@ -80,6 +80,6 @@ export default {
   postOnePost,
   deleteOnePost,
   updatePost,
-  addLikes,
+  addLike,
   updateLike
 };
