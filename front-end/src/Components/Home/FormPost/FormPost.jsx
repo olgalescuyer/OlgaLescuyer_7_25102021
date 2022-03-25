@@ -100,7 +100,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     }
   };
 
-  // func to call the api :
+  // func call to api :
   const submitToApi = (data, auth) => {
     userService
       .postOnePost(data, auth)

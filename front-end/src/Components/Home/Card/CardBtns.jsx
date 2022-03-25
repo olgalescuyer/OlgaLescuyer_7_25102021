@@ -24,13 +24,6 @@ const Btns = ({ userId, postId, onValidate }) => {
       .catch((err) => console.log(err));
   };
 
-  // const handleUpdate = (e, postId, postData) => {
-  //   userService
-  //     .updatePost(postId, postData)
-  //     .then((response) => console.log(response))
-  //     .catch((err) => console.log(err));
-  // };
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -58,7 +51,12 @@ const Btns = ({ userId, postId, onValidate }) => {
               </span>
             </div>
 
-            <CardModal onClose={handleClose} show={show} postId={postId} />
+            <CardModal
+              onClose={handleClose}
+              show={show}
+              postId={postId}
+              onValidate={onValidate}
+            />
           </>
         )}
 

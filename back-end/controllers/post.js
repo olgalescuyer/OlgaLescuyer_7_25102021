@@ -36,6 +36,7 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyOnePost = (req, res, next) => {
+  console.log(req.body, req.file);
   const postObject = req.file
     ? {
         ...JSON.parse(req.body.post),
@@ -45,6 +46,8 @@ exports.modifyOnePost = (req, res, next) => {
       }
     : { ...req.body };
 
+    console.log("postObject", postObject);
+
   const sqlInserts = [
     postObject.title,
     postObject.text,
@@ -52,15 +55,18 @@ exports.modifyOnePost = (req, res, next) => {
     req.params.id,
     req.bearerToken.userId,
   ];
+  console.log("--------------------------", sqlInserts);
 
-  const deleteImg = (img) => {
+  const deletePostWithImg = (img) => {
     const filename = img.split("/images/")[1];
 
     fs.unlink(`images/${filename}`, (err) => {
       if (err) {
+        updatePost(sqlInserts);
         console.log(err);
       } else {
         console.log(`\nDeleted file: ${filename}`);
+        updatePost(sqlInserts);
       }
     });
   };
@@ -77,8 +83,8 @@ exports.modifyOnePost = (req, res, next) => {
     .then((post) => {
       if (post[0].p_fk_user_id === req.bearerToken.userId) {
         post[0].p_image
-          ? deleteImg(post[0].p_image)
-          : updatePost(req.bearerToken.userId);
+          ? deletePostWithImg(post[0].p_image)
+          : updatePost(sqlInserts);
       } else {
         res.status(400).json({ message: "Id from token is not a valid" });
       }
@@ -106,6 +112,7 @@ exports.deleteOnePost = (req, res, next) => {
       ? fs.unlink(`images/${filename}`, (err) => {
           if (err) {
             console.log(err);
+            deletePost(postId);
           } else {
             // console.log(`\nDeleted file: ${filename}`);
             deletePost(postId);
@@ -136,7 +143,7 @@ exports.getAllPosts = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
   // console.log(userIdFromToken);
 
-  const sqlInserts = [userIdFromToken,userIdFromToken ];
+  const sqlInserts = [userIdFromToken, userIdFromToken];
   postModel
     .findAllPosts(sqlInserts)
     .then((posts) => res.status(200).json(posts))
