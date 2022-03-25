@@ -14,12 +14,15 @@ import { RiImageEditLine } from "react-icons/ri";
 import { RiEditLine } from "react-icons/ri";
 import { RiImageAddLine } from "react-icons/ri";
 
-const CardModal = ({ onClose, show, postId }) => {
+const CardModal = ({ onClose, show, postId, onValidate }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
+  const token = userContext.token;
 
+  // post object from db :
   const [dataPost, setDataPost] = useState("");
+  // console.log(dataPost);
 
   useEffect(() => {
     userService
@@ -40,9 +43,10 @@ const CardModal = ({ onClose, show, postId }) => {
     text: "",
     imageUrl: "",
   });
-  // console.log(dataNewPost.imageUrl);
+  // console.log(dataNewPost);
 
   const handleChange = (event) => {
+    setShowBtn(true);
     setDataNewPost((prevDataNewPost) => {
       // console.log(prevDataNewPost);
 
@@ -60,20 +64,13 @@ const CardModal = ({ onClose, show, postId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // make one object for send to the API (dataPost &/ or dataNewPost) :
     let obj = {
       title: "",
       text: "",
-      imageUrl: "",
     };
 
     const imagefile = document.querySelector("#imageUrl");
-    console.log("imagefile", imagefile);
-    // console.log("imagefile", imagefile.files[0]);
-    // console.log("dataNewPost", dataNewPost.title, dataNewPost.text);
-    // console.log("dataNewPost imageUrl", dataNewPost.imageUrl);
-
-    // console.log("dataPost", dataPost.p_title, dataPost.p_text);
-    // console.log(dataPost.p_image);
 
     dataNewPost.title
       ? (obj.title = dataNewPost.title)
@@ -81,19 +78,34 @@ const CardModal = ({ onClose, show, postId }) => {
     dataNewPost.text
       ? (obj.text = dataNewPost.text)
       : (obj.text = dataPost.p_text);
-    imagefile !== null || dataPost.p_image === null
-      ? console.log("not")
-      : (obj.imageUrl = dataPost.p_image);
 
-    console.log("obj", obj);
+    const postObj = JSON.stringify({
+      title: obj.title,
+      text: obj.text,
+    });
+
+    const formData = new FormData();
+
+    if (imagefile) {
+      formData.append("post", postObj);
+      formData.append("image", imagefile.files[0]);
+    } else {
+      formData.append("post", postObj);
+    }
+    submitToApi(postId, formData, token);
   };
 
   // func to call the api :
-  const submitToApi = (postId, postData, token) => {
+  const submitToApi = (postId, data, congig) => {
     userService
-      .updatePost(postId, postData, token)
+      .updatePost(postId, data, token)
       .then((response) => {
+        onValidate();
         console.log(response);
+        handleShowTitle(false);
+        handleShowText(false);
+        handleShowImg(false);
+        handleShowBtn(false);
       })
       .catch((error) => {
         console.log(error);
@@ -119,6 +131,12 @@ const CardModal = ({ onClose, show, postId }) => {
     setShowImg(bool);
   };
 
+  const [showBtn, setShowBtn] = useState(false);
+
+  const handleShowBtn = (bool) => {
+    setShowBtn(bool);
+  };
+
   return (
     <>
       <Modal show={show} onHide={onClose}>
@@ -129,6 +147,7 @@ const CardModal = ({ onClose, show, postId }) => {
             handleShowTitle(false);
             handleShowText(false);
             handleShowImg(false);
+            handleShowBtn(false);
           }}
         >
           <Modal.Title>Modifier l'article{dataPost.p_id}</Modal.Title>
@@ -343,25 +362,25 @@ const CardModal = ({ onClose, show, postId }) => {
                   handleShowTitle(false);
                   handleShowText(false);
                   handleShowImg(false);
+                  handleShowBtn(false);
                   setDataNewPost("");
+                 
                 }}
               >
                 Annuler
               </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                className="ms-3"
-                // onClick={() => {
-                //   onClose();
-                //   handleShowTitle(false);
-                //   handleShowText(false);
-                //   handleShowImg(false);
-
-                // }}
-              >
-                Confirmer les modifications
-              </Button>
+              {showBtn  && (
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="ms-3"
+                  onClick={() => {
+                    onClose();
+                  }}
+                >
+                  Confirmer les modifications
+                </Button>
+              )}
             </div>
           </Form>
         </Modal.Body>

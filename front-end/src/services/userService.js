@@ -33,17 +33,17 @@ const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
 };
 
-const updatePost = (postId, postData, token) => {
+const updatePost = (postId, data, token) => {
   const options = {
     method: "put",
-    url: API_URL + "posts" + postId,
+    url: API_URL + "posts/" + postId,
     headers: {
       Authorization: "Bearer " + token,
       "content-type": "multipart/form-data",
     },
-    data: postData,
+    data: data,
   };
-
+// console.log(options);
   return axios(options);
 };
 
@@ -81,5 +81,5 @@ export default {
   deleteOnePost,
   updatePost,
   addLike,
-  updateLike
+  updateLike,
 };
