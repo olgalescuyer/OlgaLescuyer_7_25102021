@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -14,28 +15,16 @@ import { RiImageEditLine } from "react-icons/ri";
 import { RiEditLine } from "react-icons/ri";
 import { RiImageAddLine } from "react-icons/ri";
 
-const CardModal = ({ onClose, show, postId, onValidate }) => {
+const CardModal = ({
+  onClose,
+  show,
+  postId,
+  onValidate,
+  validateHandler,
+  dataPost,
+}) => {
   const userContext = useContext(UserContextTest);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
   const token = userContext.token;
-
-  // post object from db :
-  const [dataPost, setDataPost] = useState("");
-  // console.log(dataPost);
-
-  useEffect(() => {
-    userService
-      .getOnePost(postId, config)
-      .then((response) => {
-        // console.log("response : ", response);
-        setDataPost(response.data);
-      })
-
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   // grabe a new post object :
   const [dataNewPost, setDataNewPost] = useState({
@@ -64,7 +53,7 @@ const CardModal = ({ onClose, show, postId, onValidate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // make one object for send to the API (dataPost &/ or dataNewPost) :
+    // make one object for send to API (dataPost &/ or dataNewPost) :
     let obj = {
       title: "",
       text: "",
@@ -95,12 +84,13 @@ const CardModal = ({ onClose, show, postId, onValidate }) => {
     submitToApi(postId, formData, token);
   };
 
-  // func to call the api :
-  const submitToApi = (postId, data, congig) => {
+  // func to call the API :
+  const submitToApi = (postId, data, token) => {
     userService
       .updatePost(postId, data, token)
       .then((response) => {
         onValidate();
+        validateHandler();
         console.log(response);
         handleShowTitle(false);
         handleShowText(false);
@@ -150,7 +140,10 @@ const CardModal = ({ onClose, show, postId, onValidate }) => {
             handleShowBtn(false);
           }}
         >
-          <Modal.Title>Modifier l'article{dataPost.p_id}</Modal.Title>
+          <Modal.Title>
+            Modifier l'article{dataPost.p_id}
+            {dataPost.p_title}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -364,12 +357,11 @@ const CardModal = ({ onClose, show, postId, onValidate }) => {
                   handleShowImg(false);
                   handleShowBtn(false);
                   setDataNewPost("");
-                 
                 }}
               >
                 Annuler
               </Button>
-              {showBtn  && (
+              {showBtn && (
                 <Button
                   type="submit"
                   variant="primary"
