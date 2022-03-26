@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import UserContextTest from "../../../Context/UserContextTest";
 import userService from "../../../services/userService";
 import { GoKebabVertical } from "react-icons/go";
@@ -10,20 +10,56 @@ const Btns = ({ userId, postId, onValidate }) => {
   const config = { headers: tokenAuth };
   const id = parseInt(userContext.userId(), 10);
   const role = userContext.role();
+  const token = userContext.token;
 
+  // toggle for btn kebab :
   const [item, setItem] = useState(false);
-
   const handleStateItem = () => {
     setItem(!item);
   };
 
-  const handleDelete = (e) => {
+  // call to API for delete one post :
+  const submitToApiDelete = (e) => {
     userService
       .deleteOnePost(postId, config)
       .then((response) => onValidate())
       .catch((err) => console.log(err));
   };
 
+  // state for creating a dependency on the state of CardModal & passing on useEffect  :
+  const [addDataPost, setAddDataPost] = useState(false);
+  const validateHandler = (bool) => {
+    setAddDataPost(bool);
+  };
+
+  // post object from db :
+  const [dataPost, setDataPost] = useState("");
+  // console.log(dataPost);
+
+  // call to API + dependency "addDataPost" for manage by onClick :
+  useEffect(
+    (PostId) => {
+      if (addDataPost) {
+        submitToApiGetPost(PostId, config);
+      }
+    },
+    [addDataPost]
+  );
+
+  const submitToApiGetPost = (e) => {
+    userService
+      .getOnePost(postId, config)
+      .then((response) => {
+        // console.log("response : ", response);
+        setDataPost(response.data);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // toggle for show the CardModal :
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -38,14 +74,18 @@ const Btns = ({ userId, postId, onValidate }) => {
               <span
                 className="text-danger"
                 style={{ cursor: "pointer" }}
-                onClick={(e) => handleDelete(e, postId, config)}
+                onClick={(e) => submitToApiDelete(e, postId, config)}
               >
                 Supprimer
               </span>
               <span
                 className="text-end ps-2 "
                 style={{ cursor: "pointer" }}
-                onClick={handleShow}
+                onClick={(e) => {
+                  handleShow();
+                  submitToApiGetPost(e, postId, config);
+                  validateHandler(true);
+                }}
               >
                 Modifier
               </span>
@@ -56,6 +96,9 @@ const Btns = ({ userId, postId, onValidate }) => {
               show={show}
               postId={postId}
               onValidate={onValidate}
+              addDataPost={addDataPost}
+              validateHandler={validateHandler}
+              dataPost={dataPost}
             />
           </>
         )}
@@ -77,7 +120,7 @@ const Btns = ({ userId, postId, onValidate }) => {
             <span
               className="text-danger"
               style={{ cursor: "pointer" }}
-              onClick={(e) => handleDelete(e, postId, config)}
+              onClick={(e) => submitToApiDelete(e, postId, config)}
             >
               {" "}
               Supprimer

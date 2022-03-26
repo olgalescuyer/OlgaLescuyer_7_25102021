@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { BsPersonFill } from "react-icons/bs";
+
 import Container from "react-bootstrap/Container";
 import Likes from "./Likes";
 import Btns from "./CardBtns";
@@ -24,10 +26,9 @@ const Card = ({
   disliked,
   userChoice,
   likeId,
-  likeUserId
+  likeUserId,
 }) => {
   timeago.register("fr", fr);
-  // console.log(likes, likeId, likeUserId);
 
   return (
     <article>
