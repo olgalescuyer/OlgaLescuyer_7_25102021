@@ -57,6 +57,7 @@ const CardModal = ({
     let obj = {
       title: "",
       text: "",
+      imageUrl: "",
     };
 
     const imagefile = document.querySelector("#imageUrl");
@@ -67,11 +68,18 @@ const CardModal = ({
     dataNewPost.text
       ? (obj.text = dataNewPost.text)
       : (obj.text = dataPost.p_text);
+    !imagefile ? (obj.imageUrl = dataPost.p_image) : console.log(imagefile);
 
+    // console.log(obj);
+
+    // object for call to API :
     const postObj = JSON.stringify({
       title: obj.title,
       text: obj.text,
+      image: obj.imageUrl,
     });
+
+    // console.log(postObj);
 
     const formData = new FormData();
 
