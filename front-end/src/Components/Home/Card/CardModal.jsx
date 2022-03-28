@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -22,9 +22,14 @@ const CardModal = ({
   onValidate,
   validateHandler,
   dataPost,
+  addDataPost,
 }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
+
+  const inputTitle = useRef();
+
+  console.log(dataPost);
 
   // grabe a new post object :
   const [dataNewPost, setDataNewPost] = useState({
@@ -32,7 +37,20 @@ const CardModal = ({
     text: "",
     imageUrl: "",
   });
-  // console.log(dataNewPost);
+
+  const handleValue = () => {
+    setDataNewPost(() => {
+      return {
+        title: dataPost.p_title,
+        text: dataPost.p_text,
+      };
+    });
+  };
+  useEffect(() => {
+    handleValue();
+  }, [dataPost]);
+
+  // console.log(inputTitle.current.value);
 
   const handleChange = (event) => {
     setShowBtn(true);
@@ -112,25 +130,21 @@ const CardModal = ({
 
   // toggles :
   const [showTitle, setShowTitle] = useState(false);
-
   const handleShowTitle = (bool) => {
     setShowTitle(bool);
   };
 
   const [showText, setShowText] = useState(false);
-
   const handleShowText = (bool) => {
     setShowText(bool);
   };
 
   const [showImg, setShowImg] = useState(false);
-
   const handleShowImg = (bool) => {
     setShowImg(bool);
   };
 
   const [showBtn, setShowBtn] = useState(false);
-
   const handleShowBtn = (bool) => {
     setShowBtn(bool);
   };
@@ -148,15 +162,13 @@ const CardModal = ({
             handleShowBtn(false);
           }}
         >
-          <Modal.Title>
-            Modifier l'article{dataPost.p_id}
-            {dataPost.p_title}
-          </Modal.Title>
+          <Modal.Title>Modifier l'article</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <div className="d-flex flex-column text-muted border rounded p-2">
-              <span className=" text-muted fs-2">{dataPost.p_title}</span>
+            {/* <div className="d-flex flex-column text-muted border rounded p-2">
+              <div className=" text-muted fs-2">{dataPost.p_title}</div>
+           
 
               <div className="d-flex justify-content-end">
                 <Button
@@ -166,28 +178,44 @@ const CardModal = ({
                     background: "transparent",
                     borderColor: "transparent",
                   }}
-                  onClick={(e) => handleShowTitle(true)}
+                  onClick={(e) => handleShowTitle(!showTitle)}
                 >
                   <RiEditLine size={24} className=""></RiEditLine>
                 </Button>
               </div>
-            </div>
+            </div> */}
 
-            {showTitle && (
+            {!showTitle && (
               <Form.Group
                 className="mb-3 text-muted fst-italic"
                 controlId="title"
-                onChange={handleChange}
               >
                 <div className="mb-3 text-muted"></div>
-                <FloatingLabel
+
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  style={{ height: "100px" }}
+                  type="text"
+                  placeholder="title"
+                  name="title"
+                  onChange={handleChange}
+                  ref={inputTitle}
+                  value={dataNewPost.title}
+                />
+                {/* <FloatingLabel
                   controlId="title"
                   label="Nouveau titre (max 255)"
                 >
-                  <Form.Control type="text" placeholder="title" name="title" />
-                </FloatingLabel>
+                  <Form.Control
+                    type="text"
+                    placeholder="title"
+                    name="title"
+                    onChange={handleChange}
+                  />
+                </FloatingLabel> */}
 
-                <Form.Text className="text-muted ps-2 d-none">
+                <Form.Text className="text-muted ps-2 d-none" muted>
                   some warning...
                 </Form.Text>
               </Form.Group>
@@ -221,7 +249,7 @@ const CardModal = ({
                       background: "transparent",
                       borderColor: "transparent",
                     }}
-                    onClick={(e) => handleShowText(true)}
+                    onClick={(e) => handleShowText(!showText)}
                   >
                     <RiEditLine size={24} className="text-muted"></RiEditLine>
                   </Button>
@@ -252,7 +280,6 @@ const CardModal = ({
               <Form.Group
                 className=" position-relative text-muted fst-italic mt-3"
                 controlId="text"
-                onChange={handleChange}
               >
                 <FloatingLabel controlId="text" label="Nouveau text (max 255)">
                   <Form.Control
@@ -261,6 +288,7 @@ const CardModal = ({
                     placeholder="text"
                     style={{ height: "100px" }}
                     name="text"
+                    onChange={handleChange}
                   />
                 </FloatingLabel>
                 <Form.Text className="d-block position-absolute ps-2 bottom-0 end-0 fw-bold text-danger "></Form.Text>
