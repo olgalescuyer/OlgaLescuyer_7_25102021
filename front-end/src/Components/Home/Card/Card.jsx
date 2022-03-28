@@ -74,7 +74,7 @@ const Card = ({
         <div>
           <div>
             <Container fluid className="p-2 g-0">
-              <h1 className="fs-2">{title}</h1>
+              <h1 className="fs-2" style={{ wordWrap: "break-word"}}>{title}</h1>
               <p>{text}</p>
             </Container>
 
