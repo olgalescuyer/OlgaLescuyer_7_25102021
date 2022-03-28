@@ -41,8 +41,8 @@ exports.findOnePostByIds = (postId) => {
 exports.updateOnePost = (sqlInserts) => {
   let sql =
     "UPDATE post SET p_title = ?, p_text = ?, p_image = ? WHERE p_id = ? AND p_fk_user_id = ?";
-
   sql = mysql.format(sql, sqlInserts);
+
   // console.log(sql);
 
   return new Promise((resolve, reject) => {
