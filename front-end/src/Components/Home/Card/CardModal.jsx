@@ -50,7 +50,7 @@ const CardModal = ({
   const handleChange = (event) => {
     // add a btn "confirmer" :
     setShowBtn(true);
-
+    setMessage("");
     // grabe a values :
     setDataNewPost((prevDataNewPost) => {
       // console.log(prevDataNewPost);
@@ -61,6 +61,8 @@ const CardModal = ({
       };
     });
   };
+
+  console.log(dataNewPost);
 
   // --------------------------
 
@@ -73,25 +75,13 @@ const CardModal = ({
   });
 
   const handleMessage = (data) => {
-    return !data.title && !data.text && !data.imageUrl
-      ? setMessage({
-          title: customMessage.title,
-          text: customMessage.text,
-          imageUrl: customMessage.imageUrl,
-        })
-      : !data.text && !data.imageUrl
-      ? setMessage({
-          text: customMessage.text,
-          imageUrl: customMessage.imageUrl,
-        })
-      : !data.title
-      ? setMessage({
-          title: customMessage.title,
-        })
-      : console.log("error");
+    return setMessage({
+      title: data.title ? "" : customMessage.title,
+      text: data.text ? "" : customMessage.text,
+      imageUrl: data.image ? "" : customMessage.imageUrl,
+    });
   };
 
-  // dataNewPost.title ? console.log(dataNewPost.title.length) : console.log("not")
   // -------------- //
 
   const handleSubmit = (e) => {
@@ -100,54 +90,48 @@ const CardModal = ({
     const imagefile = document.querySelector("#imageUrl");
 
     // object for FormData & call to API :
-    const postObj = JSON.stringify({
+    const postObj = {
       title: dataNewPost.title,
       text: dataNewPost.text,
-      image: !imagefile ? dataPost.p_image : console.log(""),
-    });
+      image:
+        dataNewPost.imageUrl === null ? dataPost.p_image : dataNewPost.imageUrl,
+    };
 
     const formData = new FormData();
-    if (imagefile) {
-      console.log("from true");
-      formData.append("post", postObj);
+    if (dataNewPost.imageUrl) {
+      formData.append("post", JSON.stringify(postObj));
       formData.append("image", imagefile.files[0]);
     } else {
-      console.log("from false");
-      formData.append("post", postObj);
+      formData.append("post", JSON.stringify(postObj));
     }
 
-    console.log(postObj);
+    console.log("postObj", JSON.stringify(postObj));
+    console.log(imagefile);
 
-    if (dataNewPost.title && dataNewPost.imageUrl) {
-      // submitToApi(postId, formData, token);
-      // onClose();
-    } else if (dataNewPost.title && dataNewPost.text) {
-      // submitToApi(postId, formData, token);
-      // onClose();
-    } else if (
-      (dataNewPost.title && dataNewPost.text && dataNewPost.imageUrl) ||
-      imagefile
-    ) {
-      // submitToApi(postId, formData, token);
-    } else {
-      console.log(dataNewPost);
-      handleMessage(dataNewPost);
-    }
+    postObj.title && postObj.text
+      ? console.log(" postObj.title && postObj.text")
+      : postObj.title && postObj.image
+      ? console.log(" postObj.title && postObj.image")
+      : postObj.title && imagefile
+      ? console.log(" postObj.title && imagefile")
+      : handleMessage(postObj);
 
-    submitToApi(postId, formData, token);
+    // submitToApi(postId, formData, token);
   };
 
   // func to call the API :
   const submitToApi = (postId, data, token) => {
+    console.log("from submit to api");
     userService
       .updatePost(postId, data, token)
       .then((response) => {
         onValidate();
         validateHandler();
         console.log(response);
-onclose();
+        onClose();
         handleShowImg(false);
         handleShowBtn(false);
+        setMessage("");
       })
       .catch((error) => {
         console.log(error);
@@ -173,7 +157,7 @@ onclose();
           closeButton
           onClick={() => {
             onClose();
-
+            setMessage("");
             handleShowImg(false);
             handleShowBtn(false);
           }}
@@ -276,26 +260,47 @@ onclose();
             )}
 
             {!dataPost.p_image && (
-              <div className="position-relative d-flex justify-content-end mt-3 pe-2">
-                <div className="text-muted fst-italic text-center">
+              <div className="position-relative d-flex justify-content-end mt-3">
+                <div
+                  className={
+                    dataNewPost.imageUrl
+                      ? "d-none"
+                      : "text-muted fst-italic text-center"
+                  }
+                >
                   <span>Ajouter une image</span>
                 </div>
                 <Button
                   title="Ajouter une image"
-                  className="p-0 ms-2"
+                  className={dataNewPost.imageUrl ? "d-none" : "p-0 ms-2"}
                   style={{
                     background: "transparent",
                     borderColor: "transparent",
                   }}
-                  onClick={(e) => handleShowImg(true)}
+                  onClick={(e) => handleShowImg(!showImg)}
                 >
                   <RiImageAddLine
                     size={24}
                     className="text-muted"
                   ></RiImageAddLine>
                 </Button>
+                {dataNewPost.imageUrl && (
+                  <Button
+                    title="Supprimer"
+                    className="p-0 ms-2"
+                    style={{
+                      background: "transparent",
+                      borderColor: "transparent",
+                    }}
+                  >
+                    <RiDeleteBin6Line
+                      size={24}
+                      className="text-muted"
+                    ></RiDeleteBin6Line>
+                  </Button>
+                )}
                 <Form.Text
-                  className="position-absolute d-block ps-2  fw-bold text-danger fst-italic"
+                  className="position-absolute top-0 start-0 d-block ps-2  fw-bold text-danger fst-italic"
                   style={{ zIndex: "4" }}
                 >
                   {message.imageUrl}
@@ -324,7 +329,7 @@ onclose();
                 variant="secondary"
                 onClick={() => {
                   onClose();
-
+                  setMessage("");
                   handleShowImg(false);
                   handleShowBtn(false);
                   setDataNewPost("");
@@ -338,7 +343,7 @@ onclose();
                   variant="primary"
                   className="ms-3"
                   onClick={() => {
-                    onClose();
+                    setMessage("");
                   }}
                 >
                   Confirmer les modifications
