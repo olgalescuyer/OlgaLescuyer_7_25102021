@@ -36,7 +36,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     });
   };
 
-  // -------------- 
+  // --------------
 
   // for warning messages :
 
@@ -47,24 +47,11 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   });
 
   const handleMessage = (data) => {
-    return data.title.length === 0 &&
-      data.text.length === 0 &&
-      data.imageUrl.length === 0
-      ? setMessage({
-          title: customMessage.title,
-          text: customMessage.text,
-          imageUrl: customMessage.imageUrl,
-        })
-      : data.text.length === 0 && data.imageUrl.length === 0
-      ? setMessage({
-          text: customMessage.text,
-          imageUrl: customMessage.imageUrl,
-        })
-      : data.title.length === 0
-      ? setMessage({
-          title: customMessage.title,
-        })
-      : console.log("error");
+    return setMessage({
+      title: data.title ? "" : customMessage.title,
+      text: data.text ? "" : customMessage.text,
+      imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
+    });
   };
 
   // -------------- //
