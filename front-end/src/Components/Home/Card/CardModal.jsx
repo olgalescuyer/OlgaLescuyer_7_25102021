@@ -5,6 +5,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 
+import BtnImgDel from "../../UI/BtnImgDel.jsx";
+import BtnImgEdit from "../../UI/BtnImgEdit.jsx";
+
 import UserContextTest from "../../../Context/UserContextTest";
 import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
@@ -26,6 +29,22 @@ const CardModal = ({
   const token = userContext.token;
   const customMessage = validService.messages();
 
+  // toggles :
+  const [toggle, setToggle] = useState({
+    image: false,
+    btnConfirm: false,
+    btnDelete: false,
+    inputImg: false,
+  });
+
+  const handleToggle = (key, value) => {
+    // console.log(key, value);
+    setToggle((prevToggle) => ({
+      ...prevToggle,
+      [key]: value,
+    }));
+  };
+
   // grabe a new post object + initial value from db by dependency dataPost :
   const [dataNewPost, setDataNewPost] = useState({
     title: "",
@@ -34,8 +53,10 @@ const CardModal = ({
   });
 
   const handleValue = () => {
-    setDataNewPost(() => {
+    setDataNewPost((prevDataNewPost) => {
       return {
+        ...prevDataNewPost,
+
         title: dataPost.p_title,
         text: dataPost.p_text,
         imageUrl: dataPost.p_image,
@@ -49,12 +70,13 @@ const CardModal = ({
 
   const handleChange = (event) => {
     // add a btn "confirmer" :
-    setShowBtn(true);
+    handleToggle("btnConfirm", true);
+
+    // for cancel warning messages :
     setMessage("");
+
     // grabe a values :
     setDataNewPost((prevDataNewPost) => {
-      // console.log(prevDataNewPost);
-
       return {
         ...prevDataNewPost,
         [event.target.name]: event.target.value,
@@ -62,7 +84,7 @@ const CardModal = ({
     });
   };
 
-  console.log(dataNewPost);
+  // console.log(dataNewPost);
 
   // --------------------------
 
@@ -75,14 +97,33 @@ const CardModal = ({
   });
 
   const handleMessage = (data) => {
-    return setMessage({
-      title: data.title ? "" : customMessage.title,
-      text: data.text ? "" : customMessage.text,
-      imageUrl: data.image ? "" : customMessage.imageUrl,
+    setMessage((prevMessage) => {
+      return {
+        ...prevMessage,
+
+        title: data.title ? "" : customMessage.title,
+        text: data.text ? "" : customMessage.text,
+        imageUrl: data.image ? "" : customMessage.imageUrl,
+      };
     });
   };
 
   // -------------- //
+
+  // delete image :
+
+  const handleDeleteImg = (bool) => {
+    // e.preventDefault();
+    // dataNewPost.imageUrl = null;
+    console.log("from");
+
+    setDataNewPost((prevDataNewPost) => {
+      return {
+        ...prevDataNewPost,
+        imageUrl: null,
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,9 +137,10 @@ const CardModal = ({
       image:
         dataNewPost.imageUrl === null ? dataPost.p_image : dataNewPost.imageUrl,
     };
+    console.log("postObj", postObj);
 
     const formData = new FormData();
-    if (dataNewPost.imageUrl) {
+    if (imagefile) {
       formData.append("post", JSON.stringify(postObj));
       formData.append("image", imagefile.files[0]);
     } else {
@@ -129,25 +171,12 @@ const CardModal = ({
         validateHandler();
         console.log(response);
         onClose();
-        handleShowImg(false);
-        handleShowBtn(false);
         setMessage("");
+        setToggle(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  // toggles :
-
-  const [showImg, setShowImg] = useState(false);
-  const handleShowImg = (bool) => {
-    setShowImg(bool);
-  };
-
-  const [showBtn, setShowBtn] = useState(false);
-  const handleShowBtn = (bool) => {
-    setShowBtn(bool);
   };
 
   return (
@@ -158,8 +187,7 @@ const CardModal = ({
           onClick={() => {
             onClose();
             setMessage("");
-            handleShowImg(false);
-            handleShowBtn(false);
+            setToggle(false);
           }}
         >
           <Modal.Title>Modifier la publication</Modal.Title>
@@ -209,16 +237,19 @@ const CardModal = ({
               </Form.Text>
             </Form.Group>
 
-            {dataPost.p_image && (
+            {dataNewPost.imageUrl && (
               <>
-                <div className="mt-3">
-                  <Image
-                    fluid
-                    rounded
-                    src={dataPost.p_image}
-                    style={{ width: "100%" }}
-                  />
-                </div>
+                {!toggle.image && (
+                  <div className="mt-3">
+                    <Image
+                      fluid
+                      rounded
+                      src={dataPost.p_image}
+                      alt={dataPost.p_image}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                )}
 
                 <div
                   className={
@@ -227,20 +258,35 @@ const CardModal = ({
                       : "mt-3"
                   }
                 >
-                  <Button
-                    title="Modifier"
-                    className="p-0"
-                    style={{
-                      background: "transparent",
-                      borderColor: "transparent",
-                    }}
-                    onClick={(e) => handleShowImg(true)}
-                  >
-                    <RiImageEditLine
-                      size={24}
-                      className="text-muted"
-                    ></RiImageEditLine>
-                  </Button>
+                  {/* <div className="text-muted fst-italic text-center">
+                    <span>Modifier l'image</span>
+                  </div> */}
+
+                  {!toggle.btnEdit && (
+                    <Button
+                      title="Modifier"
+                      className={
+                        dataNewPost.imageUrl !== dataPost.p_image
+                          ? "d-none"
+                          : "p-0"
+                      }
+                      style={{
+                        background: "transparent",
+                        borderColor: "transparent",
+                      }}
+                      onClick={(e) => {
+                        handleToggle("inputImg", true);
+                        handleToggle("image", true);
+                        handleToggle("btnEdit", true);
+                        // handleDeleteImg(false);
+                      }}
+                    >
+                      <RiImageEditLine
+                        size={24}
+                        className="text-muted"
+                      ></RiImageEditLine>
+                    </Button>
+                  )}
 
                   <Button
                     title="Supprimer"
@@ -248,6 +294,10 @@ const CardModal = ({
                     style={{
                       background: "transparent",
                       borderColor: "transparent",
+                    }}
+                    onClick={() => {
+                      handleDeleteImg(false);
+                      handleToggle("inputImg", false);
                     }}
                   >
                     <RiDeleteBin6Line
@@ -259,7 +309,7 @@ const CardModal = ({
               </>
             )}
 
-            {!dataPost.p_image && (
+            {!dataNewPost.imageUrl && (
               <div className="position-relative d-flex justify-content-end mt-3">
                 <div
                   className={
@@ -277,28 +327,28 @@ const CardModal = ({
                     background: "transparent",
                     borderColor: "transparent",
                   }}
-                  onClick={(e) => handleShowImg(!showImg)}
+                  onClick={(e) => handleToggle("inputImg", true)}
                 >
                   <RiImageAddLine
                     size={24}
                     className="text-muted"
                   ></RiImageAddLine>
                 </Button>
-                {dataNewPost.imageUrl && (
-                  <Button
-                    title="Supprimer"
-                    className="p-0 ms-2"
-                    style={{
-                      background: "transparent",
-                      borderColor: "transparent",
-                    }}
-                  >
-                    <RiDeleteBin6Line
-                      size={24}
-                      className="text-muted"
-                    ></RiDeleteBin6Line>
-                  </Button>
-                )}
+               {dataNewPost.imageUrl && ( 
+                <Button
+                  title="Supprimer"
+                  className="p-0 ms-2"
+                  style={{
+                    background: "transparent",
+                    borderColor: "transparent",
+                  }}
+                >
+                  <RiDeleteBin6Line
+                    size={24}
+                    className="text-muted"
+                  ></RiDeleteBin6Line>
+                </Button>
+                )} 
                 <Form.Text
                   className="position-absolute top-0 start-0 d-block ps-2  fw-bold text-danger fst-italic"
                   style={{ zIndex: "4" }}
@@ -308,7 +358,7 @@ const CardModal = ({
               </div>
             )}
 
-            {showImg && (
+            {toggle.inputImg && (
               <Form.Group
                 controlId="imageUrl"
                 className="mb-3"
@@ -330,22 +380,14 @@ const CardModal = ({
                 onClick={() => {
                   onClose();
                   setMessage("");
-                  handleShowImg(false);
-                  handleShowBtn(false);
+                  setToggle(false);
                   setDataNewPost("");
                 }}
               >
                 Annuler
               </Button>
-              {showBtn && (
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className="ms-3"
-                  onClick={() => {
-                    setMessage("");
-                  }}
-                >
+              {toggle.btnConfirm && (
+                <Button type="submit" variant="primary" className="ms-3">
                   Confirmer les modifications
                 </Button>
               )}
