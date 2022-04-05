@@ -36,7 +36,7 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyOnePost = (req, res, next) => {
-  console.log(req.body, req.file);
+  // console.log(req.body, req.file);
   const postObject = req.file
     ? {
         ...JSON.parse(req.body.post),
@@ -55,7 +55,7 @@ exports.modifyOnePost = (req, res, next) => {
     req.params.id,
     req.bearerToken.userId,
   ];
-  console.log("--------------------------", sqlInserts);
+  // console.log("--------------------------", sqlInserts);
 
   const deletePostWithImg = (img) => {
     const filename = img.split("/images/")[1];
@@ -86,7 +86,7 @@ exports.modifyOnePost = (req, res, next) => {
           ? updatePost(sqlInserts)
           : deletePostWithImg(post[0].p_image);
       } else {
-        res.status(400).json({ message: "Id from token is not a valid" });
+        res.status(401).json({ message: "Id from token is not a valid" });
       }
     })
     .catch((error) => res.status(400).json({ error }));
