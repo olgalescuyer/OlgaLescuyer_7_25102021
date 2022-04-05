@@ -48,12 +48,23 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   });
 
   const handleMessage = (data) => {
-    return setMessage({
-      title: data.title ? "" : customMessage.title,
-      text: data.text ? "" : customMessage.text,
-      imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
+    setMessage((prevMessage) => {
+      return {
+        ...prevMessage,
+        title: data.title ? "" : customMessage.title,
+        text: data.text ? "" : customMessage.text,
+        imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
+      };
     });
   };
+
+  // const handleMessage = (data) => {
+  //   return setMessage({
+  //     title: data.title ? "" : customMessage.title,
+  //     text: data.text ? "" : customMessage.text,
+  //     imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
+  //   });
+  // };
 
   // -------------- //
 
@@ -120,9 +131,17 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
 
   // for 'annuler' the post :
   const cancelCourse = () => {
-    setDataPost({ title: "", text: "", imageUrl: "" });
+    setDataPost((prevDataPost) => {
+      return {
+        ...prevDataPost,
+        title: "",
+        text: "",
+        imageUrl: "",
+      };
+    });
     refImg.current.value = "";
   };
+
   const handleClick = () => {
     cancelCourse();
     onToggle();
