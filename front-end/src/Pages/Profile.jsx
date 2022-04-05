@@ -36,19 +36,13 @@ const Profile = () => {
     <Container className="w-custom-limit-800 p-0">
       <Header />
       <main>
-        <Container className="mt-4">
+        <Container className="mt-4 pb-4">
           <h1 className="text-center fs-3">
             Bonjour {user.u_first_name + " " + user.u_last_name} !
           </h1>
-          <p className="text-center">Choisis ton avatar </p>
-          <Avatars />
-          <FormProfile
-            userId={user.u_id}
-            firstName={user.u_first_name}
-            lastName={user.u_last_name}
-            email={user.u_email}
-            password={user.u_password}
-          />
+          {/* <p className="text-center">Choisis ton avatar </p>
+          <Avatars /> */}
+          <FormProfile dataUser={user} />
         </Container>
       </main>
     </Container>
