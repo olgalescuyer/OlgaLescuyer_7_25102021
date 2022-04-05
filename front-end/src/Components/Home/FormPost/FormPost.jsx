@@ -27,6 +27,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   // console.log(dataPost);
 
   const handleChange = (event) => {
+    handleMessage(dataPost);
     setDataPost((prevDataPost) => {
       // console.log(prevDataPost);
       return {
@@ -60,31 +61,47 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     e.preventDefault();
 
     const imagefile = document.querySelector("#imageUrl");
+    const message = JSON.stringify({
+      title: dataPost.title,
+      text: dataPost.text,
+    });
 
-    if (dataPost.imageUrl.length !== 0 && dataPost.title) {
-      const message = JSON.stringify({
-        title: dataPost.title,
-        text: dataPost.text,
-      });
-
-      const formData = new FormData();
-      formData.append("post", message);
+    const formData = new FormData();
+    formData.append("post", message);
+    if (imagefile) {
       formData.append("image", imagefile.files[0]);
-
-      submitToApi(formData, token);
-    } else if (dataPost.title && dataPost.text) {
-      const titletext = JSON.stringify({
-        title: dataPost.title,
-        text: dataPost.text,
-      });
-      const mformData = new FormData();
-      mformData.append("post", titletext);
-
-      submitToApi(mformData, token);
-    } else {
-      // console.log(dataPost);
-      handleMessage(dataPost);
     }
+
+    dataPost.title && dataPost.text
+      ? submitToApi(formData, token)
+      : dataPost.title && dataPost.imageUrl.length !== 0
+      ? submitToApi(formData, token)
+      : handleMessage(dataPost);
+
+    // if (dataPost.imageUrl.length !== 0 && dataPost.title) {
+    //   const message = JSON.stringify({
+    //     title: dataPost.title,
+    //     text: dataPost.text,
+    //   });
+
+    //   const formData = new FormData();
+    //   formData.append("post", message);
+    //   formData.append("image", imagefile.files[0]);
+
+    //   submitToApi(formData, token);
+    // } else if (dataPost.title && dataPost.text) {
+    //   const titletext = JSON.stringify({
+    //     title: dataPost.title,
+    //     text: dataPost.text,
+    //   });
+    //   const mformData = new FormData();
+    //   mformData.append("post", titletext);
+
+    //   submitToApi(mformData, token);
+    // } else {
+    //   // console.log(dataPost);
+    //   handleMessage(dataPost);
+    // }
   };
 
   // func call to api :
