@@ -50,7 +50,7 @@ const Btns = ({ userId, postId, onValidate }) => {
     userService
       .getOnePost(postId, config)
       .then((response) => {
-        // console.log("response : ", response);
+        // console.log("response ---------------------------------: ", response);
         setDataPost(response.data);
       })
 

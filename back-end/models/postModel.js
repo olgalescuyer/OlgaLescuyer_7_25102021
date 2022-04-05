@@ -47,9 +47,8 @@ exports.updateOnePost = (sqlInserts) => {
 
   return new Promise((resolve, reject) => {
     db.query(sql, (error, result) => {
-      // checks if the result has a .changedRows :
-      if (result === undefined || result.changedRows === 0) {
-        console.log(result);
+      if (result === undefined) {
+        // console.log(result);
 
         reject({ error });
       } else {
