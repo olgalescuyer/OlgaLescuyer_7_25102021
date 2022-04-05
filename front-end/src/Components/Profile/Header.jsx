@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
 
 import logo from "../../Assets/Logo/icon-left-font-monochrome-blac.png";
 
@@ -28,39 +29,37 @@ const Header = () => {
     <header>
       <Navbar bg="light" expand="lg">
         <Container fluid className="g-0 px-2">
-          <Navbar.Brand  href="/" className="w-custom-limit-200">
+          <Navbar.Brand href="/" className="w-custom-limit-200">
             <img src={logo} alt="" className="img-fluid " />
           </Navbar.Brand>
 
           <div className="d-flex">
-            <div
+            <Button
+              variant="light"
               title=" Aller à la page d'accueil"
-              className="position-relative "
-              style={{ cursor: "pointer" }}
+              className="position-relativ p-0"
               onClick={() => navigate("/")}
             >
-              <span className="position-absolute invisible">
-                <RiHome2Fill size={24}></RiHome2Fill>
-              </span>
+              {/* <span className="">
+                <RiHome2Fill size={25}></RiHome2Fill>
+              </span> */}
               <span className="">
-                <RiHome2Line size={24}></RiHome2Line>
+                <RiHome2Line size={25}></RiHome2Line>
               </span>
-            </div>
-            <div
-              className="position-relative ps-2"
-              style={{ cursor: "pointer" }}
-            >
-              <span className="position-absolute ">
+            </Button>
+
+            <Button variant="light" className="position-relativ p-0 ms-2">
+              <span className="">
                 <RiUserSettingsFill size={24}></RiUserSettingsFill>
               </span>
-              <span className="invisible">
-                <RiUserSettingsLine size={24}></RiUserSettingsLine>
-              </span>
-            </div>
-            <div
+              {/* <span className="">
+                <RiUserSettingsLine size={25}></RiUserSettingsLine>
+              </span> */}
+            </Button>
+            <Button
+              variant="light"
               title="Se déconnecter"
-              className="position-relative ps-2"
-              style={{ cursor: "pointer" }}
+              className="position-relative p-0 ms-2"
               onClick={logoutHandler}
             >
               <span className="position-absolute invisible">
@@ -69,7 +68,7 @@ const Header = () => {
               <span>
                 <RiLogoutBoxRLine size={24}></RiLogoutBoxRLine>
               </span>
-            </div>
+            </Button>
           </div>
         </Container>
       </Navbar>

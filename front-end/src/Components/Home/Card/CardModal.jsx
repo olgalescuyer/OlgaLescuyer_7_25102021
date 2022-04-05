@@ -100,7 +100,6 @@ const CardModal = ({
 
   const handleDeleteImg = () => {
     // e.preventDefault();
-    // dataNewPost.imageUrl = null;
 
     setDataNewPost((prevDataNewPost) => {
       return {
@@ -171,11 +170,21 @@ const CardModal = ({
 
   const handleToggle = (key, value) => {
     // console.log(key, value);
-    setToggle((prevToggle) => ({
-      ...prevToggle,
-      [key]: value,
-    }));
+    setToggle((prevToggle) => {
+      return {
+        ...prevToggle,
+        [key]: value,
+      };
+    });
   };
+
+  // const handleToggle = (key, value) => {
+  //   // console.log(key, value);
+  //   setToggle((prevToggle) => ({
+  //     ...prevToggle,
+  //     [key]: value,
+  //   }));
+  // };
 
   const handleInitialToggle = () => {
     setToggle((prevToggle) => ({

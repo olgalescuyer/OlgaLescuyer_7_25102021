@@ -58,13 +58,13 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
               </span>
             </Button>
 
-            <Button variant="light" className="position-relative p-0 ms-2">
-              <span className="position-absolute">
+            <Button variant="light" className="position-relativ p-0 ms-2">
+              <span className="">
                 <RiHome2Fill size={25}></RiHome2Fill>
               </span>
-              <span className="invisible">
+              {/* <span className="invisible">
                 <RiHome2Line size={25}></RiHome2Line>
-              </span>
+              </span> */}
             </Button>
 
             <OverlayTrigger
@@ -88,9 +88,9 @@ const Header = ({ onToggle, toggle, firstName, lastName }) => {
                     onClick={() => navigate("/profile/:id")}
                     ref={ref}
                   >
-                    <span className="position-absolute invisible">
+                    {/* <span className="position-absolute invisible">
                       <RiUserSettingsFill size={24}></RiUserSettingsFill>
-                    </span>
+                    </span> */}
                     <span className="">
                       <RiUserSettingsLine size={24}></RiUserSettingsLine>
                     </span>
