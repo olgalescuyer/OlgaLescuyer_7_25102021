@@ -45,11 +45,7 @@ const FormProfile = ({ dataUser }) => {
     handleToggle("btnConfirm", false);
 
     // userField = event.target
-    validate(
-      event.target,
-      validRegex[event.target.attributes.name.value],
-      dataNewUser
-    );
+    validate(event.target, validRegex[event.target.attributes.name.value]);
 
     setDataNewUser((prevDataNewUser) => {
       return {
@@ -60,6 +56,8 @@ const FormProfile = ({ dataUser }) => {
   };
 
   // for warning messages & regex from validService:
+  const [oneErr, setOneErr] = useState(false);
+
   const [message, setMessage] = useState({
     firstName: "",
     lastName: "",
@@ -104,7 +102,7 @@ const FormProfile = ({ dataUser }) => {
     ) {
       console.log(dataNewUser);
     } else {
-      console.log("not");
+     setOneErr(true);
     }
   };
 
@@ -198,6 +196,11 @@ const FormProfile = ({ dataUser }) => {
           some warning...
         </Form.Text>
       </Form.Group> */}
+          {oneErr && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          Tous les champs doivent être remplis correctement
+        </Form.Text>
+      )}
 
       {!toggle.btnConfirm && (
         <Button variant="primary" type="submit" className="w-100 mb-4">
