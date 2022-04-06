@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useOutletContext } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Button from "react-bootstrap/Button";
 import Tooltip from "react-bootstrap/Tooltip";
-
-// import Card from "../Components/Home/Card/Card.jsx";
-// import Header from "../Components/Home/Header.jsx";
-// import FormPost from "../Components/Home/FormPost/FormPost";
 
 import userService from "../services/userService.js";
 
@@ -39,10 +34,15 @@ const Layout = () => {
     navigate("/login", { replace: true });
   };
 
+  // state for creating a dependency on the state of PostProfile & passing on useEffect  :
+  const [addData, setAddData] = useState(true);
+  const validateHandler = () => {
+    setAddData(true);
+  };
   //-----------------------------------------------------
 
   const [dataUser, setDataUser] = useState("");
-//   console.log(dataUser);
+  //   console.log(dataUser);
 
   useEffect(() => {
     userService
@@ -55,40 +55,38 @@ const Layout = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [addData]);
 
   const [dataPost, setDataPost] = useState([]);
   // console.log(dataPost);
 
-  const [addDataPost, setAddDataPost] = useState(true);
-  const validateHandler = () => {
-    setAddDataPost(true);
-  };
   // console.log(addDataPost);
   useEffect(() => {
-    if (addDataPost) {
+    if (addData) {
       userService
         .getAllPosts(config)
         .then((response) => {
           // console.log("response : ", response);
 
           setDataPost(response.data);
-          setAddDataPost(false);
+          setAddData(false);
         })
 
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [addDataPost]);
+  }, [addData]);
 
-  const [toggle, setToggle] = useState(false);
-  const handleToggle = () => {
-    setToggle(!toggle);
+  // toggles ------------------------ :
+
+  const [toggleAddBox, setToggleAddBox] = useState(false);
+  const handleToggleAddBox = () => {
+    setToggleAddBox(!toggleAddBox);
   };
 
   return (
-    <>
+    <Container className="w-custom-limit-800 p-0 layout">
       <header className="position-sticky top-0" style={{ zIndex: "2" }}>
         <Navbar bg="light" expand="lg">
           <Container fluid className="g-0 px-2">
@@ -97,43 +95,58 @@ const Layout = () => {
             </Navbar.Brand>
 
             <div className="d-flex">
+              {window.location.pathname === "/" && (
+                <Button
+                  variant="light"
+                  title="Créer une publication"
+                  className="position-relative p-0"
+                  onClick={() => {
+                    handleToggleAddBox();
+                  }}
+                >
+                  <span
+                    className={
+                      toggleAddBox
+                        ? "position-absolute "
+                        : "position-absolute invisible"
+                    }
+                  >
+                    <RiAddBoxFill size={26}></RiAddBoxFill>
+                  </span>
+
+                  <span className={!toggleAddBox ? "" : "invisible"}>
+                    <RiAddBoxLine size={26}></RiAddBoxLine>
+                  </span>
+                </Button>
+              )}
+
               <Button
                 variant="light"
-                title="Créer une publication"
-                className="position-relative p-0"
+                title="aller à la page d'accueil"
+                className="position-relative p-0 ms-2"
                 onClick={() => {
-                    handleToggle();
+                  navigate("/");
                 }}
               >
                 <span
                   className={
-                    toggle
-                      ? "position-absolute "
+                    window.location.pathname === "/"
+                      ? "position-absolute"
                       : "position-absolute invisible"
                   }
                 >
-                  <RiAddBoxFill size={26}></RiAddBoxFill>
-                </span>
-
-                <span className={!toggle ? "" : "invisible"}>
-                  <RiAddBoxLine size={26}></RiAddBoxLine>
-                </span>
-              </Button>
-
-              <Button variant="light" className="position-relativ p-0 ms-2">
-                <span className="">
                   <RiHome2Fill size={25}></RiHome2Fill>
                 </span>
-                {/* <span className="invisible">
-                <RiHome2Line size={25}></RiHome2Line>
-              </span> */}
+                <span className={window.location.pathname === "/" ? "" : ""}>
+                  <RiHome2Line size={25}></RiHome2Line>
+                </span>
               </Button>
 
               <OverlayTrigger
                 placement="bottom"
                 overlay={
                   <Tooltip id="button-tooltip-2">
-                    {/* {firstName} {lastName} */}
+                    {dataUser.u_first_name} {dataUser.u_last_name}
                   </Tooltip>
                 }
               >
@@ -142,18 +155,33 @@ const Layout = () => {
                     variant="light"
                     {...triggerHandler}
                     className="d-inline-flex align-items-center p-0 ms-2"
+                    title="aller à la page de profile"
+                    onClick={() => {
+                      navigate("/profile/:id");
+                      validateHandler();
+                    }}
                   >
                     <div
                       data-title="Aller à la page de profile"
                       className="position-relative"
                       style={{ cursor: "pointer" }}
-                      onClick={() => navigate("/profile/:id")}
+                      // onClick={() => navigate("/profile/:id")}
                       ref={ref}
                     >
-                      {/* <span className="position-absolute invisible">
-                      <RiUserSettingsFill size={24}></RiUserSettingsFill>
-                    </span> */}
-                      <span className="">
+                      <span
+                        className={
+                          window.location.pathname === "/profile/:id"
+                            ? "position-absolute "
+                            : "position-absolute invisible"
+                        }
+                      >
+                        <RiUserSettingsFill size={24}></RiUserSettingsFill>
+                      </span>
+                      <span
+                        className={
+                          window.location.pathname === "/profile/:id" ? "" : ""
+                        }
+                      >
                         <RiUserSettingsLine size={24}></RiUserSettingsLine>
                       </span>
                     </div>
@@ -178,8 +206,16 @@ const Layout = () => {
           </Container>
         </Navbar>
       </header>
-      <Outlet context={{dataUser, dataPost, toggle, handleToggle, validateHandler}}/>
-    </>
+      <Outlet
+        context={{
+          dataUser,
+          dataPost,
+          toggleAddBox,
+          handleToggleAddBox,
+          validateHandler,
+        }}
+      />
+    </Container>
   );
 };
 

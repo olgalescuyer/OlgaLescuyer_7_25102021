@@ -3,7 +3,6 @@ import { useOutletContext } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Card/Card.jsx";
-import Header from "../Components/Home/Header.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
 import userService from "../services/userService.js";
 
@@ -14,104 +13,55 @@ const Home = () => {
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = userContext.userId();
-  const { dataUser, dataPost, toggle, handleToggle, validateHandler } =
-    useOutletContext();
-
-  // const [dataUser, setDataUser] = useState("");
-
-  // useEffect(() => {
-  //   userService
-  //     .getOneUser(id, config)
-  //     .then((response) => {
-  //       // console.log("response : ",response);
-  //       setDataUser(response.data);
-  //     })
-
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
-  // const [dataPost, setDataPost] = useState([]);
-  // // console.log(dataPost);
-
-  // const [addDataPost, setAddDataPost] = useState(true);
-  // const validateHandler = () => {
-  //   setAddDataPost(true);
-  // };
-  // // console.log(addDataPost);
-  // useEffect(() => {
-  //   if (addDataPost) {
-  //     userService
-  //       .getAllPosts(config)
-  //       .then((response) => {
-  //         // console.log("response : ", response);
-
-  //         setDataPost(response.data);
-  //         setAddDataPost(false);
-  //       })
-
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, [addDataPost]);
-
-  // const [toggle, setToggle] = useState(false);
-  // const handleToggle = () => {
-  //   setToggle(!toggle);
-  // };
+  const {
+    dataUser,
+    dataPost,
+    toggleAddBox,
+    handleToggleAddBox,
+    validateHandler,
+  } = useOutletContext();
 
   // + .map for Card-->
   return (
     <>
-      <Container className="w-custom-limit-800 p-0">
-        {/* <Header
-          userId={"userId"}
-          onToggle={handleToggle}
-          toggle={toggle}
-          firstName={dataUser.u_first_name}
-          lastName={dataUser.u_last_name}
-        /> */}
-        <main>
-          {toggle && (
-            <FormPost
-              onValidate={validateHandler}
-              firstName={dataUser.u_first_name}
-              lastName={dataUser.u_last_name}
-              avatar={dataUser.u_avatar}
-              onToggle={handleToggle}
-            />
-          )}
+      <main>
+        {toggleAddBox && (
+          <FormPost
+            onValidate={validateHandler}
+            firstName={dataUser.u_first_name}
+            lastName={dataUser.u_last_name}
+            avatar={dataUser.u_avatar}
+            onToggle={handleToggleAddBox}
+          />
+        )}
 
-          {!toggle && (
-            <>
-              {dataPost.map((post, index) => {
-                return (
-                  <Card
-                    postId={post.p_id}
-                    title={post.p_title}
-                    text={post.p_text}
-                    imageUrl={post.p_image}
-                    userId={post.p_fk_user_id}
-                    firstName={post.u_first_name}
-                    lastName={post.u_last_name}
-                    avatar={post.u_avatar}
-                    createdAt={post.p_time}
-                    disliked={post.disliked}
-                    liked={post.liked}
-                    likeId={post.like_id}
-                    likeUserId={post.l_fk_user_id}
-                    userChoice={post.post_user_choice}
-                    key={index}
-                    onValidate={validateHandler}
-                  />
-                );
-              })}
-            </>
-          )}
-        </main>
-      </Container>
+        {!toggleAddBox && (
+          <>
+            {dataPost.map((post, index) => {
+              return (
+                <Card
+                  postId={post.p_id}
+                  title={post.p_title}
+                  text={post.p_text}
+                  imageUrl={post.p_image}
+                  userId={post.p_fk_user_id}
+                  firstName={post.u_first_name}
+                  lastName={post.u_last_name}
+                  avatar={post.u_avatar}
+                  createdAt={post.p_time}
+                  disliked={post.disliked}
+                  liked={post.liked}
+                  likeId={post.like_id}
+                  likeUserId={post.l_fk_user_id}
+                  userChoice={post.post_user_choice}
+                  key={index}
+                  onValidate={validateHandler}
+                />
+              );
+            })}
+          </>
+        )}
+      </main>
     </>
   );
 };
