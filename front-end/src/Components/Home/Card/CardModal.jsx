@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -57,6 +51,7 @@ const CardModal = ({
   const handleChange = (event) => {
     // add a btn "confirmer" :
     handleToggle("btnConfirm", false);
+    // console.log("dataNewPost", dataNewPost);
 
     // for cancel warning messages :
     setMessage("");
@@ -71,8 +66,6 @@ const CardModal = ({
   };
 
   // console.log(dataNewPost);
-
-  // --------------------------
 
   // for warning messages :
 
@@ -107,8 +100,10 @@ const CardModal = ({
         imageUrl: null,
       };
     });
+   
   };
 
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -120,7 +115,7 @@ const CardModal = ({
       text: dataNewPost.text,
       image: dataNewPost.imageUrl,
     };
-    // console.log("postObj", postObj);
+    console.log("postObj", postObj);
 
     const formData = new FormData();
     if (imagefile) {
@@ -177,14 +172,6 @@ const CardModal = ({
       };
     });
   };
-
-  // const handleToggle = (key, value) => {
-  //   // console.log(key, value);
-  //   setToggle((prevToggle) => ({
-  //     ...prevToggle,
-  //     [key]: value,
-  //   }));
-  // };
 
   const handleInitialToggle = () => {
     setToggle((prevToggle) => ({
@@ -274,8 +261,7 @@ const CardModal = ({
                   {toggle.textEdit && (
                     <div className="text-muted fst-italic text-center me-2">
                       <span>
-                        {dataPost.p_image === dataNewPost.imageUrl &&
-                        dataPost.p_image === 0
+                        {dataNewPost.imageUrl
                           ? "Modifier l'"
                           : "Ajouter une "}
                         image
@@ -338,6 +324,7 @@ const CardModal = ({
                       borderColor: "transparent",
                     }}
                     onClick={() => {
+                    
                       handleToggle("btnConfirm", false);
 
                       handleDeleteImg();
@@ -385,15 +372,7 @@ const CardModal = ({
                 Annuler
               </Button>
               {!toggle.btnConfirm && (
-                <Button
-                  type="submit"
-                  variant="primary"
-                  className={
-                    dataNewPost.imageUrl !== dataPost.p_image
-                      ? "ms-3"
-                      : "d-none"
-                  }
-                >
+                <Button type="submit" variant="primary" className="ms-3">
                   Confirmer les modifications
                 </Button>
               )}
