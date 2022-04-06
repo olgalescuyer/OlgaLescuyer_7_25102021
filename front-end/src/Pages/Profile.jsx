@@ -42,7 +42,7 @@ const Profile = () => {
 
   return (
     <Container className="w-custom-limit-800 p-0">
-      <Header onValidate={validateHandler}/>
+      {/* <Header onValidate={validateHandler}/> */}
       <main>
         <Container className="mt-2 pb-4">
           <h1 className="text-center fs-3">

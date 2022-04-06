@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useOutletContext } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Card/Card.jsx";
@@ -13,63 +14,65 @@ const Home = () => {
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = userContext.userId();
+  const { dataUser, dataPost, toggle, handleToggle, validateHandler } =
+    useOutletContext();
 
-  const [dataUser, setDataUser] = useState("");
+  // const [dataUser, setDataUser] = useState("");
 
-  useEffect(() => {
-    userService
-      .getOneUser(id, config)
-      .then((response) => {
-        // console.log("response : ",response);
-        setDataUser(response.data);
-      })
+  // useEffect(() => {
+  //   userService
+  //     .getOneUser(id, config)
+  //     .then((response) => {
+  //       // console.log("response : ",response);
+  //       setDataUser(response.data);
+  //     })
 
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
-  const [dataPost, setDataPost] = useState([]);
-  // console.log(dataPost);
+  // const [dataPost, setDataPost] = useState([]);
+  // // console.log(dataPost);
 
-  const [addDataPost, setAddDataPost] = useState(true);
-  const validateHandler = () => {
-    setAddDataPost(true);
-  };
-  // console.log(addDataPost);
-  useEffect(() => {
-    if (addDataPost) {
-      userService
-        .getAllPosts(config)
-        .then((response) => {
-          // console.log("response : ", response);
+  // const [addDataPost, setAddDataPost] = useState(true);
+  // const validateHandler = () => {
+  //   setAddDataPost(true);
+  // };
+  // // console.log(addDataPost);
+  // useEffect(() => {
+  //   if (addDataPost) {
+  //     userService
+  //       .getAllPosts(config)
+  //       .then((response) => {
+  //         // console.log("response : ", response);
 
-          setDataPost(response.data);
-          setAddDataPost(false);
-        })
+  //         setDataPost(response.data);
+  //         setAddDataPost(false);
+  //       })
 
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [addDataPost]);
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, [addDataPost]);
 
-  const [toggle, setToggle] = useState(false);
-  const handleToggle = () => {
-    setToggle(!toggle);
-  };
+  // const [toggle, setToggle] = useState(false);
+  // const handleToggle = () => {
+  //   setToggle(!toggle);
+  // };
 
   // + .map for Card-->
   return (
     <>
       <Container className="w-custom-limit-800 p-0">
-        <Header
+        {/* <Header
           userId={"userId"}
           onToggle={handleToggle}
           toggle={toggle}
           firstName={dataUser.u_first_name}
           lastName={dataUser.u_last_name}
-        />
+        /> */}
         <main>
           {toggle && (
             <FormPost
