@@ -5,6 +5,7 @@ import "./App.css";
 
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import Layout from "./Components/Layout";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
@@ -31,6 +32,20 @@ function App() {
       <UserProvider>
         <Routes>
           <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Layout />
+              </RequireAuth>
+            }
+          >
+
+            <Route index element={<RequireAuth><Home/></RequireAuth>}/>
+            <Route path="profile/:id" element={<RequireAuth><Profile/></RequireAuth>}/>
+          </Route>
+
+          {/* 
+          <Route
             index
             path="/"
             element={
@@ -46,7 +61,7 @@ function App() {
                 <Profile />
               </RequireAuth>
             }
-          />
+          /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
