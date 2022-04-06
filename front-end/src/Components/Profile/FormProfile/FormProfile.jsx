@@ -5,11 +5,14 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Btns from "./Btns.jsx";
 
 const FormProfile = ({ dataUser }) => {
+  console.log(dataUser);
   const [dataNewUser, setDataNewUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
+
+  console.log(dataNewUser);
 
   // grab the value from db + dependency of dataUser for update values :
   const handleValue = () => {
@@ -32,7 +35,7 @@ const FormProfile = ({ dataUser }) => {
   // grabe a new values :
   const handleChange = (event) => {
     // console.log(event.target.value)
-    event.preventDefault();
+    // event.preventDefault();
     setDataNewUser((prevDataNewUser) => {
       return {
         ...prevDataNewUser,
@@ -43,12 +46,16 @@ const FormProfile = ({ dataUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(dataUser);
+    console.log(dataNewUser);
   };
 
   return (
     <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
-      <Form.Group className="position-relative mb-3" controlId="firstName">
+      <Form.Group
+        className="position-relative mb-3"
+        controlId="firstName"
+        
+      >
         <FloatingLabel
           controlId="firstName"
           label="Prénom"
@@ -59,8 +66,8 @@ const FormProfile = ({ dataUser }) => {
             className="border-top-0 border-end-0 border-start-0"
             placeholder="firstName"
             name="firstName"
-            onChange={handleChange}
             value={dataNewUser.firstName}
+            onChange={handleChange}
           />
         </FloatingLabel>
         <Form.Text className="text-muted ps-2 invisible">
@@ -68,7 +75,11 @@ const FormProfile = ({ dataUser }) => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className="position-relative mb-3" controlId="lastName">
+      <Form.Group
+        className="position-relative mb-3"
+        controlId="lastName"
+       
+      >
         <FloatingLabel
           controlId="lastName"
           label="Nom"
@@ -88,7 +99,11 @@ const FormProfile = ({ dataUser }) => {
         </Form.Text>
       </Form.Group>
 
-      <Form.Group className="position-relative mb-3" controlId="email">
+      <Form.Group
+        className="position-relative mb-3"
+        controlId="email"
+       
+      >
         <FloatingLabel
           controlId="email"
           label="nom.prenom@groupomania.fr"
