@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import userService from "../../../services/userService.js";
+import validService from "../../../services/validService";
+
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
-import Btns from "./Btns.jsx";
-
 const FormProfile = ({ dataUser }) => {
-  console.log(dataUser);
+  // console.log(dataUser);
+  const navigate = useNavigate();
+  const customMessage = validService.messages();
+  const validRegex = validService.regex();
+
   const [dataNewUser, setDataNewUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
 
-  console.log(dataNewUser);
+  // console.log(dataNewUser);
 
   // grab the value from db + dependency of dataUser for update values :
   const handleValue = () => {
@@ -34,8 +42,15 @@ const FormProfile = ({ dataUser }) => {
 
   // grabe a new values :
   const handleChange = (event) => {
-    // console.log(event.target.value)
-    // event.preventDefault();
+    handleToggle("btnConfirm", false);
+
+    // userField = event.target
+    validate(
+      event.target,
+      validRegex[event.target.attributes.name.value],
+      dataNewUser
+    );
+
     setDataNewUser((prevDataNewUser) => {
       return {
         ...prevDataNewUser,
@@ -44,18 +59,73 @@ const FormProfile = ({ dataUser }) => {
     });
   };
 
+  // for warning messages & regex from validService:
+  const [message, setMessage] = useState({
+    firstName: "",
+    lastName: "",
+    email: " ",
+  });
+
+  function createErrMessage(field) {
+    switch (field.name) {
+      case "firstName":
+        setMessage({ firstName: customMessage.firstName });
+        break;
+      case "lastName":
+        setMessage({ lastName: customMessage.lastName });
+        break;
+      case "email":
+        setMessage({ email: customMessage.email });
+        break;
+
+      default:
+        console.log("default from switch");
+    }
+  }
+
+  // ---check regex if not -> create a warning message :
+  const validate = (userField, regex) => {
+    if (!regex.test(userField.value)) {
+      createErrMessage(userField);
+      return;
+    } else {
+      setMessage("");
+    }
+  };
+
+  // -------------- //
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(dataNewUser);
+    if (
+      validRegex.firstName.test(dataNewUser.firstName) &&
+      validRegex.lastName.test(dataNewUser.lastName) &&
+      validRegex.email.test(dataNewUser.email)
+    ) {
+      console.log(dataNewUser);
+    } else {
+      console.log("not");
+    }
+  };
+
+  // toggles :
+  const [toggle, setToggle] = useState({
+    btnConfirm: true,
+  });
+
+  const handleToggle = (key, value) => {
+    // console.log(key, value);
+    setToggle((prevToggle) => {
+      return {
+        ...prevToggle,
+        [key]: value,
+      };
+    });
   };
 
   return (
     <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
-      <Form.Group
-        className="position-relative mb-3"
-        controlId="firstName"
-        
-      >
+      <Form.Group className="position-relative mb-3" controlId="firstName">
         <FloatingLabel
           controlId="firstName"
           label="Prénom"
@@ -70,16 +140,10 @@ const FormProfile = ({ dataUser }) => {
             onChange={handleChange}
           />
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
-        </Form.Text>
+        <Form.Text className="text-danger ps-2 ">{message.firstName}</Form.Text>
       </Form.Group>
 
-      <Form.Group
-        className="position-relative mb-3"
-        controlId="lastName"
-       
-      >
+      <Form.Group className="position-relative mb-3" controlId="lastName">
         <FloatingLabel
           controlId="lastName"
           label="Nom"
@@ -94,16 +158,10 @@ const FormProfile = ({ dataUser }) => {
             value={dataNewUser.lastName}
           />
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
-        </Form.Text>
+        <Form.Text className="text-danger ps-2 ">{message.lastName}</Form.Text>
       </Form.Group>
 
-      <Form.Group
-        className="position-relative mb-3"
-        controlId="email"
-       
-      >
+      <Form.Group className="position-relative mb-3" controlId="email">
         <FloatingLabel
           controlId="email"
           label="nom.prenom@groupomania.fr"
@@ -118,9 +176,7 @@ const FormProfile = ({ dataUser }) => {
             value={dataNewUser.email}
           />
         </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
-        </Form.Text>
+        <Form.Text className="text-danger ps-2 ">{message.email}</Form.Text>
       </Form.Group>
 
       {/* <Form.Group className="position-relative mb-3" controlId="password">
@@ -143,7 +199,23 @@ const FormProfile = ({ dataUser }) => {
         </Form.Text>
       </Form.Group> */}
 
-      <Btns />
+      {!toggle.btnConfirm && (
+        <Button variant="primary" type="submit" className="w-100 mb-4">
+          Confirmer les modifications
+        </Button>
+      )}
+
+      <Button
+        variant="secondary"
+        className="w-100 mb-4"
+        onClick={() => navigate("/")}
+      >
+        Annuler les modifications
+      </Button>
+
+      <Button variant="danger" className="w-100">
+        Supprimer le compte
+      </Button>
     </Form>
   );
 };
