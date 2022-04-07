@@ -22,7 +22,7 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { RiAddBoxFill } from "react-icons/ri";
 import { RiAddBoxLine } from "react-icons/ri";
 
-const Layout = () => {
+const HeaderLayout = () => {
   const navigate = useNavigate();
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
@@ -44,7 +44,7 @@ const Layout = () => {
   const [dataUser, setDataUser] = useState("");
   //   console.log(dataUser);
 
-  useEffect(() => {
+  const submitToApiGetUser = (id, config) => {
     userService
       .getOneUser(id, config)
       .then((response) => {
@@ -55,6 +55,10 @@ const Layout = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    submitToApiGetUser(id, config);
   }, [addData]);
 
   const [dataPost, setDataPost] = useState([]);
@@ -219,4 +223,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default HeaderLayout;

@@ -26,6 +26,8 @@ const FormSignup = () => {
     admin: 0,
   });
 
+  console.log(dataUser);
+
   // - for warning messages :
   const [message, setMessage] = useState({
     firstName: "",
