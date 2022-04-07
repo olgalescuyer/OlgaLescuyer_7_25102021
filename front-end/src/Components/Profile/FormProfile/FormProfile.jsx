@@ -16,6 +16,27 @@ const FormProfile = ({ dataUser }) => {
   const customMessage = validService.messages();
   const validRegex = validService.regex();
 
+  // toggles :
+  const [toggle, setToggle] = useState({
+    btnConfirm: true,
+    field: true,
+    fieldPass: true,
+    btnDisabled: true,
+    btnChangePass: true,
+  });
+
+  // console.log(toggle);
+
+  const handleToggle = (key, value) => {
+    // console.log(key, value);
+    setToggle((prevToggle) => {
+      return {
+        ...prevToggle,
+        [key]: value,
+      };
+    });
+  };
+
   const [dataNewUser, setDataNewUser] = useState({
     firstName: "",
     lastName: "",
@@ -35,8 +56,6 @@ const FormProfile = ({ dataUser }) => {
         firstName: dataUser.u_first_name,
         lastName: dataUser.u_last_name,
         email: dataUser.u_email,
-        password: "",
-        controlPassword: "",
       };
     });
   };
@@ -44,12 +63,10 @@ const FormProfile = ({ dataUser }) => {
   useEffect(() => {
     handleValue();
   }, [dataUser]);
+
   // console.log(dataUser);
 
-
-
   // for warning messages & regex from validService:
-  // ---message then all the fields have some errors :
   const [oneErr, setOneErr] = useState(false);
   // ---message for compare a new password :
   const [messageValidation, setMessageValidation] = useState("");
@@ -94,75 +111,140 @@ const FormProfile = ({ dataUser }) => {
     }
   };
 
-    // grabe a new values & check the errors & create an error messages :
-    const handleChange = (event) => {
-      event.preventDefault();
+  // grabe a new values & check the errors & create an error messages :
+  const handleChange = (event) => {
+    event.preventDefault();
 
-      console.log(dataNewUser);
-      
-      // ---create the error messages :
-      handleToggle("btnConfirm", false);
+    // console.log(dataNewUser);
+
+    // ---create the error messages :
+
+    handleToggle("btnConfirm", false);
+    setMessageValidation("");
+    setOneErr(false);
+
+    if (refInputPass.current.value !== refInputControlPass.current.value) {
+      setMessageValidation("Mots de passe ne correspondent pas");
+    } else {
       setMessageValidation("");
+    }
 
-      if (refInputPass.current.value !== refInputControlPass.current.value) {
-        setMessageValidation("Mots de passe ne correspondent pas");
-      } else {
-        setMessageValidation("");
-      }
-  
-      // userField = event.target
-      validate(event.target, validRegex[event.target.attributes.name.value]);
-  
-      // ---grabe the new values :
-      setDataNewUser((prevDataNewUser) => {
-        return {
-          ...prevDataNewUser,
-          [event.target.name]: event.target.value,
-        };
-      });
-    };
+    // func for compare with regex -> userField = event.target :
+    validate(event.target, validRegex[event.target.attributes.name.value]);
+
+    // ---grabe the new values :
+    setDataNewUser((prevDataNewUser) => {
+      return {
+        ...prevDataNewUser,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
 
   // -------------- //
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      validRegex.firstName.test(dataNewUser.firstName) &&
-      validRegex.lastName.test(dataNewUser.lastName) &&
-      validRegex.email.test(dataNewUser.email) &&
-      validRegex.password.test(dataNewUser.password) &&
-      validRegex.controlPassword.test(dataNewUser.controlPassword) &&
-      refInputPass.current.value === refInputControlPass.current.value
-    ) {
-      submitToApiPut();
-    } else {
-      setOneErr(true);
-    }
+
+    const checkPass = () => {
+      if (
+        validRegex.password.test(dataNewUser.password) &&
+        validRegex.controlPassword.test(dataNewUser.controlPassword) &&
+        refInputPass.current.value === refInputControlPass.current.value
+      ) {
+        submitToApiPutPass();
+
+        dataUser.u_first_name !== dataNewUser.firstName ||
+        dataUser.u_last_name !== dataNewUser.lastName ||
+        dataUser.u_email !== dataNewUser.email
+          ? handleToggle("btnConfirm", false)
+          : handleToggle("btnConfirm", true);
+
+        console.log("ok pass");
+        handleToggle("field", true);
+        handleToggle("fieldPass", true);
+        handleToggle("btnDisabled", false);
+        handleToggle("btnChangePass", true);
+      } else {
+        setOneErr(true);
+        console.log("err pass");
+      }
+    };
+
+    const check = () => {
+      if (
+        validRegex.firstName.test(dataNewUser.firstName) &&
+        validRegex.lastName.test(dataNewUser.lastName) &&
+        validRegex.email.test(dataNewUser.email)
+      ) {
+        submitToApiPut();
+        navigate("/");
+
+        handleToggle("field", true);
+        handleToggle("fieldPass", true);
+        console.log("ok field");
+      } else {
+        setOneErr(true);
+        console.log("err field");
+      }
+      // submitToApiPut();
+    };
+
+    toggle.field ? check() : checkPass();
+    console.log(toggle.field);
   };
 
   const submitToApiPut = () => {
-    console.log(dataNewUser);
+    console.log(dataNewUser.firstName, dataNewUser.lastName, dataNewUser.email);
+  };
+  const submitToApiPutPass = () => {
+    // cancelCoursPass();
+    console.log(dataNewUser.password);
+    setDataNewUser((prevDataNewUser) => {
+      return {
+        ...prevDataNewUser,
+        password: "",
+        controlPassword: "",
+      };
+    });
   };
 
-  // toggles :
-  const [toggle, setToggle] = useState({
-    btnConfirm: true,
-    btnChange: true,
-  });
+  // custom cleanup function :
+  const cancelCoursPass = () => {
+    handleToggle("btnChangePass", true);
+    // handleToggle("btnConfirm", true);
+    handleToggle("field", true);
+    handleToggle("fieldPass", true);
+    setMessageValidation("");
 
-  const handleToggle = (key, value) => {
-    // console.log(key, value);
-    setToggle((prevToggle) => {
+    dataUser.u_first_name !== dataNewUser.firstName ||
+    dataUser.u_last_name !== dataNewUser.lastName ||
+    dataUser.u_email !== dataNewUser.email
+      ? handleToggle("btnConfirm", false)
+      : handleToggle("btnConfirm", true);
+
+    setMessage((prevMessage) => {
       return {
-        ...prevToggle,
-        [key]: value,
+        ...prevMessage,
+        password: "",
+        controlPassword: "",
+      };
+    });
+    setDataNewUser((prevDataNewUser) => {
+      return {
+        ...prevDataNewUser,
+        password: "",
+        controlPassword: "",
       };
     });
   };
 
   return (
     <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
-      <Form.Group className="position-relative mb-3" controlId="firstName">
+      <Form.Group
+        className={toggle.field ? "position-relative mb-3" : "d-none"}
+        controlId="firstName"
+      >
         <FloatingLabel
           controlId="firstName"
           label="Prénom"
@@ -180,7 +262,10 @@ const FormProfile = ({ dataUser }) => {
         <Form.Text className="text-danger ">{message.firstName}</Form.Text>
       </Form.Group>
 
-      <Form.Group className="position-relative mb-3" controlId="lastName">
+      <Form.Group
+        className={toggle.field ? "position-relative mb-3" : "d-none"}
+        controlId="lastName"
+      >
         <FloatingLabel
           controlId="lastName"
           label="Nom"
@@ -198,7 +283,10 @@ const FormProfile = ({ dataUser }) => {
         <Form.Text className="text-danger">{message.lastName}</Form.Text>
       </Form.Group>
 
-      <Form.Group className="position-relative mb-3" controlId="email">
+      <Form.Group
+        className={toggle.field ? "position-relative mb-3" : "d-none"}
+        controlId="email"
+      >
         <FloatingLabel
           controlId="email"
           label="nom.prenom@groupomania.fr"
@@ -216,60 +304,66 @@ const FormProfile = ({ dataUser }) => {
         <Form.Text className="text-danger">{message.email}</Form.Text>
       </Form.Group>
 
-      {toggle.btnChange && (
+      {toggle.btnChangePass && (
         <Button
           variant="outline-secondary"
-          className="w-100 mb-4"
+          className={!toggle.btnDisabled ? "w-100 mb-4 disabled" : "w-100 mb-4"}
           onClick={() => {
-            handleToggle("btnChange", false);
+            handleToggle("fieldPass", false);
+            handleToggle("field", false);
+
+            handleToggle("btnConfirm", true);
+            handleToggle("btnChangePass", false);
+            setOneErr(false);
           }}
         >
-          Changer de mot de pass ?
+          {!toggle.btnDisabled
+            ? "Mot de pass a été changé"
+            : "Changer de mot de pass ?"}
         </Button>
       )}
 
-      {!toggle.btnChange && (
-        <Form.Group className="position-relative mb-3" controlId="password">
-          <FloatingLabel
-            controlId="password"
-            label="Nouveau mot de passe"
-            className="text-muted fst-italic"
-          >
-            <Form.Control
-              type="password"
-              className="border-top-0 border-end-0 border-start-0 "
-              placeholder="password"
-              name="password"
-              onChange={handleChange}
-              value={dataNewUser.password}
-              ref={refInputPass}
-            />
-          </FloatingLabel>
-          <Form.Text className="text-danger ps-2 ">
-            {message.password}
-          </Form.Text>
+      <Form.Group
+        className={!toggle.fieldPass ? "position-relative mb-3" : "d-none"}
+        controlId="password"
+      >
+        <FloatingLabel
+          controlId="password"
+          label="Nouveau mot de passe"
+          className="text-muted fst-italic"
+        >
+          <Form.Control
+            type="password"
+            className="border-top-0 border-end-0 border-start-0 "
+            placeholder="password"
+            name="password"
+            onChange={handleChange}
+            value={dataNewUser.password}
+            ref={refInputPass}
+          />
+        </FloatingLabel>
+        <Form.Text className="text-danger ps-2 ">{message.password}</Form.Text>
 
-          <FloatingLabel
-            controlId="password"
-            label="Confirmer Nouveau mot de passe"
-            className="text-muted fst-italic"
-          >
-            <Form.Control
-              type="password"
-              className="border-top-0 border-end-0 border-start-0 "
-              placeholder="controlPassword"
-              name="controlPassword"
-              onChange={handleChange}
-              value={dataNewUser.controlPassword}
-              ref={refInputControlPass}
-            />
-          </FloatingLabel>
-          <Form.Text className="text-danger ps-2 ">
-            {message.controlPassword}
-            {messageValidation}
-          </Form.Text>
-        </Form.Group>
-      )}
+        <FloatingLabel
+          controlId="password"
+          label="Confirmer Nouveau mot de passe"
+          className="text-muted fst-italic"
+        >
+          <Form.Control
+            type="password"
+            className="border-top-0 border-end-0 border-start-0 "
+            placeholder="controlPassword"
+            name="controlPassword"
+            onChange={handleChange}
+            value={dataNewUser.controlPassword}
+            ref={refInputControlPass}
+          />
+        </FloatingLabel>
+        <Form.Text className="text-danger ps-2 ">
+          {message.controlPassword}
+          {messageValidation}
+        </Form.Text>
+      </Form.Group>
 
       {oneErr && (
         <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
@@ -286,7 +380,10 @@ const FormProfile = ({ dataUser }) => {
       <Button
         variant="secondary"
         className="w-100 mb-4"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          setOneErr(false);
+          toggle.field ? navigate("/") : cancelCoursPass();
+        }}
       >
         Annuler
       </Button>

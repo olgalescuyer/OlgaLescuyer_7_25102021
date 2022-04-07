@@ -44,7 +44,7 @@ const HeaderLayout = () => {
   const [dataUser, setDataUser] = useState("");
   //   console.log(dataUser);
 
-  useEffect(() => {
+  const submitToApiGetUser = (id, config) => {
     userService
       .getOneUser(id, config)
       .then((response) => {
@@ -55,6 +55,10 @@ const HeaderLayout = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    submitToApiGetUser(id, config);
   }, [addData]);
 
   const [dataPost, setDataPost] = useState([]);
