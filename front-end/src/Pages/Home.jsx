@@ -20,7 +20,7 @@ const Home = () => {
     handleToggleAddBox,
     validateHandler,
   } = useOutletContext();
-
+console.log(dataUser);
   // + .map for Card-->
   return (
     <>
