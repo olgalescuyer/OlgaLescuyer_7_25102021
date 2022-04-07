@@ -200,7 +200,7 @@ const FormSignup = () => {
           <Form.Control
             type="password"
             className="border-top-0 border-end-0 border-start-0 "
-            placeholder="paassword"
+            placeholder="password"
             name="password"
             onChange={handleChange}
             value={dataUser.password}

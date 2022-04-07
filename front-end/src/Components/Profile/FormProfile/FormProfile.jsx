@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import userService from "../../../services/userService.js";
@@ -10,6 +10,8 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const FormProfile = ({ dataUser }) => {
   // console.log(dataUser);
+  const refInputPass = useRef();
+  const refInputControlPass = useRef();
   const navigate = useNavigate();
   const customMessage = validService.messages();
   const validRegex = validService.regex();
@@ -18,6 +20,8 @@ const FormProfile = ({ dataUser }) => {
     firstName: "",
     lastName: "",
     email: "",
+    password: "",
+    controlPassword: "",
   });
 
   // console.log(dataNewUser);
@@ -31,6 +35,8 @@ const FormProfile = ({ dataUser }) => {
         firstName: dataUser.u_first_name,
         lastName: dataUser.u_last_name,
         email: dataUser.u_email,
+        password: "",
+        controlPassword: "",
       };
     });
   };
@@ -40,30 +46,20 @@ const FormProfile = ({ dataUser }) => {
   }, [dataUser]);
   // console.log(dataUser);
 
-  // grabe a new values :
-  const handleChange = (event) => {
-    handleToggle("btnConfirm", false);
 
-    // userField = event.target
-    validate(
-      event.target,
-      validRegex[event.target.attributes.name.value],
-      dataNewUser
-    );
-
-    setDataNewUser((prevDataNewUser) => {
-      return {
-        ...prevDataNewUser,
-        [event.target.name]: event.target.value,
-      };
-    });
-  };
 
   // for warning messages & regex from validService:
+  // ---message then all the fields have some errors :
+  const [oneErr, setOneErr] = useState(false);
+  // ---message for compare a new password :
+  const [messageValidation, setMessageValidation] = useState("");
+  // ---currents errors :
   const [message, setMessage] = useState({
     firstName: "",
     lastName: "",
     email: " ",
+    password: "",
+    controlPassword: "",
   });
 
   function createErrMessage(field) {
@@ -77,7 +73,12 @@ const FormProfile = ({ dataUser }) => {
       case "email":
         setMessage({ email: customMessage.email });
         break;
-
+      case "password":
+        setMessage({ password: customMessage.password });
+        break;
+      case "controlPassword":
+        setMessage({ controlPassword: customMessage.controlPassword });
+        break;
       default:
         console.log("default from switch");
     }
@@ -93,6 +94,34 @@ const FormProfile = ({ dataUser }) => {
     }
   };
 
+    // grabe a new values & check the errors & create an error messages :
+    const handleChange = (event) => {
+      event.preventDefault();
+
+      console.log(dataNewUser);
+      
+      // ---create the error messages :
+      handleToggle("btnConfirm", false);
+      setMessageValidation("");
+
+      if (refInputPass.current.value !== refInputControlPass.current.value) {
+        setMessageValidation("Mots de passe ne correspondent pas");
+      } else {
+        setMessageValidation("");
+      }
+  
+      // userField = event.target
+      validate(event.target, validRegex[event.target.attributes.name.value]);
+  
+      // ---grabe the new values :
+      setDataNewUser((prevDataNewUser) => {
+        return {
+          ...prevDataNewUser,
+          [event.target.name]: event.target.value,
+        };
+      });
+    };
+
   // -------------- //
 
   const handleSubmit = (e) => {
@@ -100,17 +129,25 @@ const FormProfile = ({ dataUser }) => {
     if (
       validRegex.firstName.test(dataNewUser.firstName) &&
       validRegex.lastName.test(dataNewUser.lastName) &&
-      validRegex.email.test(dataNewUser.email)
+      validRegex.email.test(dataNewUser.email) &&
+      validRegex.password.test(dataNewUser.password) &&
+      validRegex.controlPassword.test(dataNewUser.controlPassword) &&
+      refInputPass.current.value === refInputControlPass.current.value
     ) {
-      console.log(dataNewUser);
+      submitToApiPut();
     } else {
-      console.log("not");
+      setOneErr(true);
     }
+  };
+
+  const submitToApiPut = () => {
+    console.log(dataNewUser);
   };
 
   // toggles :
   const [toggle, setToggle] = useState({
     btnConfirm: true,
+    btnChange: true,
   });
 
   const handleToggle = (key, value) => {
@@ -140,7 +177,7 @@ const FormProfile = ({ dataUser }) => {
             onChange={handleChange}
           />
         </FloatingLabel>
-        <Form.Text className="text-danger ps-2 ">{message.firstName}</Form.Text>
+        <Form.Text className="text-danger ">{message.firstName}</Form.Text>
       </Form.Group>
 
       <Form.Group className="position-relative mb-3" controlId="lastName">
@@ -158,7 +195,7 @@ const FormProfile = ({ dataUser }) => {
             value={dataNewUser.lastName}
           />
         </FloatingLabel>
-        <Form.Text className="text-danger ps-2 ">{message.lastName}</Form.Text>
+        <Form.Text className="text-danger">{message.lastName}</Form.Text>
       </Form.Group>
 
       <Form.Group className="position-relative mb-3" controlId="email">
@@ -176,28 +213,69 @@ const FormProfile = ({ dataUser }) => {
             value={dataNewUser.email}
           />
         </FloatingLabel>
-        <Form.Text className="text-danger ps-2 ">{message.email}</Form.Text>
+        <Form.Text className="text-danger">{message.email}</Form.Text>
       </Form.Group>
 
-      {/* <Form.Group className="position-relative mb-3" controlId="password">
-        <FloatingLabel
-          controlId="password"
-          label="Mot de passe"
-          className="text-muted fst-italic"
+      {toggle.btnChange && (
+        <Button
+          variant="outline-secondary"
+          className="w-100 mb-4"
+          onClick={() => {
+            handleToggle("btnChange", false);
+          }}
         >
-          <Form.Control
-            type="password"
-            className="border-top-0 border-end-0 border-start-0 "
-            placeholder="paassword"
-            name="password"
-            onChange={handleChange}
-            value={password}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-muted ps-2 invisible">
-          some warning...
+          Changer de mot de pass ?
+        </Button>
+      )}
+
+      {!toggle.btnChange && (
+        <Form.Group className="position-relative mb-3" controlId="password">
+          <FloatingLabel
+            controlId="password"
+            label="Nouveau mot de passe"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="password"
+              className="border-top-0 border-end-0 border-start-0 "
+              placeholder="password"
+              name="password"
+              onChange={handleChange}
+              value={dataNewUser.password}
+              ref={refInputPass}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger ps-2 ">
+            {message.password}
+          </Form.Text>
+
+          <FloatingLabel
+            controlId="password"
+            label="Confirmer Nouveau mot de passe"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="password"
+              className="border-top-0 border-end-0 border-start-0 "
+              placeholder="controlPassword"
+              name="controlPassword"
+              onChange={handleChange}
+              value={dataNewUser.controlPassword}
+              ref={refInputControlPass}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger ps-2 ">
+            {message.controlPassword}
+            {messageValidation}
+          </Form.Text>
+        </Form.Group>
+      )}
+
+      {oneErr && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          Tous les champs doivent être remplis correctement
         </Form.Text>
-      </Form.Group> */}
+      )}
 
       {!toggle.btnConfirm && (
         <Button variant="primary" type="submit" className="w-100 mb-4">
@@ -210,7 +288,7 @@ const FormProfile = ({ dataUser }) => {
         className="w-100 mb-4"
         onClick={() => navigate("/")}
       >
-        Annuler les modifications
+        Annuler
       </Button>
 
       <Button variant="danger" className="w-100">
