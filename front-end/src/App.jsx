@@ -5,7 +5,7 @@ import "./App.css";
 
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
-import Layout from "./Components/Layout";
+import HeaderLayout from "./Components/HeaderLayout";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
@@ -35,7 +35,7 @@ function App() {
             path="/"
             element={
               <RequireAuth>
-                <Layout />
+                <HeaderLayout />
               </RequireAuth>
             }
           >
