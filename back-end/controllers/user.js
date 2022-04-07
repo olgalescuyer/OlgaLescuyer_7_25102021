@@ -85,7 +85,16 @@ exports.getOneUser = (req, res, next) => {
   if (userIdFromParams === userIdFromToken) {
     userModel
       .findUserById(userIdFromToken)
-      .then((user) => res.status(200).json(user[0]))
+      .then((user) =>
+        res.status(200).json({
+          u_id: user[0].u_id,
+          u_admin: user[0].u_admin,
+          u_email: user[0].u_email,
+          u_first_name: user[0].u_first_name,
+          u_last_name: user[0].u_last_name,
+          u_avatar: user[0].u_avatar,
+        })
+      )
       .catch((error) => res.status(404).json({ error }));
   } else {
     res.status(400).json({ message: "user Id from params not valid !" });
