@@ -36,7 +36,7 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyOnePost = (req, res, next) => {
-  // console.log(req.body, req.file);
+  // console.log(req.body);
   const postObject = req.file
     ? {
         ...JSON.parse(req.body.post),
