@@ -100,10 +100,8 @@ const CardModal = ({
         imageUrl: null,
       };
     });
-   
   };
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -115,7 +113,7 @@ const CardModal = ({
       text: dataNewPost.text,
       image: dataNewPost.imageUrl,
     };
-    console.log("postObj", postObj);
+    // console.log("postObj", postObj);
 
     const formData = new FormData();
     if (imagefile) {
@@ -261,9 +259,7 @@ const CardModal = ({
                   {toggle.textEdit && (
                     <div className="text-muted fst-italic text-center me-2">
                       <span>
-                        {dataNewPost.imageUrl
-                          ? "Modifier l'"
-                          : "Ajouter une "}
+                        {dataNewPost.imageUrl ? "Modifier l'" : "Ajouter une "}
                         image
                       </span>
                     </div>
@@ -324,7 +320,6 @@ const CardModal = ({
                       borderColor: "transparent",
                     }}
                     onClick={() => {
-                    
                       handleToggle("btnConfirm", false);
 
                       handleDeleteImg();

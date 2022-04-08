@@ -21,6 +21,7 @@ const Home = () => {
     validateHandler,
   } = useOutletContext();
   // console.log(dataUser);
+  console.log(dataPost);
   // + .map for Card-->
   return (
     <>

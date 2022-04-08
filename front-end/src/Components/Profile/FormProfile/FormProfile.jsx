@@ -1,14 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
+import UserContextTest from "../../../Context/UserContextTest";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const FormProfile = ({ dataUser }) => {
+  const userContext = useContext(UserContextTest);
+  const tokenAuth = userContext.authHeader();
+  const config = { headers: tokenAuth };
+  const id = userContext.userId();
+  const token = userContext.token;
   // console.log(dataUser);
   const refInputPass = useRef();
   const refInputControlPass = useRef();
@@ -177,7 +183,15 @@ const FormProfile = ({ dataUser }) => {
         validRegex.lastName.test(dataNewUser.lastName) &&
         validRegex.email.test(dataNewUser.email)
       ) {
-        submitToApiPut();
+        const userObj = {
+          firstName: dataNewUser.firstName,
+          lastName: dataNewUser.lastName,
+          email: dataNewUser.email,
+        };
+        const formData = new FormData();
+        formData.append("user", JSON.stringify(userObj));
+
+        submitToApiPut(id, formData, token);
         navigate("/");
 
         handleToggle("field", true);
@@ -191,12 +205,22 @@ const FormProfile = ({ dataUser }) => {
     };
 
     toggle.field ? check() : checkPass();
-    console.log(toggle.field);
+    // console.log(toggle.field);
   };
 
-  const submitToApiPut = () => {
-    console.log(dataNewUser.firstName, dataNewUser.lastName, dataNewUser.email);
+  const submitToApiPut = (id, data, config) => {
+    // console.log(dataNewUser.firstName, dataNewUser.lastName, dataNewUser.email);
+
+    userService
+      .modifyUser(id, data, config)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
   const submitToApiPutPass = () => {
     // cancelCoursPass();
     console.log(dataNewUser.password);

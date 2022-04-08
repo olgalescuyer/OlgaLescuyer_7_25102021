@@ -52,8 +52,7 @@ exports.findUserById = (id) => {
 };
 
 exports.updateOneUser = (sqlInserts) => {
-  let sql =
-    `REPLACE INTO user ( u_id, u_first_name, u_last_name, u_email, u_password, u_avatar ) VALUES (?, ?, ?, ?, ?, ?) `;
+  let sql = `UPDATE user SET u_first_name = ?, u_last_name = ?, u_email = ? WHERE u_id = ?`;
 
   sql = mysql.format(sql, sqlInserts);
   // console.log(sql);
@@ -65,6 +64,24 @@ exports.updateOneUser = (sqlInserts) => {
         reject(err);
       } else {
         // console.log('result from db : ', result);
+        resolve(result);
+      }
+    });
+  });
+};
+
+exports.updatePassword = (sqlInserts) => {
+  let sql = ``;
+
+  console.log(sql);
+
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, result) => {
+      if (result === undefined) {
+        reject(err);
+        console.log("result reject from db : ", result);
+      } else {
+        console.log("result resolve from db : ", result);
         resolve(result);
       }
     });

@@ -33,6 +33,20 @@ const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
 };
 
+const modifyUser = (userId, data, token) => {
+  const options = {
+    method: "put",
+    url: API_URL + "auth/" + userId,
+    headers: {
+      Authorization: "Bearer " + token,
+      "content-type": "multipart/form-data",
+    },
+    data: data,
+  };
+  // console.log(options);
+  return axios(options);
+};
+
 const updatePost = (postId, data, token) => {
   const options = {
     method: "put",
@@ -43,7 +57,7 @@ const updatePost = (postId, data, token) => {
     },
     data: data,
   };
-// console.log(options);
+  // console.log(options);
   return axios(options);
 };
 
@@ -75,6 +89,7 @@ const updateLike = (token, data, like) => {
 
 export default {
   getOneUser,
+  modifyUser,
   getOnePost,
   getAllPosts,
   postOnePost,
