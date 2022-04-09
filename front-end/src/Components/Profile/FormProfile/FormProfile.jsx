@@ -8,6 +8,10 @@ import UserContextTest from "../../../Context/UserContextTest";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import Image from "react-bootstrap/Image";
+
+import image from "../../../Assets/Gif/no-way-cat.gif";
 
 const FormProfile = ({ dataUser }) => {
   const userContext = useContext(UserContextTest);
@@ -22,7 +26,17 @@ const FormProfile = ({ dataUser }) => {
   const customMessage = validService.messages();
   const validRegex = validService.regex();
 
+  const logoutHandler = () => {
+    userContext.logout();
+    navigate("/login", { replace: true });
+  };
+
   // toggles :
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [toggle, setToggle] = useState({
     btnConfirm: true,
     field: true,
@@ -51,7 +65,7 @@ const FormProfile = ({ dataUser }) => {
     controlPassword: "",
   });
 
-  // console.log(dataNewUser);
+  console.log(dataUser);
 
   // grab the value from db + dependency of dataUser for update values :
   const handleValue = () => {
@@ -241,7 +255,18 @@ const FormProfile = ({ dataUser }) => {
       .catch((error) => {
         console.log(error);
       });
-    // cancelCoursPass();
+  };
+
+  const submitToApiDelete = (userId, config) => {
+    userService
+      .deleteUser(userId, config)
+      .then((response) => {
+        console.log(response);
+        logoutHandler();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // custom cleanup function :
@@ -275,158 +300,185 @@ const FormProfile = ({ dataUser }) => {
   };
 
   return (
-    <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
-      <Form.Group
-        className={toggle.field ? "position-relative mb-3" : "d-none"}
-        controlId="firstName"
-      >
-        <FloatingLabel
+    <>
+      <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
+        <Form.Group
+          className={toggle.field ? "position-relative mb-3" : "d-none"}
           controlId="firstName"
-          label="Prénom"
-          className="text-muted fst-italic"
         >
-          <Form.Control
-            type="text"
-            className="border-top-0 border-end-0 border-start-0"
-            placeholder="firstName"
-            name="firstName"
-            value={dataNewUser.firstName}
-            onChange={handleChange}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-danger ">{message.firstName}</Form.Text>
-      </Form.Group>
+          <FloatingLabel
+            controlId="firstName"
+            label="Prénom"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="text"
+              className="border-top-0 border-end-0 border-start-0"
+              placeholder="firstName"
+              name="firstName"
+              value={dataNewUser.firstName}
+              onChange={handleChange}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger ">{message.firstName}</Form.Text>
+        </Form.Group>
 
-      <Form.Group
-        className={toggle.field ? "position-relative mb-3" : "d-none"}
-        controlId="lastName"
-      >
-        <FloatingLabel
+        <Form.Group
+          className={toggle.field ? "position-relative mb-3" : "d-none"}
           controlId="lastName"
-          label="Nom"
-          className="text-muted fst-italic"
         >
-          <Form.Control
-            type="text"
-            className="border-top-0 border-end-0 border-start-0"
-            placeholder="lastName"
-            name="lastName"
-            onChange={handleChange}
-            value={dataNewUser.lastName}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-danger">{message.lastName}</Form.Text>
-      </Form.Group>
+          <FloatingLabel
+            controlId="lastName"
+            label="Nom"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="text"
+              className="border-top-0 border-end-0 border-start-0"
+              placeholder="lastName"
+              name="lastName"
+              onChange={handleChange}
+              value={dataNewUser.lastName}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger">{message.lastName}</Form.Text>
+        </Form.Group>
 
-      <Form.Group
-        className={toggle.field ? "position-relative mb-3" : "d-none"}
-        controlId="email"
-      >
-        <FloatingLabel
+        <Form.Group
+          className={toggle.field ? "position-relative mb-3" : "d-none"}
           controlId="email"
-          label="nom.prenom@groupomania.fr"
-          className="text-muted fst-italic"
         >
-          <Form.Control
-            type="email"
-            className="border-top-0 border-end-0 border-start-0"
-            placeholder="email"
-            name="email"
-            onChange={handleChange}
-            value={dataNewUser.email}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-danger">{message.email}</Form.Text>
-      </Form.Group>
+          <FloatingLabel
+            controlId="email"
+            label="nom.prenom@groupomania.fr"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="email"
+              className="border-top-0 border-end-0 border-start-0"
+              placeholder="email"
+              name="email"
+              onChange={handleChange}
+              value={dataNewUser.email}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger">{message.email}</Form.Text>
+        </Form.Group>
 
-      {toggle.btnChangePass && (
+        {toggle.btnChangePass && (
+          <Button
+            variant="outline-secondary"
+            className={
+              !toggle.btnDisabled ? "w-100 mb-4 disabled" : "w-100 mb-4"
+            }
+            onClick={() => {
+              handleToggle("fieldPass", false);
+              handleToggle("field", false);
+
+              handleToggle("btnConfirm", true);
+              handleToggle("btnChangePass", false);
+              setOneErr(false);
+            }}
+          >
+            {!toggle.btnDisabled
+              ? "Mot de pass a été changé"
+              : "Changer de mot de pass ?"}
+          </Button>
+        )}
+
+        <Form.Group
+          className={!toggle.fieldPass ? "position-relative mb-3" : "d-none"}
+          controlId="password"
+        >
+          <FloatingLabel
+            controlId="password"
+            label="Nouveau mot de passe"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="password"
+              className="border-top-0 border-end-0 border-start-0 "
+              placeholder="password"
+              name="password"
+              onChange={handleChange}
+              value={dataNewUser.password}
+              ref={refInputPass}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger ps-2 ">
+            {message.password}
+          </Form.Text>
+
+          <FloatingLabel
+            controlId="password"
+            label="Confirmer Nouveau mot de passe"
+            className="text-muted fst-italic"
+          >
+            <Form.Control
+              type="password"
+              className="border-top-0 border-end-0 border-start-0 "
+              placeholder="controlPassword"
+              name="controlPassword"
+              onChange={handleChange}
+              value={dataNewUser.controlPassword}
+              ref={refInputControlPass}
+            />
+          </FloatingLabel>
+          <Form.Text className="text-danger ps-2 ">
+            {message.controlPassword}
+            {messageValidation}
+          </Form.Text>
+        </Form.Group>
+
+        {oneErr && (
+          <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+            Tous les champs doivent être remplis correctement
+          </Form.Text>
+        )}
+
+        {!toggle.btnConfirm && (
+          <Button variant="primary" type="submit" className="w-100 mb-4">
+            Confirmer les modifications
+          </Button>
+        )}
+
         <Button
-          variant="outline-secondary"
-          className={!toggle.btnDisabled ? "w-100 mb-4 disabled" : "w-100 mb-4"}
+          variant="secondary"
+          className="w-100 mb-4"
           onClick={() => {
-            handleToggle("fieldPass", false);
-            handleToggle("field", false);
-
-            handleToggle("btnConfirm", true);
-            handleToggle("btnChangePass", false);
             setOneErr(false);
+            toggle.field ? navigate("/") : cancelCoursPass();
           }}
         >
-          {!toggle.btnDisabled
-            ? "Mot de pass a été changé"
-            : "Changer de mot de pass ?"}
+          Annuler
         </Button>
-      )}
 
-      <Form.Group
-        className={!toggle.fieldPass ? "position-relative mb-3" : "d-none"}
-        controlId="password"
-      >
-        <FloatingLabel
-          controlId="password"
-          label="Nouveau mot de passe"
-          className="text-muted fst-italic"
+        <Button
+          variant="danger"
+          className="w-100"
+          onClick={() => {
+            dataUser.u_admin === 1
+              ? handleShow()
+              : submitToApiDelete(id, config);
+          }}
         >
-          <Form.Control
-            type="password"
-            className="border-top-0 border-end-0 border-start-0 "
-            placeholder="password"
-            name="password"
-            onChange={handleChange}
-            value={dataNewUser.password}
-            ref={refInputPass}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-danger ps-2 ">{message.password}</Form.Text>
-
-        <FloatingLabel
-          controlId="password"
-          label="Confirmer Nouveau mot de passe"
-          className="text-muted fst-italic"
-        >
-          <Form.Control
-            type="password"
-            className="border-top-0 border-end-0 border-start-0 "
-            placeholder="controlPassword"
-            name="controlPassword"
-            onChange={handleChange}
-            value={dataNewUser.controlPassword}
-            ref={refInputControlPass}
-          />
-        </FloatingLabel>
-        <Form.Text className="text-danger ps-2 ">
-          {message.controlPassword}
-          {messageValidation}
-        </Form.Text>
-      </Form.Group>
-
-      {oneErr && (
-        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-          Tous les champs doivent être remplis correctement
-        </Form.Text>
-      )}
-
-      {!toggle.btnConfirm && (
-        <Button variant="primary" type="submit" className="w-100 mb-4">
-          Confirmer les modifications
+          Supprimer le compte
         </Button>
-      )}
+      </Form>
 
-      <Button
-        variant="secondary"
-        className="w-100 mb-4"
-        onClick={() => {
-          setOneErr(false);
-          toggle.field ? navigate("/") : cancelCoursPass();
-        }}
-      >
-        Annuler
-      </Button>
-
-      <Button variant="danger" className="w-100">
-        Supprimer le compte
-      </Button>
-    </Form>
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
+            {dataNewUser.firstName} {dataNewUser.lastName}
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Vous êtes adimistrateur & modérateur de l'app Groupomania. Pour
+          supprimer votre compte veuillez contacter le Sys Admin. Merci
+        </Offcanvas.Body>
+        <Image src={image} fluid />
+      </Offcanvas>
+    </>
   );
 };
 
