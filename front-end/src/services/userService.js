@@ -29,10 +29,15 @@ const updateUserPass = (userId, data, token) => {
       Authorization: "Bearer " + token,
       "content-type": "multipart/form-data",
     },
-    data:data,
+    data: data,
   };
   console.log(options);
   return axios(options);
+};
+
+const deleteUser = (userId, config) => {
+  console.log(userId, config);
+  return axios.delete(API_URL + "auth/" + userId, config);
 };
 
 const getAllPosts = (config) => {
@@ -105,6 +110,7 @@ export default {
   getOneUser,
   modifyUser,
   updateUserPass,
+  deleteUser,
   getOnePost,
   getAllPosts,
   postOnePost,

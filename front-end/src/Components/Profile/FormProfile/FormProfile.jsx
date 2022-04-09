@@ -22,6 +22,12 @@ const FormProfile = ({ dataUser }) => {
   const customMessage = validService.messages();
   const validRegex = validService.regex();
 
+  const logoutHandler = () => {
+    userContext.logout();
+    navigate("/login", { replace: true });
+  };
+
+
   // toggles :
   const [toggle, setToggle] = useState({
     btnConfirm: true,
@@ -241,7 +247,18 @@ const FormProfile = ({ dataUser }) => {
       .catch((error) => {
         console.log(error);
       });
-    // cancelCoursPass();
+  };
+
+  const submitToApiDelete = (userId, config) => {
+    userService
+      .deleteUser(userId, config)
+      .then((response) => {
+        console.log(response);
+        logoutHandler();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // custom cleanup function :
@@ -423,7 +440,13 @@ const FormProfile = ({ dataUser }) => {
         Annuler
       </Button>
 
-      <Button variant="danger" className="w-100">
+      <Button
+        variant="danger"
+        className="w-100"
+        onClick={() => {
+          submitToApiDelete(id, config);
+        }}
+      >
         Supprimer le compte
       </Button>
     </Form>
