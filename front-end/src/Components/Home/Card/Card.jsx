@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { BsPersonFill } from "react-icons/bs";
@@ -29,6 +29,7 @@ const Card = ({
   likeUserId,
 }) => {
   timeago.register("fr", fr);
+  const [dataNewUser, setDataNewUser] = useState();
 
   return (
     <article>
@@ -38,7 +39,7 @@ const Card = ({
             <div className="position-relative d-flex align-items-center">
               <Link
                 to={`/profile/:id`}
-                title="cliquez pour modifier avatar"
+                title="Cliquez pour modifier votre profile"
                 className="d-block d-flex justify-content-center align-items-center rounded-circle custom-icon"
                 style={{
                   background: "white",
@@ -74,7 +75,9 @@ const Card = ({
         <div>
           <div>
             <Container fluid className="p-2 g-0">
-              <h1 className="fs-2" style={{ wordWrap: "break-word"}}>{title}</h1>
+              <h1 className="fs-2" style={{ wordWrap: "break-word" }}>
+                {title}
+              </h1>
               <p>{text}</p>
             </Container>
 
@@ -82,7 +85,7 @@ const Card = ({
               <div
                 className="position-relative overflow-hidden  "
                 style={{
-                  paddingBottom: "100%",
+                  paddingBottom: "70%",
                 }}
               >
                 <img
