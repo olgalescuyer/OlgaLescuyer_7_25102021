@@ -102,7 +102,7 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.modifyOneUser = (req, res, next) => {
-  console.log("from modify-----------------------------------------------");
+  // console.log("from modify-----------------------------------------------");
   // - compare id token & id params for api security ;
   // -- find the user - query db ;
 
@@ -173,30 +173,12 @@ exports.modifyOneUser = (req, res, next) => {
   ];
   // console.log("sqlInserts", sqlInserts);
 
-  // const doSqlInserts = (id, obj) => {
-  //   bcrypt
-  //     .hash(obj.password, 10)
-  //     .then((hash) => {
-  //       const sqlInserts = [
-  //         id,
-  //         obj.firstName,
-  //         obj.lastName,
-  //         obj.email,
-  //         hash,
-  //         obj.image,
-  //       ];
-  //       // console.log(sqlInserts);
-  //       updateUser(sqlInserts);
-  //     })
-  //     .catch((error) => res.status(500).json({ error }));
-  // };
-
   !isAuthorized(userIdFromToken, userIdFromParams)
     ? res.status(401).json({ message: "Unathorized" })
     : userModel
         .findUserById(userIdFromToken)
         .then((user) => {
-          console.log(user);
+          // console.log(user);
 
           user[0].u_avatar !== null ? deleteImg(user[0].u_avatar) : false;
 
@@ -210,6 +192,43 @@ exports.modifyOneUser = (req, res, next) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
+exports.modifyPassword = (req, res, next) => {
+  // validator :
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  
+  // for returne a number from params :
+  const userIdFromParams = parseInt(req.params.id, 10);
+  const userIdFromToken = req.bearerToken.userId;
+  const passObj = JSON.parse(req.body.user);
+
+  const isAuthorized = (tokenId, paramsId) =>
+    tokenId === paramsId ? true : false;
+
+  const doSqlInserts = (id, obj) => {
+    bcrypt
+      .hash(obj.password, 10)
+      .then((hash) => {
+        const sqlInserts = [hash, id];
+        console.log(sqlInserts);
+        userModel
+          .updatePassword(sqlInserts)
+          .then((response) => {
+            res.status(200).json({ message: "Password modifié !!" });
+            // console.log(response);
+          })
+          .catch((error) => res.status(500).json({ error }));
+      })
+      .catch((error) => res.status(500).json({ error }));
+  };
+
+  !isAuthorized(userIdFromToken, userIdFromParams)
+    ? res.status(401).json({ message: "user Id from params not valid !" })
+    : doSqlInserts(userIdFromToken, passObj);
+};
+
 exports.deleteOneUser = (req, res, next) => {
   // for returne a number from params :
   const userIdFromParams = parseInt(req.params.id, 10);
@@ -221,18 +240,6 @@ exports.deleteOneUser = (req, res, next) => {
       .deleteOneUserByUser(userIdFromToken)
       .then((response) => res.status(200).json({ message: "User supprimé !" }))
       .catch((error) => res.status(500).json({ error: "👎  !" }));
-  } else {
-    res.status(401).json({ message: "user Id from params not valid !" });
-  }
-};
-
-exports.modifyPassword = (req, res, next) => {
-  // for returne a number from params :
-  const userIdFromParams = parseInt(req.params.id, 10);
-  // console.log('userIdFromParams :', userIdFromParams);
-  const userIdFromToken = req.bearerToken.userId;
-  if (userIdFromParams === userIdFromToken) {
-    console.log("modify pass");
   } else {
     res.status(401).json({ message: "user Id from params not valid !" });
   }

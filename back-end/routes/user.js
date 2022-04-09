@@ -23,7 +23,7 @@ router.post("/login", loginValidator, login); // new user login
 
 router.get("/:id", auth, getOneUser); // get user profile
 
-router.put("/:id", auth,multer, modifyOneUser); // modify user profile
+router.put("/:id", auth, multer, modifyOneUser); // modify user profile
 router.put("/:id/pass", auth, multer, modifyPassword); // modify user profile-password
 
 router.delete("/:id", auth, deleteOneUser); // delete user profile

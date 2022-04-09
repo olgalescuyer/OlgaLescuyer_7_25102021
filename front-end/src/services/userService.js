@@ -7,6 +7,34 @@ const getOneUser = (userId, config) => {
   return axios.get(API_URL + "auth/" + userId, config);
 };
 
+const modifyUser = (userId, data, token) => {
+  const options = {
+    method: "put",
+    url: API_URL + "auth/" + userId,
+    headers: {
+      Authorization: "Bearer " + token,
+      "content-type": "multipart/form-data",
+    },
+    data: data,
+  };
+  // console.log(options);
+  return axios(options);
+};
+
+const updateUserPass = (userId, data, token) => {
+  const options = {
+    method: "put",
+    url: API_URL + "auth/" + userId + "/pass",
+    headers: {
+      Authorization: "Bearer " + token,
+      "content-type": "multipart/form-data",
+    },
+    data:data,
+  };
+  console.log(options);
+  return axios(options);
+};
+
 const getAllPosts = (config) => {
   return axios.get(API_URL + "posts", config);
 };
@@ -31,20 +59,6 @@ const getOnePost = (postId, config) => {
 
 const deleteOnePost = (postId, config) => {
   return axios.delete(API_URL + "posts/" + postId, config);
-};
-
-const modifyUser = (userId, data, token) => {
-  const options = {
-    method: "put",
-    url: API_URL + "auth/" + userId,
-    headers: {
-      Authorization: "Bearer " + token,
-      "content-type": "multipart/form-data",
-    },
-    data: data,
-  };
-  // console.log(options);
-  return axios(options);
 };
 
 const updatePost = (postId, data, token) => {
@@ -90,6 +104,7 @@ const updateLike = (token, data, like) => {
 export default {
   getOneUser,
   modifyUser,
+  updateUserPass,
   getOnePost,
   getAllPosts,
   postOnePost,

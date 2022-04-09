@@ -151,14 +151,20 @@ const FormProfile = ({ dataUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const formData = new FormData();
     const checkPass = () => {
       if (
         validRegex.password.test(dataNewUser.password) &&
         validRegex.controlPassword.test(dataNewUser.controlPassword) &&
         refInputPass.current.value === refInputControlPass.current.value
       ) {
-        submitToApiPutPass();
+        const userPass = {
+          password: dataNewUser.password,
+        };
+
+        formData.append("user", JSON.stringify(userPass));
+        // console.log(JSON.stringify(userObj));
+        submitToApiPutPass(id, formData, token);
 
         dataUser.u_first_name !== dataNewUser.firstName ||
         dataUser.u_last_name !== dataNewUser.lastName ||
@@ -188,18 +194,17 @@ const FormProfile = ({ dataUser }) => {
           lastName: dataNewUser.lastName,
           email: dataNewUser.email,
         };
-        const formData = new FormData();
+
         formData.append("user", JSON.stringify(userObj));
+        // console.log(JSON.stringify(userObj));
 
         submitToApiPut(id, formData, token);
         navigate("/");
 
         handleToggle("field", true);
         handleToggle("fieldPass", true);
-        console.log("ok field");
       } else {
         setOneErr(true);
-        console.log("err field");
       }
       // submitToApiPut();
     };
@@ -208,11 +213,9 @@ const FormProfile = ({ dataUser }) => {
     // console.log(toggle.field);
   };
 
-  const submitToApiPut = (id, data, config) => {
-    // console.log(dataNewUser.firstName, dataNewUser.lastName, dataNewUser.email);
-
+  const submitToApiPut = (id, data, token) => {
     userService
-      .modifyUser(id, data, config)
+      .modifyUser(id, data, token)
       .then((response) => {
         console.log(response);
       })
@@ -221,16 +224,24 @@ const FormProfile = ({ dataUser }) => {
       });
   };
 
-  const submitToApiPutPass = () => {
+  const submitToApiPutPass = (id, data, token) => {
+    userService
+      .updateUserPass(id, data, token)
+      .then((response) => {
+        console.log(response);
+
+        setDataNewUser((prevDataNewUser) => {
+          return {
+            ...prevDataNewUser,
+            password: "",
+            controlPassword: "",
+          };
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // cancelCoursPass();
-    console.log(dataNewUser.password);
-    setDataNewUser((prevDataNewUser) => {
-      return {
-        ...prevDataNewUser,
-        password: "",
-        controlPassword: "",
-      };
-    });
   };
 
   // custom cleanup function :
