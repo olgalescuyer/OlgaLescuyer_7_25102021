@@ -14,8 +14,11 @@ const Likes = ({ liked, disliked, postId, userChoice, likeId }) => {
 
   // state of the current user-choice-like from db, can be null or 0 or 1 or -1 :
   const [initial, setInitial] = useState(userChoice);
+  const handleInitial = () => {
+    setInitial();
+  };
 
-  // solution for change a null statement from db :
+  // solution for change a null statement of like id from db & passing for call to API :
   const [value, setValue] = useState(null);
   const handleValue = (bool) => {
     setValue(bool);
@@ -41,19 +44,23 @@ const Likes = ({ liked, disliked, postId, userChoice, likeId }) => {
   const handleLike = () => {
     if (initial === null || initial === 0) {
       submitToApi(token, dataId, 1);
+
       setCountLike(countLike + 1);
+
       setInitial(1);
     } else if (initial === 1) {
       submitToApi(token, dataId, 0);
+
       setCountLike(countLike - 1);
+
       setInitial(0);
-    } else if (initial === -1) {
+    } else {
       submitToApi(token, dataId, 1);
+
       setCountDislike(countDislike - 1);
       setCountLike(countLike + 1);
+
       setInitial(1);
-    } else {
-      console.log("error");
     }
   };
 
@@ -67,14 +74,12 @@ const Likes = ({ liked, disliked, postId, userChoice, likeId }) => {
       submitToApi(token, dataId, 0);
       setCountDislike(countDislike - 1);
       setInitial(0);
-    } else if (initial === 1) {
+    } else {
       submitToApi(token, dataId, -1);
 
       setCountLike(countLike - 1);
       setCountDislike(countDislike + 1);
       setInitial(-1);
-    } else {
-      console.log("error");
     }
   };
 
