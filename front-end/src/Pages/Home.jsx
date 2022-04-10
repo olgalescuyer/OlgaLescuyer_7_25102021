@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { useOutletContext } from "react-router-dom";
 
-import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Card/Card.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
-import userService from "../services/userService.js";
-
-import UserContextTest from "../Context/UserContextTest";
 
 const Home = () => {
-  const userContext = useContext(UserContextTest);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
-  const id = userContext.userId();
   const {
     dataUser,
     dataPost,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { BsPersonFill } from "react-icons/bs";
@@ -29,7 +29,7 @@ const Card = ({
   likeUserId,
 }) => {
   timeago.register("fr", fr);
-  const [dataNewUser, setDataNewUser] = useState();
+
 
   return (
     <article>
