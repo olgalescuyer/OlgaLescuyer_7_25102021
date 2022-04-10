@@ -159,7 +159,7 @@ const HeaderLayout = () => {
                     variant="light"
                     {...triggerHandler}
                     className="d-inline-flex align-items-center p-0 ms-2"
-                    title="aller à la page de profile"
+                    title="Aller à la page de profile"
                     onClick={() => {
                       navigate("/profile/:id");
                       validateHandler();
