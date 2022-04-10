@@ -132,7 +132,7 @@ exports.deleteOnePost = (req, res, next) => {
           ? deletePostWithImg(post[0].p_image)
           : deletePost(postId);
       } else {
-        res.status(400).json({ message: "Id from token is not a valid" });
+        res.status(401).json({ message: "Id from token is not a valid" });
       }
     })
 
@@ -146,8 +146,17 @@ exports.getAllPosts = (req, res, next) => {
   const sqlInserts = [userIdFromToken, userIdFromToken];
   postModel
     .findAllPosts(sqlInserts)
-    .then((posts) => res.status(200).json(posts))
-    .catch((error) => res.status(400).json({ error }));
+    // .then((post) => res.status(200).json(post))
+    .then((post) => {
+      const newPost = [...post];
+
+      newPost.forEach((el) => {
+        el.u_password = "";
+      });
+      res.status(200).json(newPost);
+    })
+
+    .catch((error) => res.status(500).json({ error }));
 };
 
 exports.getOnePost = (req, res, next) => {
