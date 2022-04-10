@@ -11,6 +11,7 @@ const Home = () => {
     toggleAddBox,
     handleToggleAddBox,
     validateHandler,
+    addData,
   } = useOutletContext();
   // console.log(dataUser);
   console.log(dataPost);
@@ -49,6 +50,7 @@ const Home = () => {
                   userChoice={post.post_user_choice}
                   key={index}
                   onValidate={validateHandler}
+                  addData={addData}
                 />
               );
             })}
