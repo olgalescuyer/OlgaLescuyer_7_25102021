@@ -1,24 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { useOutletContext } from "react-router-dom";
 
-import Container from "react-bootstrap/Container";
 import Card from "../Components/Home/Card/Card.jsx";
 import FormPost from "../Components/Home/FormPost/FormPost";
-import userService from "../services/userService.js";
-
-import UserContextTest from "../Context/UserContextTest";
 
 const Home = () => {
-  const userContext = useContext(UserContextTest);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
-  const id = userContext.userId();
   const {
     dataUser,
     dataPost,
     toggleAddBox,
     handleToggleAddBox,
     validateHandler,
+    addData,
   } = useOutletContext();
   // console.log(dataUser);
   console.log(dataPost);
@@ -57,6 +50,7 @@ const Home = () => {
                   userChoice={post.post_user_choice}
                   key={index}
                   onValidate={validateHandler}
+                  addData={addData}
                 />
               );
             })}

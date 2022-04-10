@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { BsPersonFill } from "react-icons/bs";
@@ -27,9 +27,10 @@ const Card = ({
   userChoice,
   likeId,
   likeUserId,
+  addData
 }) => {
   timeago.register("fr", fr);
-  const [dataNewUser, setDataNewUser] = useState();
+
 
   return (
     <article>
@@ -114,6 +115,7 @@ const Card = ({
             likeId={likeId}
             likeUserId={likeUserId}
             onValidate={onValidate}
+            addData={addData}
           />
           <Btns userId={userId} postId={postId} onValidate={onValidate} />
         </Container>

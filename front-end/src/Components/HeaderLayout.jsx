@@ -217,6 +217,7 @@ const HeaderLayout = () => {
           toggleAddBox,
           handleToggleAddBox,
           validateHandler,
+          addData
         }}
       />
     </Container>

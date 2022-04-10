@@ -7,16 +7,13 @@ import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ liked, disliked, postId, userChoice, likeId }) => {
+const Likes = ({ liked, disliked, postId, userChoice, likeId, addData }) => {
   const userContext = useContext(UserContextTest);
   const token = userContext.token;
   const userIdFromToken = parseInt(userContext.userId(), 10);
 
   // state of the current user-choice-like from db, can be null or 0 or 1 or -1 :
   const [initial, setInitial] = useState(userChoice);
-  const handleInitial = () => {
-    setInitial();
-  };
 
   // solution for change a null statement of like id from db & passing for call to API :
   const [value, setValue] = useState(null);
@@ -32,7 +29,7 @@ const Likes = ({ liked, disliked, postId, userChoice, likeId }) => {
   useEffect(() => {
     setCountLike(liked);
     setCountDislike(disliked);
-  }, []);
+  }, [addData]);
 
   // object for id's :
   const dataId = {
