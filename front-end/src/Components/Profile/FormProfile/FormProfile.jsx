@@ -13,7 +13,7 @@ import Image from "react-bootstrap/Image";
 
 import image from "../../../Assets/Gif/no-way-cat.gif";
 
-const FormProfile = ({ dataUser }) => {
+const FormProfile = ({ dataUser, validateHandler }) => {
   const userContext = useContext(UserContextTest);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
@@ -232,6 +232,7 @@ const FormProfile = ({ dataUser }) => {
       .modifyUser(id, data, token)
       .then((response) => {
         console.log(response);
+        validateHandler();
       })
       .catch((error) => {
         console.log(error);
@@ -301,7 +302,11 @@ const FormProfile = ({ dataUser }) => {
 
   return (
     <>
-      <Form className="w-custom-limit-400" onSubmit={handleSubmit}>
+      <Form
+        className="w-custom-limit-400"
+        style={{ paddingBottom: "100px" }}
+        onSubmit={handleSubmit}
+      >
         <Form.Group
           className={toggle.field ? "position-relative mb-3" : "d-none"}
           controlId="firstName"

@@ -16,7 +16,7 @@ const Profile = () => {
   const config = { headers: tokenAuth };
   const id = userContext.userId();
 
-  const { dataUser } = useOutletContext();
+  const { dataUser, validateHandler } = useOutletContext();
 
   return (
     <>
@@ -27,7 +27,7 @@ const Profile = () => {
           </h1>
           {/* <p className="text-center">Choisis ton avatar </p>
           <Avatars /> */}
-          <FormProfile dataUser={dataUser} />
+          <FormProfile dataUser={dataUser} validateHandler={validateHandler}/>
         </Container>
       </main>
     </>
