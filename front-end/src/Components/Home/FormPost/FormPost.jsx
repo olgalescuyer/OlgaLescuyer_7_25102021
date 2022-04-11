@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -25,16 +25,6 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     imageUrl: "",
   });
 
-  const handleChange = (event) => {
-    handleMessage(dataPost);
-    setDataPost((prevDataPost) => {
-      return {
-        ...prevDataPost,
-        [event.target.name]: event.target.value,
-      };
-    });
-  };
-
   // --------------
 
   // for warning messages :
@@ -45,18 +35,27 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     imageUrl: "",
   });
 
-  const handleMessage = (data) => {
-    setMessage((prevMessage) => {
+  const handleMessage = (data, imagefile) => {
+    setMessage(() => {
       return {
-        ...prevMessage,
         title: data.title ? "" : customMessage.title,
         text: data.text ? "" : customMessage.text,
-        imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
+        imageUrl: data.imageUrl || imagefile ? "" : customMessage.imageUrl,
       };
     });
   };
 
   // -------------- //
+  const handleChange = (event) => {
+    const imagefile = document.querySelector("#imageUrl");
+    handleMessage(dataPost, imagefile);
+    setDataPost((prevDataPost) => {
+      return {
+        ...prevDataPost,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
