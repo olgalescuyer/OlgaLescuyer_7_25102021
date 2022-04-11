@@ -3,7 +3,6 @@ import axios from "axios";
 const API_URL = "http://localhost:3000/api/";
 
 const getOneUser = (userId, config) => {
-  // console.log(config);
   return axios.get(API_URL + "auth/" + userId, config);
 };
 
@@ -17,7 +16,7 @@ const modifyUser = (userId, data, token) => {
     },
     data: data,
   };
-  // console.log(options);
+
   return axios(options);
 };
 
@@ -31,12 +30,11 @@ const updateUserPass = (userId, data, token) => {
     },
     data: data,
   };
-  console.log(options);
+
   return axios(options);
 };
 
 const deleteUser = (userId, config) => {
-  console.log(userId, config);
   return axios.delete(API_URL + "auth/" + userId, config);
 };
 
@@ -54,7 +52,7 @@ const postOnePost = (postData, token) => {
     },
     data: postData,
   };
-  // console.log("post : ", options);
+
   return axios(options);
 };
 
@@ -76,7 +74,7 @@ const updatePost = (postId, data, token) => {
     },
     data: data,
   };
-  // console.log(options);
+
   return axios(options);
 };
 
@@ -89,7 +87,7 @@ const addLike = (token, dataId, like) => {
     },
     data: { like: like },
   };
-  // console.log(options);
+
   return axios(options);
 };
 
@@ -102,7 +100,7 @@ const updateLike = (token, data, like) => {
     },
     data: { likeId: data.likeId, userId: data.userId, like: like },
   };
-  // console.log(options);
+
   return axios(options);
 };
 

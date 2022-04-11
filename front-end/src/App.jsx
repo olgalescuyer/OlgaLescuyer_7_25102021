@@ -10,13 +10,13 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import NotFound from "./Pages/NotFound";
 
-import { UserProvider } from "./Context/UserContextTest";
-import UserContextTest from "./Context/UserContextTest";
+import { UserProvider } from "./Context/UserContext";
+import UserContext from "./Context/UserContext";
 
-// for protectection roots '/home' & '/profile' I need to check the localStorage by userContext & to create a function 'RequireAuth'
+// for protectection roots '/home' & '/profile' I need to check the localStorage by userContext & create a function 'RequireAuth'
 // + Redirect them to the /login page, but save the current location they were trying to go to when they were redirected :
 const RequireAuth = ({ children }) => {
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const location = useLocation();
   // console.log("isLoggedin", userContext.isLoggedIn);
   return userContext.isLoggedIn ? (
@@ -39,29 +39,24 @@ function App() {
               </RequireAuth>
             }
           >
-
-            <Route index element={<RequireAuth><Home/></RequireAuth>}/>
-            <Route path="profile/:id" element={<RequireAuth><Profile/></RequireAuth>}/>
+            <Route
+              index
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="profile/:id"
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
           </Route>
 
-          {/* 
-          <Route
-            index
-            path="/"
-            element={
-              <RequireAuth>
-                <Home />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile/:id"
-            element={
-              <RequireAuth>
-                <Profile />
-              </RequireAuth>
-            }
-          /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />

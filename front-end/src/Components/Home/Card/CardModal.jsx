@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
 
@@ -21,7 +21,7 @@ const CardModal = ({
   validateHandler,
   dataPost,
 }) => {
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const token = userContext.token;
   const customMessage = validService.messages();
 
@@ -113,7 +113,6 @@ const CardModal = ({
       text: dataNewPost.text,
       image: dataNewPost.imageUrl,
     };
-    // console.log("postObj", postObj);
 
     const formData = new FormData();
     if (imagefile) {
@@ -130,8 +129,6 @@ const CardModal = ({
       : postObj.title && imagefile
       ? submitToApi(postId, formData, token)
       : handleMessage(postObj);
-
-    // submitToApi(postId, formData, token);
   };
 
   // func to call the API :

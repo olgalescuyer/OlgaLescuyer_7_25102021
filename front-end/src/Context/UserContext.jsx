@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UserContextTest = React.createContext({
+const UserContext = React.createContext({
   token: "",
   userId: () => {},
   role: () => {},
@@ -64,10 +64,10 @@ export const UserProvider = (props) => {
   };
 
   return (
-    <UserContextTest.Provider value={contextValue}>
+    <UserContext.Provider value={contextValue}>
       {props.children}
-    </UserContextTest.Provider>
+    </UserContext.Provider>
   );
 };
 
-export default UserContextTest;
+export default UserContext;
