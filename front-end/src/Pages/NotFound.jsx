@@ -2,7 +2,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import cat from "../Assets/Gif/cat.gif"
+import cat from "../Assets/Gif/cat.gif";
 
 import Logo from "../Components/Logo";
 
@@ -18,7 +18,7 @@ export default function NotFound() {
           Retourner à la page d'accueil
         </Button>
         <Container className="d-flex justify-content-center pt-4">
-          <img src={cat} alt="cat"className=" rounded" />
+          <img src={cat} alt="cat" className=" rounded" />
         </Container>
       </Container>
     </Container>

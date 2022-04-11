@@ -5,19 +5,18 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLoginBtns from "./FormLoginBtns.jsx";
 import authService from "../../../services/authService";
 import validService from "../../../services/validService";
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 
 const FormLogin = () => {
   const navigate = useNavigate();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
 
   const [dataUser, setDataUser] = useState({
     email: "",
     password: "",
   });
-  // console.log(dataUser);
 
   const [message, setMessage] = useState({
     email: " ",
@@ -49,8 +48,6 @@ const FormLogin = () => {
       submitToApi(dataUser);
     } else {
       setMessageValidation("Tous les champs doivent être remplis correctement");
-
-      console.log("not ok from handle submit");
     }
   };
 
@@ -76,12 +73,9 @@ const FormLogin = () => {
   }
 
   const submitToApi = (data) => {
-    // console.log(data);
-
     authService
       .login(data)
       .then((response) => {
-        // console.log(response);
         if (response) {
           userContext.login(
             response.data.token,

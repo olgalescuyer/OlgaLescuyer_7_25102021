@@ -6,7 +6,7 @@ import FormSignupBtns from "./FormSignupBtns.jsx";
 import validService from "../../../services/validService";
 import authService from "../../../services/authService";
 
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 
 const FormSignup = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const FormSignup = () => {
   const refInputControlPass = useRef();
   const validRegex = validService.regex();
   const customMessage = validService.messages();
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
 
   // create an object for grabing the data :
   const [dataUser, setDataUser] = useState({
@@ -124,7 +124,6 @@ const FormSignup = () => {
           response.data.userId,
           response.data.role
         );
-      
 
         navigate("/", { replace: true });
       })

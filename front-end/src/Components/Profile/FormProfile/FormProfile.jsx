@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -14,7 +14,7 @@ import Image from "react-bootstrap/Image";
 import image from "../../../Assets/Gif/no-way-cat.gif";
 
 const FormProfile = ({ dataUser, validateHandler }) => {
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = userContext.userId();
@@ -64,8 +64,6 @@ const FormProfile = ({ dataUser, validateHandler }) => {
     password: "",
     controlPassword: "",
   });
-
-  console.log(dataUser);
 
   // grab the value from db + dependency of dataUser for update values :
   const handleValue = () => {
@@ -220,11 +218,9 @@ const FormProfile = ({ dataUser, validateHandler }) => {
       } else {
         setOneErr(true);
       }
-      // submitToApiPut();
     };
 
     toggle.field ? check() : checkPass();
-    // console.log(toggle.field);
   };
 
   const submitToApiPut = (id, data, token) => {
@@ -243,8 +239,6 @@ const FormProfile = ({ dataUser, validateHandler }) => {
     userService
       .updateUserPass(id, data, token)
       .then((response) => {
-        console.log(response);
-
         setDataNewUser((prevDataNewUser) => {
           return {
             ...prevDataNewUser,
@@ -262,7 +256,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
     userService
       .deleteUser(userId, config)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         logoutHandler();
       })
       .catch((error) => {
@@ -273,7 +267,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
   // custom cleanup function :
   const cancelCoursPass = () => {
     handleToggle("btnChangePass", true);
-    // handleToggle("btnConfirm", true);
+
     handleToggle("field", true);
     handleToggle("fieldPass", true);
     setMessageValidation("");
@@ -386,8 +380,8 @@ const FormProfile = ({ dataUser, validateHandler }) => {
             }}
           >
             {!toggle.btnDisabled
-              ? "Mot de pass a été changé"
-              : "Changer de mot de pass ?"}
+              ? "Mot de passe a été changé"
+              : "Changer de mot de passe ?"}
           </Button>
         )}
 

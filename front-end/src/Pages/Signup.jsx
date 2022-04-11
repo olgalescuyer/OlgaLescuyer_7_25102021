@@ -5,10 +5,10 @@ import Container from "react-bootstrap/Container";
 import Logo from "../Components/Logo.jsx";
 import FormSignup from "../Components/Signup/FormSignup/FormSignup";
 
-import UserContextTest from "../Context/UserContextTest";
+import UserContext from "../Context/UserContext";
 
 const Signup = () => {
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   return (
     <>
       {userContext.isLoggedIn && <Navigate to="/" replace={true}></Navigate>}

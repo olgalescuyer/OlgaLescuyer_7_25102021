@@ -9,13 +9,13 @@ import { BsPersonFill } from "react-icons/bs";
 import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
 
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 
 const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   const customMessage = validService.messages();
   const refImg = useRef();
   // console.log(refImg.current.value);
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const token = userContext.token;
 
   // ---- grab the object :
@@ -24,12 +24,10 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     text: "",
     imageUrl: "",
   });
-  // console.log(dataPost);
 
   const handleChange = (event) => {
     handleMessage(dataPost);
     setDataPost((prevDataPost) => {
-      // console.log(prevDataPost);
       return {
         ...prevDataPost,
         [event.target.name]: event.target.value,
@@ -58,14 +56,6 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     });
   };
 
-  // const handleMessage = (data) => {
-  //   return setMessage({
-  //     title: data.title ? "" : customMessage.title,
-  //     text: data.text ? "" : customMessage.text,
-  //     imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
-  //   });
-  // };
-
   // -------------- //
 
   const handleSubmit = (e) => {
@@ -88,31 +78,6 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       : dataPost.title && dataPost.imageUrl.length !== 0
       ? submitToApi(formData, token)
       : handleMessage(dataPost);
-
-    // if (dataPost.imageUrl.length !== 0 && dataPost.title) {
-    //   const message = JSON.stringify({
-    //     title: dataPost.title,
-    //     text: dataPost.text,
-    //   });
-
-    //   const formData = new FormData();
-    //   formData.append("post", message);
-    //   formData.append("image", imagefile.files[0]);
-
-    //   submitToApi(formData, token);
-    // } else if (dataPost.title && dataPost.text) {
-    //   const titletext = JSON.stringify({
-    //     title: dataPost.title,
-    //     text: dataPost.text,
-    //   });
-    //   const mformData = new FormData();
-    //   mformData.append("post", titletext);
-
-    //   submitToApi(mformData, token);
-    // } else {
-    //   // console.log(dataPost);
-    //   handleMessage(dataPost);
-    // }
   };
 
   // func call to api :

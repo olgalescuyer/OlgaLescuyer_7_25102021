@@ -11,7 +11,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import userService from "../services/userService.js";
 
 import logo from "../Assets/Logo/icon-left-font-monochrome-blac.png";
-import UserContextTest from "../Context/UserContextTest";
+import UserContext from "../Context/UserContext";
 
 import { RiHome2Fill } from "react-icons/ri";
 import { RiHome2Line } from "react-icons/ri";
@@ -24,7 +24,7 @@ import { RiAddBoxLine } from "react-icons/ri";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = userContext.userId();
@@ -90,7 +90,7 @@ const HeaderLayout = () => {
   };
 
   return (
-    <Container className="w-custom-limit-800 p-0 layout">
+    <Container className="w-custom-limit-640 p-0 layout">
       <header className="position-sticky top-0" style={{ zIndex: "2" }}>
         <Navbar bg="light" expand="lg">
           <Container fluid className="g-0 px-2">
@@ -217,7 +217,7 @@ const HeaderLayout = () => {
           toggleAddBox,
           handleToggleAddBox,
           validateHandler,
-          addData
+          addData,
         }}
       />
     </Container>

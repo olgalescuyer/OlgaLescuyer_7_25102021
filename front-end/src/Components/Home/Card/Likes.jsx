@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import userService from "../../../services/userService";
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 
 import { HiThumbUp } from "react-icons/hi";
 import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
 
-const Likes = ({ liked, disliked, postId, userChoice, likeId, addData }) => {
-  const userContext = useContext(UserContextTest);
+const Likes = ({ addData, liked, disliked, postId, userChoice, likeId }) => {
+  const userContext = useContext(UserContext);
+
   const token = userContext.token;
   const userIdFromToken = parseInt(userContext.userId(), 10);
 
@@ -66,16 +67,20 @@ const Likes = ({ liked, disliked, postId, userChoice, likeId, addData }) => {
       submitToApi(token, dataId, -1);
 
       setCountDislike(countDislike + 1);
+
       setInitial(-1);
     } else if (initial === -1) {
       submitToApi(token, dataId, 0);
+
       setCountDislike(countDislike - 1);
+
       setInitial(0);
     } else {
       submitToApi(token, dataId, -1);
 
       setCountLike(countLike - 1);
       setCountDislike(countDislike + 1);
+
       setInitial(-1);
     }
   };

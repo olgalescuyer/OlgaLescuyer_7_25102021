@@ -1,18 +1,17 @@
 import React, { useContext, useState, useEffect } from "react";
-import UserContextTest from "../../../Context/UserContextTest";
+import UserContext from "../../../Context/UserContext";
 import userService from "../../../services/userService";
 import { GoKebabVertical } from "react-icons/go";
 import CardModal from "./CardModal";
 
 const Btns = ({ userId, postId, onValidate }) => {
-  const userContext = useContext(UserContextTest);
+  const userContext = useContext(UserContext);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = parseInt(userContext.userId(), 10);
   const role = userContext.role();
-  const token = userContext.token;
 
-  // toggle for btn kebab :
+  // toggle for btn-kebab :
   const [item, setItem] = useState(false);
   const handleStateItem = () => {
     setItem(!item);
@@ -50,7 +49,6 @@ const Btns = ({ userId, postId, onValidate }) => {
     userService
       .getOnePost(postId, config)
       .then((response) => {
-        // console.log("response ---------------------------------: ", response);
         setDataPost(response.data);
       })
 

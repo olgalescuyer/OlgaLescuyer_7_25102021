@@ -13,8 +13,8 @@ const Home = () => {
     validateHandler,
     addData,
   } = useOutletContext();
-  // console.log(dataUser);
-  console.log(dataPost);
+
+  // console.log(dataPost);
   // + .map for Card-->
   return (
     <>
