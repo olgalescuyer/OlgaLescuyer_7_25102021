@@ -115,7 +115,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
         setMessage({ controlPassword: customMessage.controlPassword });
         break;
       default:
-        console.log("default from switch");
+       
     }
   }
 
@@ -227,7 +227,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
     userService
       .modifyUser(id, data, token)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         validateHandler();
       })
       .catch((error) => {

@@ -14,7 +14,14 @@ const Likes = ({ addData, liked, disliked, postId, userChoice, likeId }) => {
   const userIdFromToken = parseInt(userContext.userId(), 10);
 
   // state of the current user-choice-like from db, can be null or 0 or 1 or -1 :
-  const [initial, setInitial] = useState(userChoice);
+  const [initial, setInitial] = useState(null);
+  const handleInitial = (state) => {
+    setInitial(state);
+  };
+
+  useEffect(() => {
+    handleInitial(userChoice);
+  }, [addData]);
 
   // solution for change a null statement of like id from db & passing for call to API :
   const [value, setValue] = useState(null);

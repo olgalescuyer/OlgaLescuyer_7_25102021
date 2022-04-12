@@ -200,7 +200,6 @@ exports.updateLike = (req, res, next) => {
   ];
 
   // console.log(sqlInserts);
-
   likeModel
     .updateLikeOfUser(sqlInserts)
     .then((response) => {
