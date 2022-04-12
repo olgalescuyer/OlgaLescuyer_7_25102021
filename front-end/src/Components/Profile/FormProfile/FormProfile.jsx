@@ -115,7 +115,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
         setMessage({ controlPassword: customMessage.controlPassword });
         break;
       default:
-        console.log("default from switch");
+       
     }
   }
 

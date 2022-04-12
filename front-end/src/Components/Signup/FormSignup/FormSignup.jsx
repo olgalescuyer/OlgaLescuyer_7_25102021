@@ -110,7 +110,7 @@ const FormSignup = () => {
         setMessage({ controlPassword: customMessage.controlPassword });
         break;
       default:
-        console.log("default from switch");
+      
     }
   }
 

@@ -68,7 +68,6 @@ const FormLogin = () => {
         setMessage({ password: customMessage.password });
         break;
       default:
-        console.log("default from switch");
     }
   }
 
