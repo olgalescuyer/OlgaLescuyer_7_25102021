@@ -36,7 +36,7 @@ const FormSignup = () => {
     password: "",
   });
 
-  const [oneErr, setOneErr] = useState(false);
+  const [oneErr, setOneErr] = useState("");
   const [messageValidation, setMessageValidation] = useState("");
 
   const handleChange = (event) => {
@@ -63,7 +63,7 @@ const FormSignup = () => {
       };
     });
 
-    setOneErr(false);
+    setOneErr("");
   };
 
   const handleSubmit = (e) => {
@@ -79,7 +79,7 @@ const FormSignup = () => {
     ) {
       submitToApi(dataUser);
     } else {
-      setOneErr(true);
+      setOneErr("Tous les champs doivent être remplis correctement");
     }
   };
 
@@ -129,6 +129,7 @@ const FormSignup = () => {
       })
       .catch((error) => {
         console.log(error);
+        setOneErr("L'adresse email a déjà été utilisée")
       });
   };
 
@@ -234,11 +235,11 @@ const FormSignup = () => {
           </Form.Text>
         </FloatingLabel>
       </Form.Group>
-      {oneErr && (
+  
         <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-          Tous les champs doivent être remplis correctement
-        </Form.Text>
-      )}
+          {oneErr}
+          </Form.Text>
+
       <FormSignupBtns signup={`S'inscrire`} login={"Se connecter"} />
     </Form>
   );
