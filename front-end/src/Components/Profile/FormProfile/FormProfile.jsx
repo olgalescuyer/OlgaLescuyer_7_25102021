@@ -227,7 +227,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
     userService
       .modifyUser(id, data, token)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         validateHandler();
       })
       .catch((error) => {

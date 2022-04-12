@@ -57,7 +57,6 @@ exports.login = (req, res, next) => {
         .then((valid) => {
           // console.log(valid)
           if (!valid) {
-            // console.log('Password is incorrect');
             return res.status(401).json({ error: "Mot de passe incorrect !" });
           }
           res.status(200).json({
@@ -198,7 +197,7 @@ exports.modifyPassword = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  
+
   // for returne a number from params :
   const userIdFromParams = parseInt(req.params.id, 10);
   const userIdFromToken = req.bearerToken.userId;
