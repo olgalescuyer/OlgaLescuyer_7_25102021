@@ -73,7 +73,7 @@ exports.updateOneUser = (sqlInserts) => {
 exports.updatePassword = (sqlInserts) => {
   let sql = `UPDATE user SET u_password = ? WHERE u_id = ?`;
   sql = mysql.format(sql, sqlInserts);
-  console.log(sql);
+  // console.log(sql);
 
   return new Promise((resolve, reject) => {
     db.query(sql, (err, result) => {

@@ -141,7 +141,6 @@ exports.deleteOnePost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
   const userIdFromToken = req.bearerToken.userId;
-  // console.log(userIdFromToken);
 
   const sqlInserts = [userIdFromToken, userIdFromToken];
   postModel

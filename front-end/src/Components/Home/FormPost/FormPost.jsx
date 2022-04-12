@@ -35,20 +35,19 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
     imageUrl: "",
   });
 
-  const handleMessage = (data, imagefile) => {
+  const handleMessage = (data) => {
     setMessage(() => {
       return {
         title: data.title ? "" : customMessage.title,
         text: data.text ? "" : customMessage.text,
-        imageUrl: data.imageUrl || imagefile ? "" : customMessage.imageUrl,
+        imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
       };
     });
   };
 
   // -------------- //
   const handleChange = (event) => {
-    const imagefile = document.querySelector("#imageUrl");
-    handleMessage(dataPost, imagefile);
+    handleMessage(dataPost);
     setDataPost((prevDataPost) => {
       return {
         ...prevDataPost,
