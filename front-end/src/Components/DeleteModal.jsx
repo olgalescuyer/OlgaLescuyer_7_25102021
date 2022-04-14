@@ -1,13 +1,17 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import cat from "../Assets/Gif/ready-cat.gif";
+import removeCat from "../Assets/Gif/remove-cat.gif";
+
 import UserContext from "../Context/UserContext";
 import userService from "../services/userService.js";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Image from "react-bootstrap/Image";
 
-const DeleteModal = ({ handleClose, show, dataPost, onValidate,dataUser }) => {
+const DeleteModal = ({ handleClose, show, dataPost, onValidate, dataUser }) => {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const tokenAuth = userContext.authHeader();
@@ -19,7 +23,6 @@ const DeleteModal = ({ handleClose, show, dataPost, onValidate,dataUser }) => {
     navigate("/signup", { replace: true });
   };
   // console.log(window.location.pathname);
-  console.log(dataUser);
 
   //  call to API for delete one post :
   const submitToApiDeletePost = (postId, config) => {
@@ -51,13 +54,24 @@ const DeleteModal = ({ handleClose, show, dataPost, onValidate,dataUser }) => {
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {/* {dataUser.u_first_name} {dataUser.u_last_name} */}
+            {window.location.pathname === "/profile/:id"
+              ? "Alors on supprime votre compte ?"
+              : "Supprimer la publication ?"}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>Confirmez la suppression</Modal.Body>
+        <Modal.Body>
+          {window.location.pathname === "/profile/:id" && (
+            <Image src={cat} alt={cat} fluid />
+          )}
+          {window.location.pathname === "/" && (
+            <Image src={removeCat} alt={removeCat} className="w-100" fluid />
+          )}
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Annuler
+            {window.location.pathname === "/profile/:id"
+              ? "Non, pas encore"
+              : "Oh, NON !"}
           </Button>
           <Button
             variant="primary"
@@ -67,7 +81,9 @@ const DeleteModal = ({ handleClose, show, dataPost, onValidate,dataUser }) => {
                 : submitToApiDeleteUser(id, config);
             }}
           >
-            Confirmer la suppression
+            {window.location.pathname === "/profile/:id"
+              ? "Oui, au revoir !"
+              : "Oui, à la poubelle !"}
           </Button>
         </Modal.Footer>
       </Modal>

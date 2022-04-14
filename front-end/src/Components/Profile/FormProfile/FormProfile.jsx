@@ -45,11 +45,12 @@ const FormProfile = ({ dataUser, onValidate }) => {
   const handleShow = () => setShow(true);
 
   const [toggle, setToggle] = useState({
-    btnConfirm: true,
     field: true,
     fieldPass: true,
-    btnDisabled: true,
+    btnConfirm: true,
+    btnConfirmDisabled: true,
     btnChangePass: true,
+    btnPassDisabled: true,
   });
 
   // console.log(toggle);
@@ -144,6 +145,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
     // ---create the error messages :
 
     handleToggle("btnConfirm", false);
+    handleToggle("btnConfirmDisabled", true);
     setMessageValidation("");
     setOneErr(false);
 
@@ -190,7 +192,6 @@ const FormProfile = ({ dataUser, onValidate }) => {
           ? handleToggle("btnConfirm", false)
           : handleToggle("btnConfirm", true);
 
-        console.log("ok pass");
         handleToggle("field", true);
         handleToggle("fieldPass", true);
         handleToggle("btnDisabled", false);
@@ -217,7 +218,6 @@ const FormProfile = ({ dataUser, onValidate }) => {
         // console.log(JSON.stringify(userObj));
 
         submitToApiPut(id, formData, token);
-        navigate("/");
 
         handleToggle("field", true);
         handleToggle("fieldPass", true);
@@ -234,7 +234,10 @@ const FormProfile = ({ dataUser, onValidate }) => {
       .modifyUser(id, data, token)
       .then((response) => {
         // console.log(response);
+
+        handleToggle("btnConfirmDisabled", false);
         onValidate();
+        // navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -362,7 +365,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
           <Button
             variant="outline-secondary"
             className={
-              !toggle.btnDisabled
+              !toggle.btnPassDisabled
                 ? "w-100 mb-4 disabled btn-outline-success"
                 : "w-100 mb-4"
             }
@@ -375,7 +378,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
               setOneErr(false);
             }}
           >
-            {!toggle.btnDisabled
+            {!toggle.btnPassDisabled
               ? "Mot de passe a été changé"
               : "Changer de mot de passe ?"}
           </Button>
@@ -432,8 +435,18 @@ const FormProfile = ({ dataUser, onValidate }) => {
         )}
 
         {!toggle.btnConfirm && (
-          <Button variant="primary" type="submit" className="w-100 mb-4">
-            Confirmer les modifications
+          <Button
+            variant="primary"
+            type="submit"
+            className={
+              toggle.btnConfirmDisabled
+                ? "w-100 mb-4"
+                : "w-100 mb-4 disabled btn-success"
+            }
+          >
+            {toggle.btnConfirmDisabled
+              ? "Confirmer les modifications"
+              : "Modifié"}
           </Button>
         )}
 
@@ -445,7 +458,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
             toggle.field ? navigate("/") : cancelCoursPass();
           }}
         >
-          Retourner
+          Retour
         </Button>
 
         <Button
@@ -476,7 +489,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
           Vous êtes adimistrateur & modérateur de l'app Groupomania. Pour
           supprimer votre compte veuillez contacter le Sys Admin. Merci
         </Offcanvas.Body>
-        <Image src={image} fluid />
+        <Image src={image} alt={image} fluid />
       </Offcanvas>
     </>
   );
