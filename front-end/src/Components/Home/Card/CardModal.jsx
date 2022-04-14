@@ -13,14 +13,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { RiImageEditLine } from "react-icons/ri";
 import { RiImageAddLine } from "react-icons/ri";
 
-const CardModal = ({
-  onClose,
-  show,
-  postId,
-  onValidate,
-  validateHandler,
-  dataPost,
-}) => {
+const CardModal = ({ onClose, show, dataPost, onValidate }) => {
   const userContext = useContext(UserContext);
   const token = userContext.token;
   const customMessage = validService.messages();
@@ -123,11 +116,11 @@ const CardModal = ({
     }
 
     postObj.title && postObj.text
-      ? submitToApi(postId, formData, token)
+      ? submitToApi(dataPost.p_id, formData, token)
       : postObj.title && postObj.image
-      ? submitToApi(postId, formData, token)
+      ? submitToApi(dataPost.p_id, formData, token)
       : postObj.title && imagefile
-      ? submitToApi(postId, formData, token)
+      ? submitToApi(dataPost.p_id, formData, token)
       : handleMessage(postObj);
   };
 
@@ -138,7 +131,7 @@ const CardModal = ({
       .then((response) => {
         // console.log(response);
         onValidate();
-        validateHandler();
+
         onClose();
         setMessage("");
         handleInitialToggle();

@@ -1,36 +1,47 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import UserContext from "../../../Context/UserContext";
+import userService from "../../../services/userService";
 
 import { BsPersonFill } from "react-icons/bs";
 
 import Container from "react-bootstrap/Container";
+
 import Likes from "./Likes";
-import Btns from "./CardBtns";
+import CardBtns from "./CardBtns";
+import CardModal from "./CardModal";
+import DeleteModal from "../../DeleteModal.jsx";
 
 import TimeAgo from "timeago-react";
 import * as timeago from "timeago.js";
 import fr from "timeago.js/lib/lang/fr";
 
-const Card = ({
-  postId,
-  title,
-  text,
-  imageUrl,
-  userId,
-  firstName,
-  lastName,
-  avatar,
-  createdAt,
-  onValidate,
-  liked,
-  disliked,
-  userChoice,
-  likeId,
-  likeUserId,
-  addData
-}) => {
+const Card = ({ dataPost, addData, onValidate }) => {
   timeago.register("fr", fr);
+  const userContext = useContext(UserContext);
+  const tokenAuth = userContext.authHeader();
+  const config = { headers: tokenAuth };
+  const id = parseInt(userContext.userId(), 10);
 
+  //call to API for delete one post :
+  const submitToApiDelete = (e, postId, config) => {
+    userService
+      .deleteOnePost(postId, config)
+      .then((response) => onValidate())
+      .catch((err) => console.log(err));
+  };
+
+  //toggle for show the CardModal :
+  const [showCardModal, setShowCardModal] = useState(false);
+
+  const handleCloseCardModal = () => setShowCardModal(false);
+  const handleShowCardModal = () => setShowCardModal(true);
+
+  // toggle for show alert "DeleteModal" :
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
+  const handleShowDeleteModal = () => setShowDeleteModal(true);
 
   return (
     <article>
@@ -48,10 +59,10 @@ const Card = ({
                   height: "60px",
                 }}
               >
-                {!avatar && <BsPersonFill size={36} />}
-                {avatar && (
+                {!dataPost.u_avatar && <BsPersonFill size={36} />}
+                {dataPost.u_avatar && (
                   <img
-                    src={avatar}
+                    src={dataPost.u_avatar}
                     alt="avatar"
                     className="img-fluid rounded-circle"
                     style={{
@@ -65,10 +76,12 @@ const Card = ({
                 )}
               </Link>
 
-              <span className="ms-2 fw-bold">{firstName + " " + lastName}</span>
+              <span className="ms-2 fw-bold">
+                {dataPost.u_first_name + " " + dataPost.u_last_name}
+              </span>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
-                publiée <TimeAgo datetime={createdAt} locale="fr" />
+                publiée <TimeAgo datetime={dataPost.p_time} locale="fr" />
               </span>
             </div>
           </Container>
@@ -77,12 +90,12 @@ const Card = ({
           <div>
             <Container fluid className="p-2 g-0">
               <h1 className="fs-2" style={{ wordWrap: "break-word" }}>
-                {title}
+                {dataPost.p_title}
               </h1>
-              <p>{text}</p>
+              <p>{dataPost.p_text}</p>
             </Container>
 
-            {imageUrl && (
+            {dataPost.p_image && (
               <div
                 className="position-relative overflow-hidden  "
                 style={{
@@ -90,8 +103,8 @@ const Card = ({
                 }}
               >
                 <img
-                  src={imageUrl}
-                  alt={imageUrl}
+                  src={dataPost.p_image}
+                  alt={dataPost.p_image}
                   className="position-absolute img-fluid "
                   style={{
                     objectFit: "cover",
@@ -107,19 +120,30 @@ const Card = ({
         </div>
         <Container fluid className="d-flex justify-content-between p-2 g-0">
           <Likes
-            liked={liked}
-            disliked={disliked}
-            postId={postId}
-            userChoice={userChoice}
-            userId={userId}
-            likeId={likeId}
-            likeUserId={likeUserId}
+            dataPost={dataPost}
             onValidate={onValidate}
             addData={addData}
           />
-          <Btns userId={userId} postId={postId} onValidate={onValidate} />
+          <CardBtns
+            dataPost={dataPost}
+            onValidate={onValidate}
+            handleShowCardModal={handleShowCardModal}
+            handleShowDeleteModal={handleShowDeleteModal}
+          />
         </Container>
       </Container>
+      <CardModal
+        onClose={handleCloseCardModal}
+        show={showCardModal}
+        onValidate={onValidate}
+        dataPost={dataPost}
+      />
+      <DeleteModal
+        handleClose={handleCloseDeleteModal}
+        show={showDeleteModal}
+        dataPost={dataPost}
+        onValidate={onValidate}
+      />
     </article>
   );
 };

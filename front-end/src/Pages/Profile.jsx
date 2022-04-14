@@ -19,7 +19,7 @@ const Profile = () => {
           </h1>
           {/* <p className="text-center">Choisis ton avatar </p>
           <Avatars /> */}
-          <FormProfile dataUser={dataUser} validateHandler={validateHandler} />
+          <FormProfile dataUser={dataUser} onValidate={validateHandler} />
         </Container>
       </main>
     </>
