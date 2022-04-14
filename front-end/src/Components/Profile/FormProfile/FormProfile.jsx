@@ -5,6 +5,8 @@ import userService from "../../../services/userService.js";
 import validService from "../../../services/validService";
 import UserContext from "../../../Context/UserContext";
 
+import DeleteModal from "../../DeleteModal.jsx";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -13,7 +15,7 @@ import Image from "react-bootstrap/Image";
 
 import image from "../../../Assets/Gif/no-way-cat.gif";
 
-const FormProfile = ({ dataUser, validateHandler }) => {
+const FormProfile = ({ dataUser, onValidate }) => {
   const userContext = useContext(UserContext);
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
@@ -32,8 +34,13 @@ const FormProfile = ({ dataUser, validateHandler }) => {
   };
 
   // toggles :
-  const [show, setShow] = useState(false);
+  // -----toggle for show alert "DeleteModal" :
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
+  const handleShowDeleteModal = () => setShowDeleteModal(true);
 
+  // ----toggle for
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -115,7 +122,6 @@ const FormProfile = ({ dataUser, validateHandler }) => {
         setMessage({ controlPassword: customMessage.controlPassword });
         break;
       default:
-       
     }
   }
 
@@ -228,7 +234,7 @@ const FormProfile = ({ dataUser, validateHandler }) => {
       .modifyUser(id, data, token)
       .then((response) => {
         // console.log(response);
-        validateHandler();
+        onValidate();
       })
       .catch((error) => {
         console.log(error);
@@ -246,18 +252,6 @@ const FormProfile = ({ dataUser, validateHandler }) => {
             controlPassword: "",
           };
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const submitToApiDelete = (userId, config) => {
-    userService
-      .deleteUser(userId, config)
-      .then((response) => {
-        // console.log(response);
-        logoutHandler();
       })
       .catch((error) => {
         console.log(error);
@@ -368,7 +362,9 @@ const FormProfile = ({ dataUser, validateHandler }) => {
           <Button
             variant="outline-secondary"
             className={
-              !toggle.btnDisabled ? "w-100 mb-4 disabled" : "w-100 mb-4"
+              !toggle.btnDisabled
+                ? "w-100 mb-4 disabled btn-outline-success"
+                : "w-100 mb-4"
             }
             onClick={() => {
               handleToggle("fieldPass", false);
@@ -449,21 +445,26 @@ const FormProfile = ({ dataUser, validateHandler }) => {
             toggle.field ? navigate("/") : cancelCoursPass();
           }}
         >
-          Annuler
+          Retourner
         </Button>
 
         <Button
           variant="danger"
           className="w-100"
           onClick={() => {
-            dataUser.u_admin === 1
-              ? handleShow()
-              : submitToApiDelete(id, config);
+            dataUser.u_admin === 1 ? handleShow() : handleShowDeleteModal();
           }}
         >
           Supprimer le compte
         </Button>
       </Form>
+
+      <DeleteModal
+        handleClose={handleCloseDeleteModal}
+        show={showDeleteModal}
+        onValidate={onValidate}
+        dataUser={dataUser}
+      />
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>

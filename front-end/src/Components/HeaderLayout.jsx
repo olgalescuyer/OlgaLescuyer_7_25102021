@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+// import DeleteModal from "./DeleteModal.jsx";
+
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -34,34 +36,41 @@ const HeaderLayout = () => {
     navigate("/login", { replace: true });
   };
 
-  // state for creating a dependency on the state of PostProfile & passing on useEffect  :
+  // state for creating a dependency on the state of PostProfile | render after update & passing on useEffect  :
   const [addData, setAddData] = useState(true);
   const validateHandler = () => {
     setAddData(true);
   };
+
   //-----------------------------------------------------
 
-  const [dataUser, setDataUser] = useState("");
+  // func to call to API GET on user :
+  const [dataUser, setDataUser] = useState({});
+  const handleDataUser = (data) => {
+    setDataUser(data);
+  };
   //   console.log(dataUser);
 
-  const submitToApiGetUser = (id, config) => {
+  useEffect(() => {
     userService
       .getOneUser(id, config)
       .then((response) => {
         // console.log("response : ",response);
-        setDataUser(response.data);
+        handleDataUser(response.data);
       })
 
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  useEffect(() => {
-    submitToApiGetUser(id, config);
   }, [addData]);
 
+  //-----------------------------------------------------
+
+  // call to API GET all posts :
   const [dataPost, setDataPost] = useState([]);
+  const handleDataPost = (data) => {
+    setDataPost(data);
+  };
   // console.log(dataPost);
 
   // console.log(addDataPost);
@@ -72,7 +81,7 @@ const HeaderLayout = () => {
         .then((response) => {
           // console.log("response : ", response);
 
-          setDataPost(response.data);
+          handleDataPost(response.data);
           setAddData(false);
         })
 
@@ -81,6 +90,8 @@ const HeaderLayout = () => {
         });
     }
   }, [addData]);
+
+  //----------------------------------------------------------------
 
   // toggles ------------------------ :
 

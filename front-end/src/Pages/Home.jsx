@@ -34,20 +34,8 @@ const Home = () => {
             {dataPost.map((post, index) => {
               return (
                 <Card
-                  postId={post.p_id}
-                  title={post.p_title}
-                  text={post.p_text}
-                  imageUrl={post.p_image}
-                  userId={post.p_fk_user_id}
-                  firstName={post.u_first_name}
-                  lastName={post.u_last_name}
-                  avatar={post.u_avatar}
-                  createdAt={post.p_time}
-                  disliked={post.disliked}
-                  liked={post.liked}
-                  likeId={post.like_id}
-                  likeUserId={post.l_fk_user_id}
-                  userChoice={post.post_user_choice}
+                  dataPost={post}
+                  postpostId={post.p_id}
                   key={index}
                   onValidate={validateHandler}
                   addData={addData}
