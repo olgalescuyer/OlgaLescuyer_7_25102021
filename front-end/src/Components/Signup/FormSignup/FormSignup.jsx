@@ -29,34 +29,41 @@ const FormSignup = () => {
   // console.log(dataUser);
 
   // - for warning messages :
+  const [oneErr, setOneErr] = useState("");
+  const handleOneErr = () => {
+    setOneErr(true);
+  };
+  const [messageValidation, setMessageValidation] = useState("");
+
+  // ---currents errors :
   const [message, setMessage] = useState({
     firstName: "",
     lastName: "",
     email: " ",
     password: "",
+    controlPassword: "",
   });
 
-  const [oneErr, setOneErr] = useState("");
-  const [messageValidation, setMessageValidation] = useState("");
+  // userField= event.target
+  const createErrMessage = (userField) => {
+    setMessage((prevMessage) => {
+      return {
+        ...prevMessage,
+        [userField.name]: !validRegex[userField.attributes.name.value].test(
+          userField.value
+        )
+          ? customMessage[userField.name]
+          : "",
+      };
+    });
+  };
 
   const handleChange = (event) => {
     event.preventDefault();
-    setMessageValidation("");
-    //  console.log("ref ",refInputPass.current.value);
-    //  console.log("ref control ",refInputControlPass.current.value);
 
-    if (refInputPass.current.value !== refInputControlPass.current.value) {
-      setMessageValidation("Mots de passe ne correspondent pas");
-    } else {
-      setMessageValidation("");
-    }
-
-    // userField = event.target
-
-    validate(event.target, validRegex[event.target.attributes.name.value]);
+    createErrMessage(event.target);
 
     setDataUser((prevDataUser) => {
-      // console.log(prevDataUser);
       return {
         ...prevDataUser,
         [event.target.name]: event.target.value,
@@ -64,6 +71,7 @@ const FormSignup = () => {
     });
 
     setOneErr("");
+    setMessageValidation("");
   };
 
   const handleSubmit = (e) => {
@@ -79,40 +87,15 @@ const FormSignup = () => {
     ) {
       submitToApi(dataUser);
     } else {
-      setOneErr("Tous les champs doivent être remplis correctement");
+      handleOneErr();
     }
-  };
 
-  const validate = (userField, regex) => {
-    if (!regex.test(userField.value)) {
-      createErrMessage(userField);
-      return;
+    if (refInputPass.current.value !== refInputControlPass.current.value) {
+      setMessageValidation("Mots de passe ne correspondent pas");
     } else {
-      setMessage("");
+      setMessageValidation("");
     }
   };
-
-  function createErrMessage(field) {
-    switch (field.name) {
-      case "firstName":
-        setMessage({ firstName: customMessage.firstName });
-        break;
-      case "lastName":
-        setMessage({ lastName: customMessage.lastName });
-        break;
-      case "email":
-        setMessage({ email: customMessage.email });
-        break;
-      case "password":
-        setMessage({ password: customMessage.password });
-        break;
-      case "controlPassword":
-        setMessage({ controlPassword: customMessage.controlPassword });
-        break;
-      default:
-      
-    }
-  }
 
   const submitToApi = (data) => {
     authService
@@ -129,7 +112,8 @@ const FormSignup = () => {
       })
       .catch((error) => {
         console.log(error);
-        setOneErr("L'adresse email a déjà été utilisée")
+        setMessageValidation("L'adresse email a déjà été utilisée");
+        handleOneErr();
       });
   };
 
@@ -149,7 +133,7 @@ const FormSignup = () => {
             onChange={handleChange}
             value={dataUser.firstName}
           />
-          <Form.Text className="text-danger ps-2 ">
+          <Form.Text className="d-block text-danger fst-italic ps-2">
             {message.firstName}
           </Form.Text>
         </FloatingLabel>
@@ -170,7 +154,9 @@ const FormSignup = () => {
             value={dataUser.lastName}
           />
 
-          <Form.Text className="text-danger ps-2">{message.lastName}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.lastName}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
 
@@ -189,7 +175,9 @@ const FormSignup = () => {
             value={dataUser.email}
           />
 
-          <Form.Text className="text-danger ps-2">{message.email}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.email}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
 
@@ -209,7 +197,9 @@ const FormSignup = () => {
             ref={refInputPass}
           />
 
-          <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.password}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
 
@@ -229,16 +219,21 @@ const FormSignup = () => {
             ref={refInputControlPass}
           />
 
-          <Form.Text className="text-danger ps-2">
+          <Form.Text className="d-block text-danger fst-italic ps-2">
             {message.controlPassword}
-            {messageValidation}
           </Form.Text>
         </FloatingLabel>
       </Form.Group>
-  
+
+      {oneErr && (
         <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-          {oneErr}
-          </Form.Text>
+          Veuillez vérifier {!dataUser.firstName ? "PRENOM" : ""}{" "}
+          {!dataUser.lastName ? "NOM" : ""}{" "}
+          {!dataUser.email ? "ADRESSE E-MAIL" : ""}{" "}
+          {!dataUser.password ? "MOT de PASSE" : ""} pour continuer{" "}
+          {messageValidation}
+        </Form.Text>
+      )}
 
       <FormSignupBtns signup={`S'inscrire`} login={"Se connecter"} />
     </Form>

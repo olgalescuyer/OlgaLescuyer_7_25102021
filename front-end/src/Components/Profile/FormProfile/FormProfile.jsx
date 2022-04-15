@@ -90,6 +90,9 @@ const FormProfile = ({ dataUser, onValidate }) => {
 
   // for warning messages & regex from validService:
   const [oneErr, setOneErr] = useState(false);
+  const handleOneErr = () => {
+    setOneErr(true);
+  };
 
   // ---message for compare a new password :
   const [messageValidation, setMessageValidation] = useState("");
@@ -141,12 +144,6 @@ const FormProfile = ({ dataUser, onValidate }) => {
     handleToggle("btnConfirmDisabled", true);
     setMessageValidation("");
     setOneErr(false);
-
-    if (refInputPass.current.value !== refInputControlPass.current.value) {
-      setMessageValidation("Mots de passe ne correspondent pas");
-    } else {
-      setMessageValidation("");
-    }
   };
 
   // -------------- //
@@ -179,6 +176,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
         handleToggle("fieldPass", true);
       } else {
         createErrMessage(dataNewUser);
+        handleOneErr();
       }
     };
 
@@ -209,6 +207,13 @@ const FormProfile = ({ dataUser, onValidate }) => {
         handleToggle("btnChangePass", true);
       } else {
         createErrMessage(dataNewUser);
+        handleOneErr();
+      }
+
+      if (refInputPass.current.value !== refInputControlPass.current.value) {
+        setMessageValidation(": MOTS DE PASSE ne correspondent pas");
+      } else {
+        setMessageValidation("");
       }
     };
 
@@ -221,6 +226,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
       .then((response) => {
         handleToggle("btnConfirmDisabled", false);
         onValidate();
+        cleanMessage();
       })
       .catch((error) => {
         console.log(error);
@@ -274,6 +280,19 @@ const FormProfile = ({ dataUser, onValidate }) => {
     });
   };
 
+  const cleanMessage = () => {
+    setMessage((prevMessage) => {
+      return {
+        ...prevMessage,
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        controlPassword: "",
+      };
+    });
+  };
+
   return (
     <>
       <Form
@@ -299,7 +318,10 @@ const FormProfile = ({ dataUser, onValidate }) => {
               onChange={handleChange}
             />
           </FloatingLabel>
-          <Form.Text className="text-danger ">{message.firstName}</Form.Text>
+
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.firstName}
+          </Form.Text>
         </Form.Group>
 
         <Form.Group
@@ -320,7 +342,9 @@ const FormProfile = ({ dataUser, onValidate }) => {
               value={dataNewUser.lastName}
             />
           </FloatingLabel>
-          <Form.Text className="text-danger">{message.lastName}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.lastName}
+          </Form.Text>
         </Form.Group>
 
         <Form.Group
@@ -341,7 +365,9 @@ const FormProfile = ({ dataUser, onValidate }) => {
               value={dataNewUser.email}
             />
           </FloatingLabel>
-          <Form.Text className="text-danger">{message.email}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.email}
+          </Form.Text>
         </Form.Group>
 
         {toggle.btnChangePass && (
@@ -359,6 +385,13 @@ const FormProfile = ({ dataUser, onValidate }) => {
               handleToggle("btnConfirm", true);
               handleToggle("btnChangePass", false);
               setOneErr(false);
+              setMessage((prevMessage) => {
+                return {
+                  ...prevMessage,
+                  password: "",
+                  controlPassword: "",
+                };
+              });
             }}
           >
             {!toggle.btnPassDisabled
@@ -386,7 +419,7 @@ const FormProfile = ({ dataUser, onValidate }) => {
               ref={refInputPass}
             />
           </FloatingLabel>
-          <Form.Text className="text-danger ps-2 ">
+          <Form.Text className="d-block text-danger fst-italic ps-2">
             {message.password}
           </Form.Text>
 
@@ -405,17 +438,19 @@ const FormProfile = ({ dataUser, onValidate }) => {
               ref={refInputControlPass}
             />
           </FloatingLabel>
-          <Form.Text className="text-danger ps-2 ">
+          <Form.Text className="d-block text-danger fst-italic ps-2">
             {message.controlPassword}
-            {messageValidation}
           </Form.Text>
         </Form.Group>
 
-        {/* {oneErr && (
+        {oneErr && (
           <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-            Tous les champs doivent être remplis correctement
+            Veuillez vérifier {!dataNewUser.firstName ? "PRENOM" : ""}{" "}
+            {!dataNewUser.lastName ? "NOM" : ""}{" "}
+            {!dataNewUser.email ? "ADRESSE E-MAIL" : ""} pour continuer{" "}
+            {messageValidation}
           </Form.Text>
-        )} */}
+        )}
 
         {!toggle.btnConfirm && (
           <Button

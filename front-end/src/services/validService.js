@@ -11,8 +11,8 @@ const regex = () => {
 
 const messages = () => {
   return {
-    firstName: "Vérifiez le prénom. Ce champ accepte uniquement les lettres.",
-    lastName: "Vérifiez le prénom. Ce champ accepte uniquement les lettres.",
+    firstName: "Ce champ accepte uniquement les lettres.",
+    lastName: "Ce champ accepte uniquement les lettres.",
     email:
       "Saisissez une adresse électronique correcte : nom.prenom@groupomania.fr ",
     password:
