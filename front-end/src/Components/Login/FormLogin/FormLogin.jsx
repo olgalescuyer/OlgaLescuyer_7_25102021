@@ -18,16 +18,38 @@ const FormLogin = () => {
     password: "",
   });
 
+  // warning messages :
+  const [oneErr, setOneErr] = useState(false);
+  const handleOneErr = (bool) => {
+    setOneErr(bool);
+  };
+
+  const [messageValidation, setMessageValidation] = useState("");
+
   const [message, setMessage] = useState({
     email: " ",
     password: "",
   });
 
-  const [messageValidation, setMessageValidation] = useState("");
+  // userField= event.target
+  const createErrMessage = (userField) => {
+    setMessage((prevMessage) => {
+      return {
+        ...prevMessage,
+        [userField.name]: !validRegex[userField.attributes.name.value].test(
+          userField.value
+        )
+          ? customMessage[userField.name]
+          : "",
+      };
+    });
+  };
 
   const handleChange = (event) => {
     // console.log(event.target.value)
-    validate(event.target, validRegex[event.target.attributes.name.value]);
+    createErrMessage(event.target);
+    setMessageValidation("");
+    handleOneErr(false);
 
     setDataUser((prevDataUser) => {
       return {
@@ -35,7 +57,6 @@ const FormLogin = () => {
         [event.target.name]: event.target.value,
       };
     });
-    setMessageValidation("");
   };
 
   const handleSubmit = (e) => {
@@ -47,29 +68,9 @@ const FormLogin = () => {
     ) {
       submitToApi(dataUser);
     } else {
-      setMessageValidation("Tous les champs doivent être remplis correctement");
+      handleOneErr(true);
     }
   };
-
-  const validate = (userField, regex) => {
-    if (!regex.test(userField.value)) {
-      createErrMessage(userField);
-    } else {
-      setMessage("");
-    }
-  };
-
-  function createErrMessage(field) {
-    switch (field.name) {
-      case "email":
-        setMessage({ email: customMessage.email });
-        break;
-      case "password":
-        setMessage({ password: customMessage.password });
-        break;
-      default:
-    }
-  }
 
   const submitToApi = (data) => {
     authService
@@ -109,7 +110,9 @@ const FormLogin = () => {
             onChange={handleChange}
             value={dataUser.email}
           />
-          <Form.Text className="text-danger ps-2">{message.email}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.email}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
 
@@ -127,13 +130,21 @@ const FormLogin = () => {
             onChange={handleChange}
             value={dataUser.password}
           />
-          <Form.Text className="text-danger ps-2">{message.password}</Form.Text>
+          <Form.Text className="d-block text-danger fst-italic ps-2">
+            {message.password}
+          </Form.Text>
         </FloatingLabel>
       </Form.Group>
 
-      <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+      <Form.Text className="d-block text-danger fst-italic ps-2 pb-2">
         {messageValidation}
       </Form.Text>
+      {oneErr && (
+        <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+          Veuillez vérifier {!dataUser.email ? "ADRESSE E-MAIL" : ""}{" "}
+          {!dataUser.password ? "MOT de PASSE" : ""} pour continuer{" "}
+        </Form.Text>
+      )}
 
       <FormLoginBtns login={"Se connecter"} signup={`S'inscrire`} />
     </Form>

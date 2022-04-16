@@ -29,9 +29,9 @@ const FormSignup = () => {
   // console.log(dataUser);
 
   // - for warning messages :
-  const [oneErr, setOneErr] = useState("");
-  const handleOneErr = () => {
-    setOneErr(true);
+  const [oneErr, setOneErr] = useState(false);
+  const handleOneErr = (bool) => {
+    setOneErr(bool);
   };
   const [messageValidation, setMessageValidation] = useState("");
 
@@ -70,7 +70,8 @@ const FormSignup = () => {
       };
     });
 
-    setOneErr("");
+    setOneErr(false);
+
     setMessageValidation("");
   };
 
@@ -87,7 +88,7 @@ const FormSignup = () => {
     ) {
       submitToApi(dataUser);
     } else {
-      handleOneErr();
+      handleOneErr(true);
     }
 
     if (refInputPass.current.value !== refInputControlPass.current.value) {
@@ -112,7 +113,7 @@ const FormSignup = () => {
       })
       .catch((error) => {
         console.log(error);
-        setMessageValidation("L'adresse email a déjà été utilisée");
+        setMessageValidation("L'adresse email a été déjà utilisée");
         handleOneErr();
       });
   };
@@ -224,14 +225,16 @@ const FormSignup = () => {
           </Form.Text>
         </FloatingLabel>
       </Form.Group>
-
+      <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
+        {" "}
+        {messageValidation}
+      </Form.Text>
       {oneErr && (
         <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
           Veuillez vérifier {!dataUser.firstName ? "PRENOM" : ""}{" "}
           {!dataUser.lastName ? "NOM" : ""}{" "}
           {!dataUser.email ? "ADRESSE E-MAIL" : ""}{" "}
           {!dataUser.password ? "MOT de PASSE" : ""} pour continuer{" "}
-          {messageValidation}
         </Form.Text>
       )}
 
