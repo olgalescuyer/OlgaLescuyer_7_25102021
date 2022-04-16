@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -30,6 +30,9 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   // for warning messages :
 
   const [oneErr, setOneErr] = useState(" ");
+  const handleOneErr = (message) => {
+    setOneErr(message);
+  };
 
   const [message, setMessage] = useState({
     title: "",
@@ -51,7 +54,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   // -------------- //
   const handleChange = (event) => {
     handleMessage(dataPost);
-    setOneErr("");
+    handleOneErr(" ");
 
     // grab the post :
     setDataPost((prevDataPost) => {
@@ -83,9 +86,11 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       ? submitToApi(formData, token)
       : handleMessage(dataPost);
 
-    dataPost.title && !dataPost.text && !dataPost.imageUrl
-      ? setOneErr("Veuillez ajouter une description ou/et une image")
-      : setOneErr("");
+    if (!dataPost.title) {
+      handleOneErr("Veuillez ajouter un titre");
+    } else if (dataPost.title && !dataPost.text && !dataPost.imageUrl) {
+      handleOneErr("Veuillez ajouter une description ou/et une image");
+    }
   };
 
   // func call to api :
@@ -96,9 +101,11 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         onValidate();
         cancelCourse();
         onToggle();
+        handleOneErr(" ");
       })
       .catch((error) => {
         console.log(error);
+        handleOneErr("Text est trop longue. 255 caractères max");
       });
   };
 
@@ -118,6 +125,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   const handleClick = () => {
     cancelCourse();
     onToggle();
+    handleOneErr(" ");
   };
 
   return (

@@ -4,11 +4,9 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import UserContext from "../../../Context/UserContext";
 import userService from "../../../services/userService.js";
-import validService from "../../../services/validService";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RiImageEditLine } from "react-icons/ri";
@@ -17,7 +15,6 @@ import { RiImageAddLine } from "react-icons/ri";
 const CardModal = ({ onClose, show, dataPost, onValidate }) => {
   const userContext = useContext(UserContext);
   const token = userContext.token;
-  const customMessage = validService.messages();
 
   // grabe a new post object + initial value from db by dependency dataPost :
   const [dataNewPost, setDataNewPost] = useState({
@@ -64,7 +61,7 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
   const handleOneErr = (message) => {
     setOneErr(message);
   };
-  console.log(oneErr);
+
   // -------------- //
 
   // delete image :
@@ -91,7 +88,7 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       text: dataNewPost.text,
       image: dataNewPost.imageUrl,
     };
-    console.log(postObj);
+
     const formData = new FormData();
     if (imagefile) {
       formData.append("post", JSON.stringify(postObj));

@@ -17,14 +17,13 @@ import image from "../../../Assets/Gif/no-way-cat.gif";
 
 const FormProfile = ({ dataUser, onValidate }) => {
   const userContext = useContext(UserContext);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
   const id = userContext.userId();
   const token = userContext.token;
-  // console.log(dataUser);
+
   const refInputPass = useRef();
   const refInputControlPass = useRef();
   const navigate = useNavigate();
+
   const customMessage = validService.messages();
   const validRegex = validService.regex();
 
