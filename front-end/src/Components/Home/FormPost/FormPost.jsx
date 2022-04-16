@@ -29,6 +29,13 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
 
   // for warning messages :
 
+  const [oneErr, setOneErr] = useState(" ");
+  console.log(oneErr);
+  const handleOneErr = (bool) => {
+    console.log(bool);
+    setOneErr(bool);
+  };
+
   const [message, setMessage] = useState({
     title: "",
     text: "",
@@ -36,8 +43,9 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   });
 
   const handleMessage = (data) => {
-    setMessage(() => {
+    setMessage((prevMessage) => {
       return {
+        ...prevMessage,
         title: data.title ? "" : customMessage.title,
         text: data.text ? "" : customMessage.text,
         imageUrl: data.imageUrl ? "" : customMessage.imageUrl,
@@ -48,6 +56,9 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   // -------------- //
   const handleChange = (event) => {
     handleMessage(dataPost);
+    setOneErr("");
+
+    // grab the post :
     setDataPost((prevDataPost) => {
       return {
         ...prevDataPost,
@@ -76,6 +87,10 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       : dataPost.title && dataPost.imageUrl.length !== 0
       ? submitToApi(formData, token)
       : handleMessage(dataPost);
+
+    dataPost.title && !dataPost.text && !dataPost.imageUrl
+      ? setOneErr("Veuillez ajouter une description ou/et une image")
+      : setOneErr("");
   };
 
   // func call to api :
@@ -155,7 +170,10 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         className="position-relative text-muted fst-italic"
         controlId="title"
       >
-        <FloatingLabel controlId="title" label="Titre (max 255)">
+        <FloatingLabel
+          controlId="title"
+          label="Titre est obligatoire (max 255)"
+        >
           <Form.Control
             type="text"
             placeholder="title"
@@ -166,7 +184,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         </FloatingLabel>
 
         <div className="position-relative p-4">
-          <Form.Text className="position-absolute start-0 top-0 d-block ps-2 fw-bold text-danger ">
+          <Form.Text className="position-absolute start-0 top-0 d-block ps-2 fw-bold text-secondary ">
             {message.title}
           </Form.Text>
         </div>
@@ -176,7 +194,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
         className=" position-relative text-muted fst-italic mt-1"
         controlId="text"
       >
-        <FloatingLabel controlId="text" label="À quoi pensez-vous ? (max 255)">
+        <FloatingLabel controlId="text" label="Text est optionnel (max 255)">
           <Form.Control
             as="textarea"
             rows={3}
@@ -188,7 +206,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
           />
         </FloatingLabel>
         <div className="position-relative p-1">
-          <Form.Text className="position-absolute d-block ps-2 fw-bold text-danger ">
+          <Form.Text className="position-absolute d-block ps-2 fw-bold text-secondary ">
             {message.text}
           </Form.Text>
         </div>
@@ -205,14 +223,19 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
           ref={refImg}
         />
         <div className="position-relative">
-          <Form.Text className="position-absolute d-block ps-2  fw-bold text-danger fst-italic">
+          <Form.Text className="position-absolute d-block ps-2  fw-bold text-secondary fst-italic">
             {message.imageUrl}
           </Form.Text>
         </div>
       </Form.Group>
+
+      <Form.Text className="d-block pt-4 px-2 fw-bold text-danger ">
+        {oneErr}
+      </Form.Text>
+
       <Container
         fluid
-        className="d-flex justify-content-end position-relative g-0 mt-4 "
+        className="d-flex justify-content-end position-relative g-0 mt-2 "
       >
         <Button variant="primary" type="submit">
           Publier
