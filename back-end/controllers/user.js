@@ -211,7 +211,7 @@ exports.modifyPassword = (req, res, next) => {
       .hash(obj.password, 10)
       .then((hash) => {
         const sqlInserts = [hash, id];
-        console.log(sqlInserts);
+
         userModel
           .updatePassword(sqlInserts)
           .then((response) => {

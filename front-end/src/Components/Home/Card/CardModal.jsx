@@ -109,8 +109,6 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       ? submitToApi(dataPost.p_id, formData, token)
       : postObj.title && postObj.image
       ? submitToApi(dataPost.p_id, formData, token)
-      : postObj.title && imagefile
-      ? submitToApi(dataPost.p_id, formData, token)
       : createErrMessage();
   };
 
@@ -127,6 +125,7 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       })
       .catch((error) => {
         console.log(error);
+        handleOneErr("Trop longue- 255 caractères max");
       });
   };
 
