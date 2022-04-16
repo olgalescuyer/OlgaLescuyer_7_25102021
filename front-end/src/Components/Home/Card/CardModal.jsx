@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 import UserContext from "../../../Context/UserContext";
 import userService from "../../../services/userService.js";
@@ -46,9 +47,6 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
     handleToggle("btnConfirm", false);
     // console.log("dataNewPost", dataNewPost);
 
-    // for cancel warning messages :
-    setMessage("");
-
     // grabe a values :
     setDataNewPost((prevDataNewPost) => {
       return {
@@ -56,30 +54,17 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
         [event.target.name]: event.target.value,
       };
     });
+    handleOneErr(" ");
   };
 
   // console.log(dataNewPost);
 
   // for warning messages :
-
-  const [message, setMessage] = useState({
-    title: "",
-    text: "",
-    imageUrl: "",
-  });
-
-  const handleMessage = (data) => {
-    setMessage((prevMessage) => {
-      return {
-        ...prevMessage,
-
-        title: data.title ? "" : customMessage.title,
-        text: data.text ? "" : customMessage.text,
-        imageUrl: data.image ? "" : customMessage.imageUrl,
-      };
-    });
+  const [oneErr, setOneErr] = useState(" ");
+  const handleOneErr = (message) => {
+    setOneErr(message);
   };
-
+  console.log(oneErr);
   // -------------- //
 
   // delete image :
@@ -106,7 +91,7 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       text: dataNewPost.text,
       image: dataNewPost.imageUrl,
     };
-
+    console.log(postObj);
     const formData = new FormData();
     if (imagefile) {
       formData.append("post", JSON.stringify(postObj));
@@ -115,13 +100,21 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       formData.append("post", JSON.stringify(postObj));
     }
 
+    const createErrMessage = () => {
+      if (!postObj.title) {
+        handleOneErr("Veuillez ajouter un titre");
+      } else if (postObj.title && !postObj.text && !postObj.image) {
+        handleOneErr("Veuillez ajouter une description et/ou une image");
+      }
+    };
+
     postObj.title && postObj.text
       ? submitToApi(dataPost.p_id, formData, token)
       : postObj.title && postObj.image
       ? submitToApi(dataPost.p_id, formData, token)
       : postObj.title && imagefile
       ? submitToApi(dataPost.p_id, formData, token)
-      : handleMessage(postObj);
+      : createErrMessage();
   };
 
   // func to call the API :
@@ -131,10 +124,9 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
       .then((response) => {
         // console.log(response);
         onValidate();
-
         onClose();
-        setMessage("");
         handleInitialToggle();
+        handleOneErr(" ");
       })
       .catch((error) => {
         console.log(error);
@@ -180,55 +172,38 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
           closeButton
           onClick={() => {
             onClose();
-            setMessage("");
             handleInitialToggle();
+            handleOneErr(" ");
           }}
         >
           <Modal.Title>Modifier la publication</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group
-              className="position-relative mb-3 text-muted fst-italic"
-              controlId="title"
-            >
+            <Form.Group className="position-relative mb-3" controlId="title">
               <Form.Control
                 as="textarea"
                 rows={3}
                 style={{ height: "100px" }}
                 type="text"
-                placeholder="Modifier le titre"
+                placeholder="Ajouter un titre ( obligatoire )"
                 name="title"
                 onChange={handleChange}
                 value={dataNewPost.title}
-                className="fs-2"
+                className="fs-4"
               />
-
-              <Form.Text
-                className="d-block position-absolute ps-2 bottom-0 end-0 fw-bold text-danger"
-                muted
-              >
-                {message.title}
-              </Form.Text>
             </Form.Group>
 
-            <Form.Group
-              className=" position-relative text-muted fst-italic mt-3"
-              controlId="text"
-            >
+            <Form.Group className=" position-relative mt-3" controlId="text">
               <Form.Control
                 as="textarea"
                 rows={3}
-                placeholder="Ajouter une description"
+                placeholder="Ajouter une description ( optionnel )"
                 style={{ height: "100px" }}
                 name="text"
                 onChange={handleChange}
                 value={dataNewPost.text}
               />
-
-              <Form.Text className="d-block position-absolute ps-2 bottom-0 end-0 fw-bold text-danger ">
-                {message.text}
-              </Form.Text>
             </Form.Group>
 
             <>
@@ -254,6 +229,7 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
                       </span>
                     </div>
                   )}
+
                   {toggle.btnEdit && (
                     <>
                       <Button
@@ -344,14 +320,17 @@ const CardModal = ({ onClose, show, dataPost, onValidate }) => {
               </Form.Group>
             )}
 
+            <Form.Text className="d-block text-end fw-bold text-danger">
+              {oneErr}
+            </Form.Text>
+
             <div className="d-flex justify-content-md-end justify-content-between mt-3">
               <Button
                 variant="secondary"
                 onClick={() => {
                   onClose();
-                  setMessage("");
-
                   handleInitialToggle();
+                  handleOneErr(" ");
                 }}
               >
                 Annuler

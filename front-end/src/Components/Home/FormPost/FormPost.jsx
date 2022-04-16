@@ -30,11 +30,6 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
   // for warning messages :
 
   const [oneErr, setOneErr] = useState(" ");
-  console.log(oneErr);
-  const handleOneErr = (bool) => {
-    console.log(bool);
-    setOneErr(bool);
-  };
 
   const [message, setMessage] = useState({
     title: "",
