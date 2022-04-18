@@ -13,11 +13,11 @@ export default function Login() {
     <>
     {userContext.isLoggedIn && <Navigate to="/" replace={true}></Navigate>}
       <Container className="w-custom-limit-400">
-      <header>
+      <header className="d-flex justify-content-around" >
         <Logo />
       </header>
       <main>
-        <span className="d-block h4 text-center mb-4">Vous avez déjà un compte ?</span>
+        <span className="fs-3 d-block h4 text-center mb-4">Vous avez déjà un compte ?</span>
         <FormLogin  />
       </main>
     </Container>
