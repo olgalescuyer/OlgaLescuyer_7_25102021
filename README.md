@@ -17,15 +17,15 @@ salariés .
 * React Bootstrap
 * JS  
 ## Instalation
-1. Cloner le dépot 
-2. Consulter le fishier `.env_dist`
+1. Clonez le dépot 
+2. Consultez le fishier `.env_dist`
 3. Démarrez le serveur
 * `cd back-end`
 * `npm start`
 4.  Démarrez le client
 * `cd front-end`
 * `npm start`
-5. Pour exécutez l'application en mode "administrateur & modérateur" du côté client
+5. Pour exécuter l'application en mode "administrateur & modérateur" du côté client
 > e-mail: `prime.leonidas@groupomania.fr `   
 > mot de passe: `AZ12cv?./§`
 ---
