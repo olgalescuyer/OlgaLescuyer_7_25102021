@@ -18,7 +18,7 @@ salariés .
 * JS  
 ## Instalation
 1. Clonez le dépot 
-2. Créez le dossier 'images' dans le répertoire 'back-end' pour stocker des images 
+2. Créez le dossier `images` dans le répertoire "back-end" pour stocker des images 
 3. Consultez le fishier `.env_dist`
 4. Démarrez le serveur
 * `cd back-end`
