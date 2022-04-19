@@ -13,7 +13,7 @@ const Signup = () => {
     <>
       {userContext.isLoggedIn && <Navigate to="/" replace={true}></Navigate>}
       <Container className="w-custom-limit-400">
-        <header>
+        <header className="d-flex justify-content-around">
           <Logo />
         </header>
 

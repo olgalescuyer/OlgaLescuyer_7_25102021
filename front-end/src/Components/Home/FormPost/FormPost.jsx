@@ -105,7 +105,7 @@ const FormPost = ({ onValidate, firstName, lastName, avatar, onToggle }) => {
       })
       .catch((error) => {
         console.log(error);
-        handleOneErr("Text est trop longue. 255 caractères max");
+        handleOneErr("Trop longue- 255 caractères max");
       });
   };
 

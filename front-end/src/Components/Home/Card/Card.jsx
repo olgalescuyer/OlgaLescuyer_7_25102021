@@ -1,8 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import UserContext from "../../../Context/UserContext";
-import userService from "../../../services/userService";
 
 import { BsPersonFill } from "react-icons/bs";
 
@@ -19,18 +16,6 @@ import fr from "timeago.js/lib/lang/fr";
 
 const Card = ({ dataPost, addData, onValidate }) => {
   timeago.register("fr", fr);
-  const userContext = useContext(UserContext);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
-  const id = parseInt(userContext.userId(), 10);
-
-  //call to API for delete one post :
-  const submitToApiDelete = (e, postId, config) => {
-    userService
-      .deleteOnePost(postId, config)
-      .then((response) => onValidate())
-      .catch((err) => console.log(err));
-  };
 
   //toggle for show the CardModal :
   const [showCardModal, setShowCardModal] = useState(false);
@@ -75,10 +60,21 @@ const Card = ({ dataPost, addData, onValidate }) => {
                   />
                 )}
               </Link>
+              <div className="position-relative">
+                <span className="ms-2 fw-bold">
+                  {dataPost.u_first_name + " " + dataPost.u_last_name}
+                </span>
 
-              <span className="ms-2 fw-bold">
-                {dataPost.u_first_name + " " + dataPost.u_last_name}
-              </span>
+                <span
+                  className={
+                    dataPost.u_admin === 1
+                      ? "ms-2 text-muted fst-italic d-block position-absolute"
+                      : "d-none"
+                  }
+                >
+                  admin
+                </span>
+              </div>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
                 publiée <TimeAgo datetime={dataPost.p_time} locale="fr" />
