@@ -18,14 +18,15 @@ salariés .
 * JS  
 ## Instalation
 1. Clonez le dépot 
-2. Consultez le fishier `.env_dist`
-3. Démarrez le serveur
+2. Créez le dossier 'images' dans le répertoire 'back-end' pour stocker des images 
+3. Consultez le fishier `.env_dist`
+4. Démarrez le serveur
 * `cd back-end`
 * `npm start`
-4.  Démarrez le client
+5.  Démarrez le client
 * `cd front-end`
 * `npm start`
-5. Pour exécuter l'application en mode "administrateur & modérateur" du côté client
+6. Pour exécuter l'application en mode "administrateur & modérateur" du côté client
 > e-mail: `prime.leonidas@groupomania.fr `   
 > mot de passe: `AZ12cv?./§`
 ---
