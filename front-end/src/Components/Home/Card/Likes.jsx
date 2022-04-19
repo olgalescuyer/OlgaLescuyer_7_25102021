@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import userService from "../../../services/userService";
 import UserContext from "../../../Context/UserContext";
 
+import Button from "react-bootstrap/Button";
+
 import { HiThumbUp } from "react-icons/hi";
 import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
@@ -117,7 +119,7 @@ const Likes = ({ addData, dataPost }) => {
 
   return (
     <div className="d-flex ">
-      <div className="position-relative" onClick={handleLike}>
+      <Button variant="transparent" className="position-relative p-0" onClick={handleLike}>
         <span
           className={
             initial === 1 ? "position-absolute" : "position-absolute invisible"
@@ -131,9 +133,9 @@ const Likes = ({ addData, dataPost }) => {
         </span>
 
         <span>{countLike}</span>
-      </div>
+      </Button>
 
-      <div className="position-relative" onClick={handleDislike}>
+      <Button variant="transparent" className="position-relative p-0" onClick={handleDislike}>
         <span
           className={
             initial === -1 ? "position-absolute" : "position-absolute invisible"
@@ -146,7 +148,7 @@ const Likes = ({ addData, dataPost }) => {
         </span>
 
         <span>{countDislike}</span>
-      </div>
+      </Button>
     </div>
   );
 };

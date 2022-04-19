@@ -444,10 +444,11 @@ const FormProfile = ({ dataUser, onValidate }) => {
 
         {oneErr && (
           <Form.Text className="d-block rounded text-center p-2 fw-bold text-danger ">
-            Veuillez vérifier {!dataNewUser.firstName ? "PRENOM" : ""}{" "}
-            {!dataNewUser.lastName ? "NOM" : ""}{" "}
-            {!dataNewUser.email ? "ADRESSE E-MAIL" : ""} pour continuer{" "}
-            {messageValidation}
+            Veuillez vérifier{" "}
+            {!dataNewUser.firstName && toggle.field ? "PRENOM" : ""}{" "}
+            {!dataNewUser.lastName && toggle.field ? "NOM" : ""}{" "}
+            {!dataNewUser.email && toggle.field ? "ADRESSE E-MAIL" : ""} pour
+            continuer {messageValidation}
           </Form.Text>
         )}
 

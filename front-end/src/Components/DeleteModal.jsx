@@ -17,7 +17,6 @@ const DeleteModal = ({ handleClose, show, dataPost, onValidate, dataUser }) => {
   const tokenAuth = userContext.authHeader();
   const config = { headers: tokenAuth };
   const id = userContext.userId();
-  const token = userContext.token;
   const logoutHandler = () => {
     userContext.logout();
     navigate("/signup", { replace: true });
