@@ -75,10 +75,21 @@ const Card = ({ dataPost, addData, onValidate }) => {
                   />
                 )}
               </Link>
+              <div className="position-relative">
+                <span className="ms-2 fw-bold">
+                  {dataPost.u_first_name + " " + dataPost.u_last_name}
+                </span>
 
-              <span className="ms-2 fw-bold">
-                {dataPost.u_first_name + " " + dataPost.u_last_name}
-              </span>
+                <span
+                  className={
+                    dataPost.u_admin === 1
+                      ? "ms-2 text-muted fst-italic d-block position-absolute"
+                      : "d-none"
+                  }
+                >
+                  admin
+                </span>
+              </div>
 
               <span className="position-absolute top-0 end-0 text-muted fst-italic">
                 publiée <TimeAgo datetime={dataPost.p_time} locale="fr" />
