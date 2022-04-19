@@ -1,8 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import UserContext from "../../../Context/UserContext";
-import userService from "../../../services/userService";
 
 import { BsPersonFill } from "react-icons/bs";
 
@@ -19,18 +16,6 @@ import fr from "timeago.js/lib/lang/fr";
 
 const Card = ({ dataPost, addData, onValidate }) => {
   timeago.register("fr", fr);
-  const userContext = useContext(UserContext);
-  const tokenAuth = userContext.authHeader();
-  const config = { headers: tokenAuth };
-  const id = parseInt(userContext.userId(), 10);
-
-  //call to API for delete one post :
-  const submitToApiDelete = (e, postId, config) => {
-    userService
-      .deleteOnePost(postId, config)
-      .then((response) => onValidate())
-      .catch((err) => console.log(err));
-  };
 
   //toggle for show the CardModal :
   const [showCardModal, setShowCardModal] = useState(false);
