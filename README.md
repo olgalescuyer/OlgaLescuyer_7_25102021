@@ -35,5 +35,7 @@ salariés .
 * Personnaliser le contenu envoyé à un client web ;
 * Implémenter un stockage de données sécurisé en utilisant SQL ;
 * Gérer un stockage de données à l'aide de SQL .
+---
+### *Status : validé avec succès*
 
 
